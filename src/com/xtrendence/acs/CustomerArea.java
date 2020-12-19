@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -13,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerArea extends JFrame {
@@ -53,13 +55,6 @@ public class CustomerArea extends JFrame {
         itemTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         scannedTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
 
-        JScrollBar scrollBar = new JScrollBar();
-        scrollBar.setBackground(new Color(230,230,230));
-        scrollBar.setPreferredSize(new Dimension(10, 40));
-        scrollBar.setMinimumSize(new Dimension(10, 40));
-        scrollBar.setMaximumSize(new Dimension(20, 2147483647));
-        scrollBar.setBorder(BorderFactory.createEmptyBorder());
-
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 
@@ -75,8 +70,22 @@ public class CustomerArea extends JFrame {
         scannedTableTitle.setBackground(new Color(150,135,255));
         scannedTableTitle.setForeground(new Color(255,255,255));
 
-        itemTableScrollPane.setVerticalScrollBar(scrollBar);
-        scannedTableScrollPane.setVerticalScrollBar(scrollBar);
+        JScrollBar itemScrollBar = new JScrollBar();
+        itemScrollBar.setBackground(new Color(230,230,230));
+        itemScrollBar.setPreferredSize(new Dimension(10, 40));
+        itemScrollBar.setMinimumSize(new Dimension(10, 40));
+        itemScrollBar.setMaximumSize(new Dimension(10, 2147483647));
+        itemScrollBar.setBorder(BorderFactory.createEmptyBorder());
+
+        JScrollBar scannedScrollBar = new JScrollBar();
+        scannedScrollBar.setBackground(new Color(230,230,230));
+        scannedScrollBar.setPreferredSize(new Dimension(10, 40));
+        scannedScrollBar.setMinimumSize(new Dimension(10, 40));
+        scannedScrollBar.setMaximumSize(new Dimension(10, 2147483647));
+        scannedScrollBar.setBorder(BorderFactory.createEmptyBorder());
+
+        itemTableScrollPane.setVerticalScrollBar(itemScrollBar);
+        scannedTableScrollPane.setVerticalScrollBar(scannedScrollBar);
 
         itemTable.setBackground(new Color(255, 255, 255));
         itemTable.setForeground(new Color(75,75,75));
@@ -97,6 +106,7 @@ public class CustomerArea extends JFrame {
         scannedTable.setRowHeight(30);
         scannedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scannedTable.setDefaultEditor(Object.class, null);
+        createScannedTable(scannedTable);
 
         scanOutput.setVisible(false);
         scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -129,6 +139,7 @@ public class CustomerArea extends JFrame {
                             scanOutput.setBackground(new Color(150, 135, 255));
                             scanOutput.setForeground(new Color(255,255,255));
                             scanOutput.setText("The item has been added to your shopping cart.");
+                            addToScannedTable(item, scannedTable);
                             timer.restart();
                         }
                     }
@@ -143,13 +154,13 @@ public class CustomerArea extends JFrame {
         Stock stock = new Stock();
         stock.updateStock();
 
-        updateTable(Stock.items, customerArea.itemTable);
+        updateItemTable(Stock.items, customerArea.itemTable);
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
 
-        JPopupMenu popupMenu = new JPopupMenu();
-        popupMenu.setBackground(new Color(230,230,230));
+        JPopupMenu itemTablePopupMenu = new JPopupMenu();
+        itemTablePopupMenu.setBackground(new Color(230,230,230));
         JMenuItem scanItem = new JMenuItem("Scan Item");
         scanItem.setSize(scanItem.getWidth(), 30);
         scanItem.setBackground(new Color(255,255,255));
@@ -161,16 +172,16 @@ public class CustomerArea extends JFrame {
                 customerArea.inputProductCode.setText(code);
             }
         });
-        popupMenu.add(scanItem);
-        customerArea.itemTable.setComponentPopupMenu(popupMenu);
+        itemTablePopupMenu.add(scanItem);
+        customerArea.itemTable.setComponentPopupMenu(itemTablePopupMenu);
 
-        popupMenu.addPopupMenuListener(new PopupMenuListener() {
+        itemTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        int rowAtCursor = customerArea.itemTable.rowAtPoint(SwingUtilities.convertPoint(popupMenu, new Point(0, 0), customerArea.itemTable));
+                        int rowAtCursor = customerArea.itemTable.rowAtPoint(SwingUtilities.convertPoint(itemTablePopupMenu, new Point(0, 0), customerArea.itemTable));
                         if(rowAtCursor > -1) {
                             customerArea.itemTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
                         }
@@ -190,13 +201,29 @@ public class CustomerArea extends JFrame {
         });
     }
 
-    public static void updateTable(List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
+    public static void addToScannedTable(Item item, JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.addRow(new Object[]{ item.getName(), item.getPrice() });
+        table.setModel(model);
+        table.repaint();
+    }
+
+    public static void updateItemTable(List<Item> stock, JTable table) {
+        String[] columns = new String[]{ "Product Code", "Name", "Price (£)", "Remaining Quantity" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
             model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
         }
+        table.setModel(model);
+        table.repaint();
+        table.getRowSorter().toggleSortOrder(0);
+    }
+
+    public static void createScannedTable(JTable table) {
+        String[] columns = new String[]{ "Name", "Price" };
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
         table.setModel(model);
         table.repaint();
         table.getRowSorter().toggleSortOrder(0);
