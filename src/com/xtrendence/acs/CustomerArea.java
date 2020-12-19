@@ -41,7 +41,7 @@ public class CustomerArea extends JFrame {
     public JButton checkoutButton;
     public JLabel companyTitle;
 
-    public CustomerArea() throws IOException {
+    public CustomerArea() {
         this.setSize(1280, 720);
         this.setLocation(150, 150);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,10 +50,21 @@ public class CustomerArea extends JFrame {
         CustomerAreaStyling styling = new CustomerAreaStyling(this);
         styling.applyStyle();
 
+        adminButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                LoginDialog loginDialog = new LoginDialog();
+                loginDialog.setSize(200, 180);
+                loginDialog.setResizable(false);
+                loginDialog.setUndecorated(true);
+                loginDialog.setLocation(adminButton.getLocationOnScreen().x - 150, adminButton.getLocationOnScreen().y + 50);
+                loginDialog.setVisible(true);
+            }
+        });
+
         itemTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 if(me.getClickCount() == 2) {
-                    JTable target = (JTable) me.getSource();
                     String code = itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString();
                     inputProductCode.setText(code);
                 }
@@ -62,57 +73,48 @@ public class CustomerArea extends JFrame {
 
         createScannedTable(scannedTable);
 
-        inputProductCode.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                scanButton.doClick();
-            }
-        });
+        inputProductCode.addActionListener(e -> scanButton.doClick());
 
         int delay = 2000;
-        ActionListener hideOutput = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                scanOutput.setVisible(false);
-                scanButton.setText("Scan Item");
-                inputProductCode.setEnabled(true);
-            }
+        ActionListener hideOutput = actionEvent -> {
+            scanOutput.setVisible(false);
+            scanButton.setText("Scan Item");
+            scanButton.setBackground(new Color(0,125,255));
+            inputProductCode.setEnabled(true);
         };
         Timer timer = new Timer(delay, hideOutput);
 
-        scanButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                if(inputProductCode.isEnabled()) {
-                    String code = inputProductCode.getText();
-                    if(code != null && !code.equals("")) {
-                        for(Item item : Stock.items) {
-                            if(item.getCode().equals(code) && item.getQuantity() >= 0) {
-                                if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
-                                    inputProductCode.setText("");
-                                    JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
-                                } else {
-                                    selectRowByValue(itemTable, code);
+        scanButton.addActionListener(actionEvent -> {
+            if(inputProductCode.isEnabled()) {
+                String code = inputProductCode.getText();
+                if(code != null && !code.equals("")) {
+                    for(Item item : Stock.items) {
+                        if(item.getCode().equals(code) && item.getQuantity() >= 0) {
+                            if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
+                                inputProductCode.setText("");
+                                JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                selectRowByValue(itemTable, code);
 
-                                    TableModel model = itemTable.getModel();
-                                    int row = itemTable.getSelectedRow();
-                                    int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
-                                    model.setValueAt(currentQuantity - 1, row, 3);
+                                TableModel model = itemTable.getModel();
+                                int row = itemTable.getSelectedRow();
+                                int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
+                                model.setValueAt(currentQuantity - 1, row, 3);
 
-                                    inputProductCode.setText("");
-                                    inputProductCode.setEnabled(false);
+                                inputProductCode.setText("");
+                                inputProductCode.setEnabled(false);
 
-                                    scanButton.setText("Please Wait...");
-                                    scanOutput.setVisible(true);
-                                    scanOutput.setEditable(false);
-                                    scanOutput.setBackground(new Color(150, 135, 255));
-                                    scanOutput.setForeground(new Color(255,255,255));
-                                    scanOutput.setText("The item has been added to your shopping cart.");
+                                scanButton.setText("Please Wait...");
+                                scanButton.setBackground(new Color(0,100,200));
+                                scanOutput.setVisible(true);
+                                scanOutput.setEditable(false);
+                                scanOutput.setBackground(new Color(150, 135, 255));
+                                scanOutput.setForeground(new Color(255,255,255));
+                                scanOutput.setText("The item has been added to your shopping cart.");
 
-                                    addToScannedTable(scannedTotal, item, scannedTable);
+                                addToScannedTable(scannedTotal, item, scannedTable);
 
-                                    timer.restart();
-                                }
+                                timer.restart();
                             }
                         }
                     }
@@ -121,7 +123,7 @@ public class CustomerArea extends JFrame {
         });
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         CustomerArea customerArea = new CustomerArea();
 
         Stock stock = new Stock();
@@ -152,12 +154,9 @@ public class CustomerArea extends JFrame {
         scanItem.setSize(scanItem.getWidth(), 30);
         scanItem.setBackground(new Color(255,255,255));
         scanItem.setForeground(new Color(75,75,75));
-        scanItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String code = customerArea.itemTable.getValueAt(customerArea.itemTable.getSelectedRow(), 0).toString();
-                customerArea.inputProductCode.setText(code);
-            }
+        scanItem.addActionListener(e -> {
+            String code = customerArea.itemTable.getValueAt(customerArea.itemTable.getSelectedRow(), 0).toString();
+            customerArea.inputProductCode.setText(code);
         });
         itemTablePopupMenu.add(scanItem);
         customerArea.itemTable.setComponentPopupMenu(itemTablePopupMenu);
@@ -165,26 +164,17 @@ public class CustomerArea extends JFrame {
         itemTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        int rowAtCursor = customerArea.itemTable.rowAtPoint(SwingUtilities.convertPoint(itemTablePopupMenu, new Point(0, 0), customerArea.itemTable));
-                        if(rowAtCursor > -1) {
-                            customerArea.itemTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
-                        }
+                SwingUtilities.invokeLater(() -> {
+                    int rowAtCursor = customerArea.itemTable.rowAtPoint(SwingUtilities.convertPoint(itemTablePopupMenu, new Point(0, 0), customerArea.itemTable));
+                    if(rowAtCursor > -1) {
+                        customerArea.itemTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
                     }
                 });
             }
-
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
-
-            }
-
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) { }
             @Override
-            public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
-
-            }
+            public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) { }
         });
     }
 
@@ -221,26 +211,17 @@ public class CustomerArea extends JFrame {
         scannedTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        int rowAtCursor = customerArea.scannedTable.rowAtPoint(SwingUtilities.convertPoint(scannedTablePopupMenu, new Point(0, 0), customerArea.scannedTable));
-                        if(rowAtCursor > -1) {
-                            customerArea.scannedTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
-                        }
+                SwingUtilities.invokeLater(() -> {
+                    int rowAtCursor = customerArea.scannedTable.rowAtPoint(SwingUtilities.convertPoint(scannedTablePopupMenu, new Point(0, 0), customerArea.scannedTable));
+                    if(rowAtCursor > -1) {
+                        customerArea.scannedTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
                     }
                 });
             }
-
             @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
-
-            }
-
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) { }
             @Override
-            public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
-
-            }
+            public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) { }
         });
     }
 

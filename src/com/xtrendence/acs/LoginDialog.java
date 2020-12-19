@@ -1,0 +1,84 @@
+package com.xtrendence.acs;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class LoginDialog extends JDialog {
+    private JPanel contentPane;
+    private JButton buttonLogin;
+    private JButton buttonCancel;
+    private JPanel buttonsWrapper;
+    private JPanel contentWrapper;
+    private JPanel formWrapper;
+    private JTextField inputUsername;
+    private JTextField inputPassword;
+    private JLabel labelUsername;
+    private JLabel labelPassword;
+
+    public LoginDialog() {
+        setContentPane(contentPane);
+        setModal(false);
+        getRootPane().setDefaultButton(buttonLogin);
+
+        contentPane.setBackground(new Color(0, 100, 200));
+        contentWrapper.setBackground(new Color(0, 100, 200));
+        formWrapper.setBackground(new Color(0, 100, 200));
+        buttonsWrapper.setBackground(new Color(0, 100, 200));
+
+        inputUsername.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        inputUsername.setHorizontalAlignment(JTextField.CENTER);
+        inputUsername.setBackground(new Color(255,255,255));
+        inputUsername.setForeground(new Color(75,75,75));
+        labelUsername.setForeground(new Color(255,255,255));
+
+        inputPassword.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        inputPassword.setHorizontalAlignment(JTextField.CENTER);
+        inputPassword.setBackground(new Color(255,255,255));
+        inputPassword.setForeground(new Color(75,75,75));
+        labelPassword.setForeground(new Color(255,255,255));
+
+        buttonCancel.setBackground(new Color(255,255,255));
+        buttonCancel.setForeground(new Color(0,100,200));
+
+        buttonLogin.setBackground(new Color(255,255,255));
+        buttonLogin.setForeground(new Color(0,100,200));
+
+        buttonCancel.addActionListener(e -> onCancel());
+
+        buttonLogin.addActionListener(e -> onLogin());
+
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                onCancel();
+            }
+        });
+
+        this.addWindowFocusListener(new WindowFocusListener() {
+            @Override
+            public void windowGainedFocus(WindowEvent windowEvent) { }
+            @Override
+            public void windowLostFocus(WindowEvent windowEvent) {
+                dispose();
+            }
+        });
+
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void onCancel() {
+        dispose();
+    }
+
+    private void onLogin() {
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        LoginDialog dialog = new LoginDialog();
+        dialog.pack();
+        dialog.setVisible(true);
+        System.exit(0);
+    }
+}
