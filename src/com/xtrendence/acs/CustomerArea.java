@@ -25,6 +25,9 @@ public class CustomerArea extends JFrame {
     private JLabel adminButton;
     private JTable itemTable;
     private JScrollPane tableScrollPane;
+    private JTextField inputProductCode;
+    private JPanel scanWrapper;
+    private JButton scanButton;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
@@ -53,6 +56,10 @@ public class CustomerArea extends JFrame {
         itemTable.setRowHeight(30);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.setDefaultEditor(Object.class, null);
+
+        inputProductCode.setSize(200, 30);
+        scanButton.setBackground(new Color(0,125,255));
+        scanButton.setForeground(new Color(255,255,255));
     }
 
     public static void main(String[] args) throws IOException {
@@ -76,6 +83,7 @@ public class CustomerArea extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String code = customerArea.itemTable.getValueAt(customerArea.itemTable.getSelectedRow(), 0).toString();
+                customerArea.inputProductCode.setText(code);
             }
         });
         popupMenu.add(scanItem);
