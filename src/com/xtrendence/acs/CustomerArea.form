@@ -179,8 +179,11 @@
                     </constraints>
                     <properties>
                       <borderPainted value="false"/>
+                      <focusPainted value="false"/>
+                      <focusable value="true"/>
                       <font/>
                       <requestFocusEnabled value="false"/>
+                      <rolloverEnabled value="true"/>
                       <text value="Scan Item"/>
                     </properties>
                   </component>
