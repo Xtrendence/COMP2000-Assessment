@@ -159,6 +159,11 @@ public class CustomerArea extends JFrame {
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
 
+        createItemPopupMenu(customerArea);
+        createScannedPopupMenu(customerArea);
+    }
+
+    public static void createItemPopupMenu(CustomerArea customerArea) {
         JPopupMenu itemTablePopupMenu = new JPopupMenu();
         itemTablePopupMenu.setBackground(new Color(230,230,230));
         JMenuItem scanItem = new JMenuItem("Scan Item");
@@ -184,6 +189,52 @@ public class CustomerArea extends JFrame {
                         int rowAtCursor = customerArea.itemTable.rowAtPoint(SwingUtilities.convertPoint(itemTablePopupMenu, new Point(0, 0), customerArea.itemTable));
                         if(rowAtCursor > -1) {
                             customerArea.itemTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent popupMenuEvent) {
+
+            }
+
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent popupMenuEvent) {
+
+            }
+        });
+    }
+
+    public static void createScannedPopupMenu(CustomerArea customerArea) {
+        JPopupMenu scannedTablePopupMenu = new JPopupMenu();
+        scannedTablePopupMenu.setBackground(new Color(230,230,230));
+        JMenuItem deleteItem = new JMenuItem("Delete Item");
+        deleteItem.setSize(deleteItem.getWidth(), 30);
+        deleteItem.setBackground(new Color(255,255,255));
+        deleteItem.setForeground(new Color(75,75,75));
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
+                int row = customerArea.scannedTable.getSelectedRow();
+                model.removeRow(row);
+                customerArea.scannedTable.setModel(model);
+                customerArea.scannedTable.repaint();
+            }
+        });
+        scannedTablePopupMenu.add(deleteItem);
+        customerArea.scannedTable.setComponentPopupMenu(scannedTablePopupMenu);
+
+        scannedTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        int rowAtCursor = customerArea.scannedTable.rowAtPoint(SwingUtilities.convertPoint(scannedTablePopupMenu, new Point(0, 0), customerArea.scannedTable));
+                        if(rowAtCursor > -1) {
+                            customerArea.scannedTable.setRowSelectionInterval(rowAtCursor, rowAtCursor);
                         }
                     }
                 });
