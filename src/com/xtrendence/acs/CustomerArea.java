@@ -11,6 +11,8 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -104,9 +106,19 @@ public class CustomerArea extends JFrame {
         itemTable.setSelectionForeground(new Color(255,255,255));
         itemTable.setGridColor(new Color(230,230,230));
         itemTable.getTableHeader().setPreferredSize(new Dimension(itemTable.getTableHeader().getWidth(), 30));
+        itemTable.getTableHeader().setReorderingAllowed(false);
         itemTable.setRowHeight(30);
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.setDefaultEditor(Object.class, null);
+        itemTable.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent me) {
+                if(me.getClickCount() == 2) {
+                    JTable target = (JTable) me.getSource();
+                    String code = itemTable.getValueAt(itemTable.getSelectedRow(), 0).toString();
+                    inputProductCode.setText(code);
+                }
+            }
+        });
 
         scannedTable.setBackground(new Color(255, 255, 255));
         scannedTable.setForeground(new Color(75,75,75));
@@ -124,8 +136,16 @@ public class CustomerArea extends JFrame {
         scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         scanButton.setBackground(new Color(0,125,255));
         scanButton.setForeground(new Color(255,255,255));
+
         inputProductCode.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         inputProductCode.setHorizontalAlignment(JTextField.CENTER);
+        inputProductCode.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                scanButton.doClick();
+            }
+        });
+
         int delay = 2000;
         ActionListener hideOutput = new ActionListener() {
             @Override
@@ -141,22 +161,25 @@ public class CustomerArea extends JFrame {
             public void actionPerformed(ActionEvent actionEvent) {
                 if(inputProductCode.isEnabled()) {
                     String code = inputProductCode.getText();
-                    for(Item item : Stock.items) {
-                        if(item.getCode().equals(code) && item.getQuantity() >= 0) {
-                            if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
-                                inputProductCode.setText("");
-                                JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
-                            } else {
-                                inputProductCode.setText("");
-                                inputProductCode.setEnabled(false);
-                                scanButton.setText("Please Wait...");
-                                scanOutput.setVisible(true);
-                                scanOutput.setEditable(false);
-                                scanOutput.setBackground(new Color(150, 135, 255));
-                                scanOutput.setForeground(new Color(255,255,255));
-                                scanOutput.setText("The item has been added to your shopping cart.");
-                                addToScannedTable(scannedTotal, item, scannedTable);
-                                timer.restart();
+                    if(code != null && !code.equals("")) {
+                        for(Item item : Stock.items) {
+                            if(item.getCode().equals(code) && item.getQuantity() >= 0) {
+                                if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
+                                    inputProductCode.setText("");
+                                    JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
+                                } else {
+                                    selectRowByValue(itemTable, code);
+                                    inputProductCode.setText("");
+                                    inputProductCode.setEnabled(false);
+                                    scanButton.setText("Please Wait...");
+                                    scanOutput.setVisible(true);
+                                    scanOutput.setEditable(false);
+                                    scanOutput.setBackground(new Color(150, 135, 255));
+                                    scanOutput.setForeground(new Color(255,255,255));
+                                    scanOutput.setText("The item has been added to your shopping cart.");
+                                    addToScannedTable(scannedTotal, item, scannedTable);
+                                    timer.restart();
+                                }
                             }
                         }
                     }
@@ -178,6 +201,15 @@ public class CustomerArea extends JFrame {
 
         createItemPopupMenu(customerArea);
         createScannedPopupMenu(customerArea);
+    }
+
+    public static void selectRowByValue(JTable table, String value) {
+        TableModel model = table.getModel();
+        for(int i = model.getRowCount() - 1; i >= 0; --i) {
+            if(model.getValueAt(i, 0).equals(value)) {
+                table.setRowSelectionInterval(i, i);
+            }
+        }
     }
 
     public static void createItemPopupMenu(CustomerArea customerArea) {
