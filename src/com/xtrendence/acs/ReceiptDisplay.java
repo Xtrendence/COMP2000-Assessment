@@ -16,6 +16,7 @@ public class ReceiptDisplay extends JFrame {
         this.setLocation(600, 300);
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("X Mart - Receipt");
+        this.setUndecorated(true);
 
         receiptText.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
