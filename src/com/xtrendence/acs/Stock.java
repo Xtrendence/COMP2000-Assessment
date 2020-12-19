@@ -4,14 +4,15 @@ import com.google.gson.*;
 import java.util.Map;
 
 public class Stock {
-    public Item[] stock;
+    public Item[] items = new Item[2];
 
     public void updateStock() {
         DataAccess dataAccess = new DataAccess();
         String content = DataAccess.readFile(dataAccess.stockFile);
         Gson gson = new Gson();
         Map map = gson.fromJson(content, Map.class);
-        System.out.println(dataAccess.stockFile);
-        System.out.println(map);
+        for(Object products : map.entrySet()) {
+
+        }
     }
 }

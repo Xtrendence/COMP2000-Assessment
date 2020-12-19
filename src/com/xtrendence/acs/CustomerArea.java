@@ -63,6 +63,8 @@ public class CustomerArea extends JFrame {
         String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
+
+        model.addRow(new Object[]{ "251", "Milk", "0.25", "5" });
         table.setModel(model);
         table.repaint();
     }
