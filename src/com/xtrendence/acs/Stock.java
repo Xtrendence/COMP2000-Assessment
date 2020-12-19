@@ -11,6 +11,15 @@ import java.util.Map;
 public class Stock {
     static List<Item> items;
 
+    public Item getItem(String code) {
+        for(Item item : items) {
+            if(code.equals(item.getCode())) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public void updateStock() {
         DataAccess dataAccess = new DataAccess();
         String content = DataAccess.readFile(dataAccess.stockFile);

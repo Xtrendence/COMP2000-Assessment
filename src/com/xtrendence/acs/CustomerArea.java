@@ -142,17 +142,22 @@ public class CustomerArea extends JFrame {
                 if(inputProductCode.isEnabled()) {
                     String code = inputProductCode.getText();
                     for(Item item : Stock.items) {
-                        if(item.getCode().equals(code) && item.getQuantity() > 0) {
-                            inputProductCode.setText("");
-                            inputProductCode.setEnabled(false);
-                            scanButton.setText("Please Wait...");
-                            scanOutput.setVisible(true);
-                            scanOutput.setEditable(false);
-                            scanOutput.setBackground(new Color(150, 135, 255));
-                            scanOutput.setForeground(new Color(255,255,255));
-                            scanOutput.setText("The item has been added to your shopping cart.");
-                            addToScannedTable(scannedTotal, item, scannedTable);
-                            timer.restart();
+                        if(item.getCode().equals(code) && item.getQuantity() >= 0) {
+                            if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
+                                inputProductCode.setText("");
+                                JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
+                            } else {
+                                inputProductCode.setText("");
+                                inputProductCode.setEnabled(false);
+                                scanButton.setText("Please Wait...");
+                                scanOutput.setVisible(true);
+                                scanOutput.setEditable(false);
+                                scanOutput.setBackground(new Color(150, 135, 255));
+                                scanOutput.setForeground(new Color(255,255,255));
+                                scanOutput.setText("The item has been added to your shopping cart.");
+                                addToScannedTable(scannedTotal, item, scannedTable);
+                                timer.restart();
+                            }
                         }
                     }
                 }
@@ -282,7 +287,9 @@ public class CustomerArea extends JFrame {
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
-            model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
+            if(item.getQuantity() > 0) {
+                model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
+            }
         }
         table.setModel(model);
         table.repaint();
