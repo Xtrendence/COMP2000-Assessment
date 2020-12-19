@@ -106,6 +106,7 @@ public class CustomerArea extends JFrame {
         scannedTable.setRowHeight(30);
         scannedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         scannedTable.setDefaultEditor(Object.class, null);
+        scannedTable.getTableHeader().setReorderingAllowed(false);
         createScannedTable(scannedTable);
 
         scanOutput.setVisible(false);
@@ -209,21 +210,23 @@ public class CustomerArea extends JFrame {
     public static void createScannedPopupMenu(CustomerArea customerArea) {
         JPopupMenu scannedTablePopupMenu = new JPopupMenu();
         scannedTablePopupMenu.setBackground(new Color(230,230,230));
-        JMenuItem deleteItem = new JMenuItem("Delete Item");
-        deleteItem.setSize(deleteItem.getWidth(), 30);
-        deleteItem.setBackground(new Color(255,255,255));
-        deleteItem.setForeground(new Color(75,75,75));
-        deleteItem.addActionListener(new ActionListener() {
+        JMenuItem removeItem = new JMenuItem("Remove Item");
+        removeItem.setSize(removeItem.getWidth(), 30);
+        removeItem.setBackground(new Color(255,255,255));
+        removeItem.setForeground(new Color(75,75,75));
+        removeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
                 int row = customerArea.scannedTable.getSelectedRow();
+                String code = customerArea.scannedTable.getValueAt(row, 0).toString();
+                Cart.removeFromCart(code);
+                DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
                 model.removeRow(row);
                 customerArea.scannedTable.setModel(model);
                 customerArea.scannedTable.repaint();
             }
         });
-        scannedTablePopupMenu.add(deleteItem);
+        scannedTablePopupMenu.add(removeItem);
         customerArea.scannedTable.setComponentPopupMenu(scannedTablePopupMenu);
 
         scannedTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -253,8 +256,9 @@ public class CustomerArea extends JFrame {
     }
 
     public static void addToScannedTable(Item item, JTable table) {
+        Cart.addToCart(item.getCode());
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(new Object[]{ item.getName(), item.getPrice() });
+        model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice() });
         table.setModel(model);
         table.repaint();
     }
@@ -272,11 +276,12 @@ public class CustomerArea extends JFrame {
     }
 
     public static void createScannedTable(JTable table) {
-        String[] columns = new String[]{ "Name", "Price" };
+        String[] columns = new String[]{ "Product Code", "Name", "Price" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         table.setModel(model);
+        table.getColumnModel().getColumn(0).setMinWidth(0);
+        table.getColumnModel().getColumn(0).setMaxWidth(0);
         table.repaint();
-        table.getRowSorter().toggleSortOrder(0);
     }
 }
