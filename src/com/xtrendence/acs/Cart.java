@@ -30,5 +30,6 @@ public class Cart {
 
     static void emptyCart() {
         cart.clear();
+        total = 0;
     }
 }

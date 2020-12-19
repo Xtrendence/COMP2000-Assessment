@@ -7,8 +7,14 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 public class CheckoutScreen extends JFrame {
+    CustomerArea customerArea;
+    private boolean payingByCash;
     private JButton cashButton;
     private JButton cardButton;
     private JPanel mainPanel;
@@ -21,6 +27,7 @@ public class CheckoutScreen extends JFrame {
     private JButton payButton;
 
     public CheckoutScreen(CustomerArea customerArea) {
+        this.customerArea = customerArea;
         this.setContentPane(mainPanel);
         this.setSize(400, 210);
         this.setLocation(600, 300);
@@ -69,6 +76,7 @@ public class CheckoutScreen extends JFrame {
             payButton.setVisible(true);
             declineButton.setVisible(false);
             approveButton.setVisible(false);
+            this.payingByCash = true;
         });
 
         cardButton.addActionListener(actionEvent -> {
@@ -78,13 +86,33 @@ public class CheckoutScreen extends JFrame {
             payButton.setVisible(false);
             declineButton.setVisible(true);
             approveButton.setVisible(true);
+            this.payingByCash = false;
         });
 
         payButton.addActionListener(actionEvent -> {
-            customerArea.setVisible(true);
-            CustomerArea.loadData(customerArea);
-            Cart.emptyCart();
-            dispose();
+            float change = 0;
+            float cash = 0;
+            boolean valid = false;
+            String message = "Invalid cash entry.";
+            try {
+                cash = Float.parseFloat(inputCash.getText());
+                if(cash >= Cart.total) {
+                    change = cash - Cart.total;
+                    message = "You are owed £" + String.format("%.2f", change) + " in change.";
+                    valid = true;
+                } else {
+                    message = "Not enough cash inserted.";
+                }
+            } catch(Exception e) {
+                inputCash.setText("");
+            }
+            if(valid) {
+                JOptionPane.showMessageDialog(null, message, "Successful Payment", JOptionPane.INFORMATION_MESSAGE);
+                showReceipt(change);
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         declineButton.addActionListener(actionEvent -> {
@@ -93,9 +121,7 @@ public class CheckoutScreen extends JFrame {
         });
 
         approveButton.addActionListener(actionEvent -> {
-            customerArea.setVisible(true);
-            CustomerArea.loadData(customerArea);
-            Cart.emptyCart();
+            showReceipt((float) 0);
             dispose();
         });
 
@@ -121,4 +147,35 @@ public class CheckoutScreen extends JFrame {
     }
 
     public static void main(String[] args) { }
+
+    public void showReceipt(Float change) {
+        ReceiptDisplay receiptDisplay = new ReceiptDisplay(customerArea);
+        receiptDisplay.setVisible(true);
+
+        new Thread(() -> {
+            SimpleDateFormat today = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
+            String dateString = today.format(new Date());
+            StringBuilder builder = new StringBuilder();
+            builder.append("X Mart - Receipt\n" + dateString + "\n\n");
+            Iterator iterator = Cart.cart.entrySet().iterator();
+            while(iterator.hasNext()) {
+                Map.Entry pair = (Map.Entry) iterator.next();
+                String code = pair.getKey().toString();
+                int quantity = Integer.parseInt(pair.getValue().toString());
+                for(Item item : Stock.items) {
+                    if(code.equals(item.getCode())) {
+                        float price = item.getPrice();
+                        builder.append(quantity + " " + item.getName() + "        £" + String.format("%.2f", price * quantity) + "\n");
+                    }
+                }
+                iterator.remove();
+            }
+            builder.append("\nTotal: £" + String.format("%.2f", Cart.total));
+            if(this.payingByCash) {
+                builder.append("\nChange Due: £" + String.format("%.2f", change));
+            }
+
+            receiptDisplay.printReceipt(builder.toString());
+        }).start();
+    }
 }

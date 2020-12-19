@@ -124,9 +124,13 @@ public class CustomerArea extends JFrame {
         });
 
         checkoutButton.addActionListener(actionEvent -> {
-            CheckoutScreen checkoutScreen = new CheckoutScreen(frame);
-            checkoutScreen.setVisible(true);
-            this.setVisible(false);
+            if(Cart.cart.size() > 0) {
+                CheckoutScreen checkoutScreen = new CheckoutScreen(frame);
+                checkoutScreen.setVisible(true);
+                this.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please add something to your basket before checking out.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
     }
 
@@ -148,6 +152,8 @@ public class CustomerArea extends JFrame {
 
         updateItemTable(Stock.items, customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);
+
+        customerArea.scannedTotal.setText("Total: £0.00");
     }
 
     public static void selectRowByValue(JTable table, String value) {
