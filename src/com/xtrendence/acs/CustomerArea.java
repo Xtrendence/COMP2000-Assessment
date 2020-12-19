@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class CustomerArea extends JFrame {
     private JPanel mainPanel;
@@ -53,18 +54,16 @@ public class CustomerArea extends JFrame {
         Stock stock = new Stock();
         stock.updateStock();
 
-        updateTable(stock, customerArea.itemTable);
+        updateTable(stock.items, customerArea.itemTable);
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
     }
 
-    public static void updateTable(Stock stock, JTable table) {
+    public static void updateTable(List<Item> stock, JTable table) {
         String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
-
-        model.addRow(new Object[]{ "251", "Milk", "0.25", "5" });
         table.setModel(model);
         table.repaint();
     }

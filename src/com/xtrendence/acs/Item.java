@@ -1,10 +1,21 @@
 package com.xtrendence.acs;
 
 public class Item {
-    public String code;
-    public String name;
-    public float price;
-    public int quantity;
+    private String code;
+    private String name;
+    private float price;
+    private int quantity;
+
+    public Item() {
+
+    }
+
+    public Item(String code, String name, float price, int quantity) {
+        this.code = code;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
 
     public void setCode(String code) {
         this.code = code;

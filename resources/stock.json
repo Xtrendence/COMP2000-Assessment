@@ -1,100 +1,120 @@
 {
-  "pc00001": {
+  "1": {
+    "code": "pc00001",
     "name": "Milk",
     "price": "1.20",
     "quantity": "5"
   },
-  "pc00002": {
+  "2": {
+    "code": "pc00002",
     "name": "Bread",
     "price": "1.10",
     "quantity": "10"
   },
-  "pc00003": {
+  "3": {
+    "code": "pc00003",
     "name": "Eggs",
     "price": "0.70",
     "quantity": "3"
   },
-  "pc00004": {
+  "4": {
+    "code": "pc00004",
     "name": "Beef",
     "price": "3.00",
     "quantity": "4"
   },
-  "pc00005": {
+  "5": {
+    "code": "pc00005",
     "name": "Chicken",
     "price": "2.50",
     "quantity": "9"
   },
-  "pc00006": {
+  "6": {
+    "code": "pc00006",
     "name": "Bacon",
     "price": "1.50",
     "quantity": "12"
   },
-  "pc00007": {
+  "7": {
+    "code": "pc00007",
     "name": "Bananas",
     "price": "1.25",
     "quantity": "3"
   },
-  "pc00008": {
+  "8": {
+    "code": "pc00008",
     "name": "Apples",
     "price": "1.35",
     "quantity": "2"
   },
-  "pc00009": {
+  "9": {
+    "code": "pc00009",
     "name": "Peaches",
     "price": "1.20",
     "quantity": "1"
   },
-  "pc00010": {
+  "10": {
+    "code": "pc00010",
     "name": "Chocolate",
     "price": "3.25",
     "quantity": "2"
   },
-  "pc00011": {
+  "11": {
+    "code": "pc00011",
     "name": "Strawberries",
     "price": "2.75",
     "quantity": "4"
   },
-  "pc00012": {
+  "12": {
+    "code": "pc00012",
     "name": "Chips",
     "price": "1.75",
     "quantity": "5"
   },
-  "pc00013": {
+  "13": {
+    "code": "pc00013",
     "name": "Olives",
     "price": "0.85",
     "quantity": "6"
   },
-  "pc00014": {
+  "14": {
+    "code": "pc00014",
     "name": "Oranges",
     "price": "0.50",
     "quantity": "8"
   },
-  "pc00015": {
+  "15": {
+    "code": "pc00015",
     "name": "Red Bull",
     "price": "1.25",
     "quantity": "9"
   },
-  "pc00016": {
+  "16": {
+    "code": "pc00016",
     "name": "Salmon",
     "price": "4.00",
     "quantity": "5"
   },
-  "pc00017": {
+  "17": {
+    "code": "pc00017",
     "name": "Dignity",
     "price": "0.01",
     "quantity": "1"
   },
-  "pc00018": {
+  "18": {
+    "code": "pc00018",
     "name": "Coffee",
     "price": "2.00",
     "quantity": "3"
   },
-  "pc00019": {
+  "19": {
+    "code": "pc00019",
     "name": "Tea",
     "price": "1.50",
     "quantity": "7"
   },
-  "pc00020": {
+  "20": {
+    "code": "pc00020",
     "name": "Nando\u0027s Sauce",
     "price": "3.00",
     "quantity": "99"
