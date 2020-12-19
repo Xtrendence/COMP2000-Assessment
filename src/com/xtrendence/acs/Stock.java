@@ -26,14 +26,8 @@ public class Stock {
                 for(int i = 1; i <= count; i++)
                 {
                     Map<String, String> entry = map.get(String.valueOf(i));
-                    for(String key : entry.keySet()) {
-                        try {
-                            Item item = new Item(entry.get("code"), entry.get("name"), Float.parseFloat(entry.get("price")), Integer.parseInt(entry.get("quantity")));
-                            items.add(item);
-                        } catch(Exception e) {
-                            System.out.println(e);
-                        }
-                    }
+                    Item item = new Item(entry.get("code"), entry.get("name"), Float.parseFloat(entry.get("price")), Integer.parseInt(entry.get("quantity")));
+                    items.add(item);
                 }
             } catch(Exception e) {
                 System.out.println(e);

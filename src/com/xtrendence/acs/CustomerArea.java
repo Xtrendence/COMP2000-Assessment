@@ -64,6 +64,9 @@ public class CustomerArea extends JFrame {
         String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
+        for(Item item : stock) {
+            model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
+        }
         table.setModel(model);
         table.repaint();
     }
