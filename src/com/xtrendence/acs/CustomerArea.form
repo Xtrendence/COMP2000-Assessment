@@ -149,9 +149,9 @@
                   <component id="6b506" class="javax.swing.JTextField" binding="inputProductCode">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="150" height="30"/>
-                        <preferred-size width="200" height="30"/>
-                        <maximum-size width="200" height="30"/>
+                        <minimum-size width="130" height="30"/>
+                        <preferred-size width="130" height="30"/>
+                        <maximum-size width="130" height="30"/>
                       </grid>
                     </constraints>
                     <properties/>
@@ -166,15 +166,15 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
-                      <text value="Enter a product code to scan:"/>
+                      <text value="Scan Product Code:"/>
                     </properties>
                   </component>
                   <component id="ce0fb" class="javax.swing.JButton" binding="scanButton">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="150" height="30"/>
-                        <preferred-size width="200" height="30"/>
-                        <maximum-size width="200" height="30"/>
+                        <minimum-size width="130" height="30"/>
+                        <preferred-size width="130" height="30"/>
+                        <maximum-size width="130" height="30"/>
                       </grid>
                     </constraints>
                     <properties>
@@ -187,9 +187,9 @@
                   <component id="fda93" class="javax.swing.JTextPane" binding="scanOutput">
                     <constraints>
                       <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                        <minimum-size width="150" height="60"/>
-                        <preferred-size width="200" height="60"/>
-                        <maximum-size width="200" height="60"/>
+                        <minimum-size width="130" height="80"/>
+                        <preferred-size width="130" height="80"/>
+                        <maximum-size width="130" height="80"/>
                       </grid>
                     </constraints>
                     <properties>

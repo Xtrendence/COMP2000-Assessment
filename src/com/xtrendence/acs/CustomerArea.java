@@ -65,33 +65,37 @@ public class CustomerArea extends JFrame {
         itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemTable.setDefaultEditor(Object.class, null);
 
-        inputProductCode.setSize(200, 30);
         scanOutput.setVisible(false);
         scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         scanButton.setBackground(new Color(0,125,255));
         scanButton.setForeground(new Color(255,255,255));
+        int delay = 2000;
+        ActionListener hideOutput = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                scanOutput.setVisible(false);
+                scanButton.setText("Scan Item");
+                inputProductCode.setEnabled(true);
+            }
+        };
+        Timer timer = new Timer(delay, hideOutput);
         scanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                String code = inputProductCode.getText();
-                for(Item item : Stock.items) {
-                    if(item.getCode().equals(code) && item.getQuantity() > 0) {
-                        inputProductCode.setText("");
-                        inputProductCode.setEnabled(false);
-                        scanOutput.setVisible(true);
-                        scanOutput.setEditable(false);
-                        scanOutput.setBackground(new Color(143, 135, 255));
-                        scanOutput.setForeground(new Color(255,255,255));
-                        scanOutput.setText("The item has been added to your shopping cart.");
-                        scanOutput.setSize(scanButton.getWidth(), 60);
-                        int delay = 3000;
-                        ActionListener hideOutput = new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent actionEvent) {
-                                scanOutput.setVisible(false);
-                            }
-                        };
-                        new Timer(delay, hideOutput).start();
+                if(inputProductCode.isEnabled()) {
+                    String code = inputProductCode.getText();
+                    for(Item item : Stock.items) {
+                        if(item.getCode().equals(code) && item.getQuantity() > 0) {
+                            inputProductCode.setText("");
+                            inputProductCode.setEnabled(false);
+                            scanButton.setText("Please Wait...");
+                            scanOutput.setVisible(true);
+                            scanOutput.setEditable(false);
+                            scanOutput.setBackground(new Color(143, 135, 255));
+                            scanOutput.setForeground(new Color(255,255,255));
+                            scanOutput.setText("The item has been added to your shopping cart.");
+                            timer.restart();
+                        }
                     }
                 }
             }
