@@ -39,12 +39,13 @@ public class CustomerArea extends JFrame {
     public JTextPane scannedTableTitle;
     public JTextPane scannedTotal;
     public JButton checkoutButton;
+    public JLabel companyTitle;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
         this.setLocation(150, 150);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Customer Area");
+        this.setTitle("X Mart - Customer Area");
 
         CustomerAreaStyling styling = new CustomerAreaStyling(this);
         styling.applyStyle();
