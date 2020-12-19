@@ -92,15 +92,24 @@ public class CustomerArea extends JFrame {
                                     JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
                                 } else {
                                     selectRowByValue(itemTable, code);
+
+                                    TableModel model = itemTable.getModel();
+                                    int row = itemTable.getSelectedRow();
+                                    int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
+                                    model.setValueAt(currentQuantity - 1, row, 3);
+
                                     inputProductCode.setText("");
                                     inputProductCode.setEnabled(false);
+
                                     scanButton.setText("Please Wait...");
                                     scanOutput.setVisible(true);
                                     scanOutput.setEditable(false);
                                     scanOutput.setBackground(new Color(150, 135, 255));
                                     scanOutput.setForeground(new Color(255,255,255));
                                     scanOutput.setText("The item has been added to your shopping cart.");
+
                                     addToScannedTable(scannedTotal, item, scannedTable);
+
                                     timer.restart();
                                 }
                             }
@@ -197,6 +206,12 @@ public class CustomerArea extends JFrame {
                 model.removeRow(row);
                 customerArea.scannedTable.setModel(model);
                 customerArea.scannedTable.repaint();
+
+                selectRowByValue(customerArea.itemTable, code);
+                TableModel itemTableModel = customerArea.itemTable.getModel();
+                int itemTableRow = customerArea.itemTable.getSelectedRow();
+                int currentQuantity = Integer.parseInt(itemTableModel.getValueAt(itemTableRow, 3).toString());
+                itemTableModel.setValueAt(currentQuantity + 1, itemTableRow, 3);
             }
         });
         scannedTablePopupMenu.add(removeItem);
