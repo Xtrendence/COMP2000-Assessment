@@ -35,6 +35,8 @@ public class CustomerArea extends JFrame {
     private JScrollPane scannedTableScrollPane;
     private JTextPane itemTableTitle;
     private JTextPane scannedTableTitle;
+    private JTextPane scannedTotal;
+    private JButton checkoutButton;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
@@ -69,6 +71,15 @@ public class CustomerArea extends JFrame {
         scannedTableTitle.setFont(scannedTableTitle.getFont().deriveFont(Font.BOLD, 16));
         scannedTableTitle.setBackground(new Color(150,135,255));
         scannedTableTitle.setForeground(new Color(255,255,255));
+
+        StyledDocument scannedTotalText = scannedTotal.getStyledDocument();
+        scannedTotalText.setParagraphAttributes(0, scannedTotalText.getLength(), center, false);
+        scannedTotal.setFont(scannedTotal.getFont().deriveFont(Font.BOLD, 16));
+        scannedTotal.setBackground(new Color(150,135,255));
+        scannedTotal.setForeground(new Color(255,255,255));
+
+        checkoutButton.setBackground(new Color(0,125,255));
+        checkoutButton.setForeground(new Color(255,255,255));
 
         JScrollBar itemScrollBar = new JScrollBar();
         itemScrollBar.setBackground(new Color(230,230,230));
@@ -140,7 +151,7 @@ public class CustomerArea extends JFrame {
                             scanOutput.setBackground(new Color(150, 135, 255));
                             scanOutput.setForeground(new Color(255,255,255));
                             scanOutput.setText("The item has been added to your shopping cart.");
-                            addToScannedTable(item, scannedTable);
+                            addToScannedTable(scannedTotal, item, scannedTable);
                             timer.restart();
                         }
                     }
@@ -219,7 +230,9 @@ public class CustomerArea extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int row = customerArea.scannedTable.getSelectedRow();
                 String code = customerArea.scannedTable.getValueAt(row, 0).toString();
-                Cart.removeFromCart(code);
+                float price = Float.parseFloat(customerArea.scannedTable.getValueAt(row, 2).toString());
+                Cart.removeFromCart(code, price);
+                customerArea.scannedTotal.setText("Total: £" + String.format("%.2f", Cart.total));
                 DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
                 model.removeRow(row);
                 customerArea.scannedTable.setModel(model);
@@ -255,8 +268,9 @@ public class CustomerArea extends JFrame {
         });
     }
 
-    public static void addToScannedTable(Item item, JTable table) {
-        Cart.addToCart(item.getCode());
+    public static void addToScannedTable(JTextPane total, Item item, JTable table) {
+        Cart.addToCart(item.getCode(), item.getPrice());
+        total.setText("Total: £" + String.format("%.2f", Cart.total));
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice() });
         table.setModel(model);
