@@ -28,6 +28,7 @@ public class CustomerArea extends JFrame {
     private JTextField inputProductCode;
     private JPanel scanWrapper;
     private JButton scanButton;
+    private JTextPane scanOutput;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
@@ -58,8 +59,36 @@ public class CustomerArea extends JFrame {
         itemTable.setDefaultEditor(Object.class, null);
 
         inputProductCode.setSize(200, 30);
+        scanOutput.setVisible(false);
+        scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         scanButton.setBackground(new Color(0,125,255));
         scanButton.setForeground(new Color(255,255,255));
+        scanButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                String code = inputProductCode.getText();
+                for(Item item : Stock.items) {
+                    if(item.getCode().equals(code) && item.getQuantity() > 0) {
+                        inputProductCode.setText("");
+                        inputProductCode.setEnabled(false);
+                        scanOutput.setVisible(true);
+                        scanOutput.setEditable(false);
+                        scanOutput.setBackground(new Color(143, 135, 255));
+                        scanOutput.setForeground(new Color(255,255,255));
+                        scanOutput.setText("The item has been added to your shopping cart.");
+                        scanOutput.setSize(scanButton.getWidth(), 60);
+                        int delay = 3000;
+                        ActionListener hideOutput = new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                scanOutput.setVisible(false);
+                            }
+                        };
+                        new Timer(delay, hideOutput).start();
+                    }
+                }
+            }
+        });
     }
 
     public static void main(String[] args) throws IOException {
@@ -68,7 +97,7 @@ public class CustomerArea extends JFrame {
         Stock stock = new Stock();
         stock.updateStock();
 
-        updateTable(stock.items, customerArea.itemTable);
+        updateTable(Stock.items, customerArea.itemTable);
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);

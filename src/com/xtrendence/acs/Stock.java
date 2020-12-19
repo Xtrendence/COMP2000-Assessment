@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Stock {
-    public List<Item> items;
+    static List<Item> items;
 
     public void updateStock() {
         DataAccess dataAccess = new DataAccess();
