@@ -20,25 +20,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerArea extends JFrame {
-    private JPanel mainPanel;
-    private JPanel navbar;
-    private JPanel contentWrapper;
-    private JPanel listWrapper;
-    private JPanel actionsWrapper;
-    private JLabel adminButton;
-    private JTable itemTable;
-    private JScrollPane itemTableScrollPane;
-    private JTextField inputProductCode;
-    private JPanel scanWrapper;
-    private JButton scanButton;
-    private JTextPane scanOutput;
-    private JPanel basketWrapper;
-    private JTable scannedTable;
-    private JScrollPane scannedTableScrollPane;
-    private JTextPane itemTableTitle;
-    private JTextPane scannedTableTitle;
-    private JTextPane scannedTotal;
-    private JButton checkoutButton;
+    public JPanel mainPanel;
+    public JPanel navbar;
+    public JPanel contentWrapper;
+    public JPanel listWrapper;
+    public JPanel actionsWrapper;
+    public JLabel adminButton;
+    public JTable itemTable;
+    public JScrollPane itemTableScrollPane;
+    public JTextField inputProductCode;
+    public JPanel scanWrapper;
+    public JButton scanButton;
+    public JTextPane scanOutput;
+    public JPanel basketWrapper;
+    public JTable scannedTable;
+    public JScrollPane scannedTableScrollPane;
+    public JTextPane itemTableTitle;
+    public JTextPane scannedTableTitle;
+    public JTextPane scannedTotal;
+    public JButton checkoutButton;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
@@ -46,70 +46,9 @@ public class CustomerArea extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Customer Area");
 
-        navbar.setBackground(new Color(0, 125, 255));
-        navbar.setSize(navbar.getWidth(), 60);
+        CustomerAreaStyling styling = new CustomerAreaStyling(this);
+        styling.applyStyle();
 
-        mainPanel.setBackground(new Color(235,235,235));
-        contentWrapper.setBackground(new Color(235,235,235));
-        actionsWrapper.setBackground(new Color(235,235,235));
-
-        BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + "\\resources\\user.png"));
-        adminButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-
-        itemTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
-        scannedTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
-
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-
-        StyledDocument itemTableTitleText = itemTableTitle.getStyledDocument();
-        itemTableTitleText.setParagraphAttributes(0, itemTableTitleText.getLength(), center, false);
-        itemTableTitle.setFont(itemTableTitle.getFont().deriveFont(Font.BOLD, 16));
-        itemTableTitle.setBackground(new Color(150,135,255));
-        itemTableTitle.setForeground(new Color(255,255,255));
-
-        StyledDocument scannedTableTitleText = scannedTableTitle.getStyledDocument();
-        scannedTableTitleText.setParagraphAttributes(0, scannedTableTitleText.getLength(), center, false);
-        scannedTableTitle.setFont(scannedTableTitle.getFont().deriveFont(Font.BOLD, 16));
-        scannedTableTitle.setBackground(new Color(150,135,255));
-        scannedTableTitle.setForeground(new Color(255,255,255));
-
-        StyledDocument scannedTotalText = scannedTotal.getStyledDocument();
-        scannedTotalText.setParagraphAttributes(0, scannedTotalText.getLength(), center, false);
-        scannedTotal.setFont(scannedTotal.getFont().deriveFont(Font.BOLD, 16));
-        scannedTotal.setBackground(new Color(150,135,255));
-        scannedTotal.setForeground(new Color(255,255,255));
-
-        checkoutButton.setBackground(new Color(0,125,255));
-        checkoutButton.setForeground(new Color(255,255,255));
-
-        JScrollBar itemScrollBar = new JScrollBar();
-        itemScrollBar.setBackground(new Color(230,230,230));
-        itemScrollBar.setPreferredSize(new Dimension(10, 40));
-        itemScrollBar.setMinimumSize(new Dimension(10, 40));
-        itemScrollBar.setMaximumSize(new Dimension(10, 2147483647));
-        itemScrollBar.setBorder(BorderFactory.createEmptyBorder());
-
-        JScrollBar scannedScrollBar = new JScrollBar();
-        scannedScrollBar.setBackground(new Color(230,230,230));
-        scannedScrollBar.setPreferredSize(new Dimension(10, 40));
-        scannedScrollBar.setMinimumSize(new Dimension(10, 40));
-        scannedScrollBar.setMaximumSize(new Dimension(10, 2147483647));
-        scannedScrollBar.setBorder(BorderFactory.createEmptyBorder());
-
-        itemTableScrollPane.setVerticalScrollBar(itemScrollBar);
-        scannedTableScrollPane.setVerticalScrollBar(scannedScrollBar);
-
-        itemTable.setBackground(new Color(255, 255, 255));
-        itemTable.setForeground(new Color(75,75,75));
-        itemTable.setSelectionBackground(new Color(0,125,255));
-        itemTable.setSelectionForeground(new Color(255,255,255));
-        itemTable.setGridColor(new Color(230,230,230));
-        itemTable.getTableHeader().setPreferredSize(new Dimension(itemTable.getTableHeader().getWidth(), 30));
-        itemTable.getTableHeader().setReorderingAllowed(false);
-        itemTable.setRowHeight(30);
-        itemTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        itemTable.setDefaultEditor(Object.class, null);
         itemTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 if(me.getClickCount() == 2) {
@@ -120,25 +59,8 @@ public class CustomerArea extends JFrame {
             }
         });
 
-        scannedTable.setBackground(new Color(255, 255, 255));
-        scannedTable.setForeground(new Color(75,75,75));
-        scannedTable.setSelectionBackground(new Color(0,125,255));
-        scannedTable.setSelectionForeground(new Color(255,255,255));
-        scannedTable.setGridColor(new Color(230,230,230));
-        scannedTable.getTableHeader().setPreferredSize(new Dimension(scannedTable.getTableHeader().getWidth(), 30));
-        scannedTable.setRowHeight(30);
-        scannedTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        scannedTable.setDefaultEditor(Object.class, null);
-        scannedTable.getTableHeader().setReorderingAllowed(false);
         createScannedTable(scannedTable);
 
-        scanOutput.setVisible(false);
-        scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        scanButton.setBackground(new Color(0,125,255));
-        scanButton.setForeground(new Color(255,255,255));
-
-        inputProductCode.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        inputProductCode.setHorizontalAlignment(JTextField.CENTER);
         inputProductCode.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -156,6 +78,7 @@ public class CustomerArea extends JFrame {
             }
         };
         Timer timer = new Timer(delay, hideOutput);
+
         scanButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
