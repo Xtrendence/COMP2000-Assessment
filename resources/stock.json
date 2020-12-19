@@ -1,8 +1,8 @@
 {
   "pc00001": {
-    "Name": "Milk",
-    "Price": "1.20",
-    "Quantity": "5"
+    "name": "Milk",
+    "price": "1.20",
+    "quantity": "5"
   },
   "pc00002": {
     "name": "Bread",
