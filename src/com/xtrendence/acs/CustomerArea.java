@@ -19,6 +19,7 @@ public class CustomerArea extends JFrame {
     private JLabel basketButton;
     private JLabel adminButton;
     private JTable itemTable;
+    private JScrollPane tableScrollPane;
 
     public CustomerArea() throws IOException {
         this.setSize(1280, 720);
@@ -37,8 +38,13 @@ public class CustomerArea extends JFrame {
         BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + "\\resources\\user.png"));
         adminButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 
+        tableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         itemTable.setBackground(new Color(255, 255, 255));
         itemTable.setForeground(new Color(75,75,75));
+        itemTable.setSelectionBackground(new Color(0,125,255));
+        itemTable.setSelectionForeground(new Color(255,255,255));
+        itemTable.getTableHeader().setPreferredSize(new Dimension(itemTable.getTableHeader().getWidth(), 30));
+        itemTable.setRowHeight(30);
     }
 
     public static void main(String[] args) throws IOException {
@@ -47,14 +53,17 @@ public class CustomerArea extends JFrame {
         Stock stock = new Stock();
         stock.updateStock();
 
-        String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-
-        customerArea.itemTable.setModel(model);
-        customerArea.itemTable.repaint();
+        updateTable(stock, customerArea.itemTable);
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
+    }
+
+    public static void updateTable(Stock stock, JTable table) {
+        String[] columns = new String[]{ "Product Code", "Name", "Price", "Remaining Quantity" };
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        table.setModel(model);
+        table.repaint();
     }
 }
