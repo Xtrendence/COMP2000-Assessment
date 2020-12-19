@@ -48,6 +48,13 @@ public class CustomerArea extends JFrame {
         adminButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 
         tableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
+        JScrollBar scrollBar = new JScrollBar();
+        scrollBar.setBackground(new Color(230,230,230));
+        scrollBar.setPreferredSize(new Dimension(10, 40));
+        scrollBar.setMinimumSize(new Dimension(10, 40));
+        scrollBar.setMaximumSize(new Dimension(20, 2147483647));
+        scrollBar.setBorder(BorderFactory.createEmptyBorder());
+        tableScrollPane.setVerticalScrollBar(scrollBar);
         itemTable.setBackground(new Color(255, 255, 255));
         itemTable.setForeground(new Color(75,75,75));
         itemTable.setSelectionBackground(new Color(0,125,255));
@@ -153,5 +160,6 @@ public class CustomerArea extends JFrame {
         }
         table.setModel(model);
         table.repaint();
+        table.getRowSorter().toggleSortOrder(0);
     }
 }
