@@ -67,8 +67,11 @@ public class CustomerArea extends JFrame {
         customerArea.setContentPane(customerArea.mainPanel);
 
         JPopupMenu popupMenu = new JPopupMenu();
+        popupMenu.setBackground(new Color(230,230,230));
         JMenuItem scanItem = new JMenuItem("Scan Item");
         scanItem.setSize(scanItem.getWidth(), 30);
+        scanItem.setBackground(new Color(255,255,255));
+        scanItem.setForeground(new Color(75,75,75));
         scanItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
