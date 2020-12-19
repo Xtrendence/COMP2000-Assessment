@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LoginDialog extends JDialog {
+    private CustomerArea customerArea;
     private JPanel contentPane;
     private JButton buttonLogin;
     private JButton buttonCancel;
@@ -16,7 +17,8 @@ public class LoginDialog extends JDialog {
     private JLabel labelUsername;
     private JLabel labelPassword;
 
-    public LoginDialog() {
+    public LoginDialog(CustomerArea customerArea) {
+        this.customerArea = customerArea;
         setContentPane(contentPane);
         setModal(false);
         getRootPane().setDefaultButton(buttonLogin);
@@ -43,6 +45,10 @@ public class LoginDialog extends JDialog {
 
         buttonLogin.setBackground(new Color(255,255,255));
         buttonLogin.setForeground(new Color(0,100,200));
+
+        // TODO: Remove after development.
+        inputUsername.setText("Xtrendence");
+        inputPassword.setText("passw0rd");
 
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -72,13 +78,16 @@ public class LoginDialog extends JDialog {
     }
 
     private void onLogin() {
+        boolean login = Account.login(inputUsername.getText(), inputPassword.getText());
+        if(login) {
+            customerArea.setVisible(false);
+            AdminArea adminArea = new AdminArea();
+            adminArea.setVisible(true);
+        }
         dispose();
     }
 
     public static void main(String[] args) {
-        LoginDialog dialog = new LoginDialog();
-        dialog.pack();
-        dialog.setVisible(true);
         System.exit(0);
     }
 }

@@ -42,6 +42,7 @@ public class CustomerArea extends JFrame {
     public JLabel companyTitle;
 
     public CustomerArea() {
+        CustomerArea frame = this;
         this.setSize(1280, 720);
         this.setLocation(150, 150);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +54,7 @@ public class CustomerArea extends JFrame {
         adminButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                LoginDialog loginDialog = new LoginDialog();
+                LoginDialog loginDialog = new LoginDialog(frame);
                 loginDialog.setSize(200, 180);
                 loginDialog.setResizable(false);
                 loginDialog.setUndecorated(true);
