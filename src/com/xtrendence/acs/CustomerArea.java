@@ -122,21 +122,32 @@ public class CustomerArea extends JFrame {
                 }
             }
         });
+
+        checkoutButton.addActionListener(actionEvent -> {
+            CheckoutScreen checkoutScreen = new CheckoutScreen(frame);
+            checkoutScreen.setVisible(true);
+            this.setVisible(false);
+        });
     }
 
     public static void main(String[] args) {
         CustomerArea customerArea = new CustomerArea();
 
-        Stock stock = new Stock();
-        stock.updateStock();
-
-        updateItemTable(Stock.items, customerArea.itemTable);
+        loadData(customerArea);
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
 
         createItemPopupMenu(customerArea);
         createScannedPopupMenu(customerArea);
+    }
+
+    public static void loadData(CustomerArea customerArea) {
+        Stock stock = new Stock();
+        stock.updateStock();
+
+        updateItemTable(Stock.items, customerArea.itemTable);
+        createScannedTable(customerArea.scannedTable);
     }
 
     public static void selectRowByValue(JTable table, String value) {

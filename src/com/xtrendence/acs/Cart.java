@@ -27,4 +27,8 @@ public class Cart {
         }
         total -= price;
     }
+
+    static void emptyCart() {
+        cart.clear();
+    }
 }
