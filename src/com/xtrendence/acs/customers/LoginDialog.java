@@ -56,6 +56,7 @@ public class LoginDialog extends JDialog {
         // TODO: Remove after development.
         inputUsername.setText("Temp");
         inputPassword.setText("t3mp");
+        onLogin();
 
         buttonCancel.addActionListener(e -> onCancel());
 
@@ -90,6 +91,7 @@ public class LoginDialog extends JDialog {
             customerArea.setVisible(false);
             AdminArea adminArea = new AdminArea();
             adminArea.setVisible(true);
+            adminArea.setContentPane(adminArea.mainPanel);
         }
         dispose();
     }

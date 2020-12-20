@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class CustomerArea extends JFrame {
+    private static CustomerArea instance;
     public JPanel mainPanel;
     public JPanel navbar;
     public JPanel contentWrapper;
@@ -36,6 +37,7 @@ public class CustomerArea extends JFrame {
     public JLabel companyTitle;
 
     public CustomerArea() {
+        instance = this;
         CustomerArea frame = this;
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
@@ -47,15 +49,13 @@ public class CustomerArea extends JFrame {
         CustomerAreaStyling styling = new CustomerAreaStyling(this);
         styling.applyStyle();
 
+        // TODO: Remove after development.
+        showLogin();
+
         adminButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                LoginDialog loginDialog = new LoginDialog(frame);
-                loginDialog.setSize(200, 180);
-                loginDialog.setResizable(false);
-                loginDialog.setUndecorated(true);
-                loginDialog.setLocation(adminButton.getLocationOnScreen().x - 150, adminButton.getLocationOnScreen().y + 50);
-                loginDialog.setVisible(true);
+                showLogin();
             }
         });
 
@@ -142,6 +142,19 @@ public class CustomerArea extends JFrame {
 
         createItemPopupMenu(customerArea);
         createScannedPopupMenu(customerArea);
+    }
+
+    public static CustomerArea getInstance() {
+        return instance;
+    }
+
+    private void showLogin() {
+        LoginDialog loginDialog = new LoginDialog(this);
+        loginDialog.setLocation(adminButton.getLocationOnScreen().x - 150, adminButton.getLocationOnScreen().y + 50);
+        loginDialog.setSize(200, 180);
+        loginDialog.setResizable(false);
+        loginDialog.setUndecorated(true);
+        loginDialog.setVisible(true);
     }
 
     public static void loadData(CustomerArea customerArea) {

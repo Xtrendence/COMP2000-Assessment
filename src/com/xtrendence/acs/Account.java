@@ -13,7 +13,6 @@ public class Account {
 
     public static boolean login(String username, String password) {
         boolean valid = false;
-        Repository repository = new Repository();
         String content = Repository.readFile(Repository.accountsFile);
         if(content != null) {
             try {
