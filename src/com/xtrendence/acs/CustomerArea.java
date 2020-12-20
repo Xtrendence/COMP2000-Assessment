@@ -35,6 +35,7 @@ public class CustomerArea extends JFrame {
 
     public CustomerArea() {
         CustomerArea frame = this;
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(1280, 720);
         this.setLocation(150, 150);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

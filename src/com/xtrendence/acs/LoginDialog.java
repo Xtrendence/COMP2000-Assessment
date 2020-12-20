@@ -19,9 +19,10 @@ public class LoginDialog extends JDialog {
 
     public LoginDialog(CustomerArea customerArea) {
         this.customerArea = customerArea;
-        setContentPane(contentPane);
-        setModal(false);
-        getRootPane().setDefaultButton(buttonLogin);
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        this.setContentPane(contentPane);
+        this.setModal(false);
+        this.getRootPane().setDefaultButton(buttonLogin);
 
         contentPane.setBackground(new Color(0, 100, 200));
         contentWrapper.setBackground(new Color(0, 100, 200));

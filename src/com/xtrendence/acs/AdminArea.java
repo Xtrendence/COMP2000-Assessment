@@ -4,6 +4,7 @@ import java.awt.*;
 
 public class AdminArea extends JFrame {
     public AdminArea() {
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(700, 300);
         this.setLocation(150, 150);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -29,6 +29,7 @@ public class CheckoutScreen extends JFrame {
 
     public CheckoutScreen(CustomerArea customerArea) {
         this.customerArea = customerArea;
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
         this.setSize(400, 210);
         this.setLocation(600, 300);

@@ -11,6 +11,7 @@ public class ReceiptDisplay extends JFrame {
     private JButton closeButton;
 
     public ReceiptDisplay(CustomerArea customerArea) {
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
         this.setSize(400, 400);
         this.setLocation(600, 300);
