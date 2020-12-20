@@ -2,4 +2,4 @@
 
 COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system for a supermarket.
 
-![X Mart - Automated Checkout System](https://i.imgur.com/4gumxEf.png)
+![X Mart - Automated Checkout System](https://i.imgur.com/jUcIDGy.png)
