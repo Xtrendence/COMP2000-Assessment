@@ -1,8 +1,11 @@
 package com.xtrendence.acs.admins;
+import com.xtrendence.acs.Item;
+import com.xtrendence.acs.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -30,6 +33,9 @@ public class AdminArea extends JFrame {
     private JButton deliveryButton;
     private JTable deliveryTable;
     private JButton replenishButton;
+    private JTextPane lowStockLabel;
+    private JScrollPane lowStockScrollPane;
+    private JTable lowStockTable;
 
     public AdminArea() {
         String separator = System.getProperty("file.separator");
@@ -56,6 +62,7 @@ public class AdminArea extends JFrame {
         contentWrapper.setBackground(new Color(235,235,235));
 
         stockScrollPane.getViewport().setBackground(new Color(255, 255, 255));
+        lowStockScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         deliveryScrollPane.getViewport().setBackground(new Color(255, 255, 255));
 
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -67,6 +74,13 @@ public class AdminArea extends JFrame {
         stockLabel.setBackground(new Color(150,135,255));
         stockLabel.setForeground(new Color(255,255,255));
         stockLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
+
+        StyledDocument lowStockLabelText = lowStockLabel.getStyledDocument();
+        lowStockLabelText.setParagraphAttributes(0, lowStockLabelText.getLength(), center, false);
+        lowStockLabel.setFont(lowStockLabel.getFont().deriveFont(Font.BOLD, 16));
+        lowStockLabel.setBackground(new Color(150,135,255));
+        lowStockLabel.setForeground(new Color(255,255,255));
+        lowStockLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         StyledDocument deliveryLabelText = deliveryLabel.getStyledDocument();
         deliveryLabelText.setParagraphAttributes(0, deliveryLabelText.getLength(), center, false);
@@ -90,6 +104,13 @@ public class AdminArea extends JFrame {
         stockScrollBar.setMaximumSize(new Dimension(10, 2147483647));
         stockScrollBar.setBorder(BorderFactory.createEmptyBorder());
 
+        JScrollBar lowStockScrollBar = new JScrollBar();
+        lowStockScrollBar.setBackground(new Color(230,230,230));
+        lowStockScrollBar.setPreferredSize(new Dimension(10, 40));
+        lowStockScrollBar.setMinimumSize(new Dimension(10, 40));
+        lowStockScrollBar.setMaximumSize(new Dimension(10, 2147483647));
+        lowStockScrollBar.setBorder(BorderFactory.createEmptyBorder());
+
         JScrollBar deliveryScrollBar = new JScrollBar();
         deliveryScrollBar.setBackground(new Color(230,230,230));
         deliveryScrollBar.setPreferredSize(new Dimension(10, 40));
@@ -98,6 +119,7 @@ public class AdminArea extends JFrame {
         deliveryScrollBar.setBorder(BorderFactory.createEmptyBorder());
 
         stockScrollPane.setVerticalScrollBar(stockScrollBar);
+        lowStockScrollPane.setVerticalScrollBar(lowStockScrollBar);
         deliveryScrollPane.setVerticalScrollBar(deliveryScrollBar);
 
         stockTable.setBackground(new Color(255, 255, 255));
@@ -111,6 +133,17 @@ public class AdminArea extends JFrame {
         stockTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         stockTable.setDefaultEditor(Object.class, null);
 
+        lowStockTable.setBackground(new Color(255, 255, 255));
+        lowStockTable.setForeground(new Color(75,75,75));
+        lowStockTable.setSelectionBackground(new Color(0,125,255));
+        lowStockTable.setSelectionForeground(new Color(255,255,255));
+        lowStockTable.setGridColor(new Color(230,230,230));
+        lowStockTable.getTableHeader().setPreferredSize(new Dimension(lowStockTable.getTableHeader().getWidth(), 30));
+        lowStockTable.getTableHeader().setReorderingAllowed(false);
+        lowStockTable.setRowHeight(30);
+        lowStockTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lowStockTable.setDefaultEditor(Object.class, null);
+
         deliveryTable.setBackground(new Color(255, 255, 255));
         deliveryTable.setForeground(new Color(75,75,75));
         deliveryTable.setSelectionBackground(new Color(0,125,255));
@@ -120,7 +153,6 @@ public class AdminArea extends JFrame {
         deliveryTable.getTableHeader().setReorderingAllowed(false);
         deliveryTable.setRowHeight(30);
         deliveryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        deliveryTable.setDefaultEditor(Object.class, null);
 
         backButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -133,7 +165,6 @@ public class AdminArea extends JFrame {
 
         int delay = 3000;
         ActionListener deliverItems = actionEvent -> {
-            deliveryTable.setEnabled(false);
             delivered = true;
             deliveryButton.setText("Request Items");
             deliveryButton.setBackground(new Color(0, 75, 150));
@@ -144,6 +175,11 @@ public class AdminArea extends JFrame {
         deliveryButton.addActionListener(actionEvent -> {
             if(!delivered) {
                 deliveryButton.setText("Delivering...");
+                deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                deliveryTable.setEnabled(false);
+                deliveryTable.setBackground(new Color(200, 200, 200));
+                deliveryTable.setForeground(new Color(150,150,150));
+                deliveryTable.setGridColor(new Color(230,230,230));
                 timer.restart();
             } else {
                 JOptionPane.showMessageDialog(null, "There's already a delivery that needs to be processed.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -153,7 +189,11 @@ public class AdminArea extends JFrame {
         replenishButton.addActionListener(actionEvent -> {
             if(delivered) {
                 timer.stop();
+                deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
                 deliveryTable.setEnabled(true);
+                deliveryTable.setBackground(new Color(255, 255, 255));
+                deliveryTable.setForeground(new Color(75,75,75));
+                deliveryTable.setGridColor(new Color(230,230,230));
                 delivered = false;
                 deliveryButton.setBackground(new Color(0,125,255));
                 replenishButton.setBackground(new Color(0, 75, 150));
@@ -163,7 +203,48 @@ public class AdminArea extends JFrame {
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { }
 
+    public void loadData(AdminArea adminArea) {
+        Stock.getStock();
+
+        createStockTable(Stock.items, adminArea.stockTable);
+        createLowStockTable(Stock.items, adminArea.lowStockTable);
+        createDeliveryTable(Stock.items, adminArea.deliveryTable);
+    }
+
+    public void createStockTable(java.util.List<Item> stock, JTable table) {
+        String[] columns = new String[]{ "Product Code", "Name", "Price (£)", "Remaining Quantity" };
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        for(Item item : stock) {
+            model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
+        }
+        table.setModel(model);
+        table.getRowSorter().toggleSortOrder(0);
+    }
+
+    public void createLowStockTable(java.util.List<Item> stock, JTable table) {
+        String[] columns = new String[]{ "Product Code", "Remaining Quantity" };
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        for(Item item : stock) {
+            if(item.getQuantity() < 5) {
+                model.addRow(new Object[]{ item.getCode(), item.getQuantity() });
+            }
+        }
+        table.setModel(model);
+        table.getRowSorter().toggleSortOrder(1);
+    }
+
+    public void createDeliveryTable(java.util.List<Item> stock, JTable table) {
+        String[] columns = new String[]{ "Product Code", "Quantity To Order" };
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(columns);
+        for(Item item : stock) {
+            model.addRow(new Object[]{ item.getCode(), 0 });
+        }
+        table.setModel(model);
+        table.getRowSorter().toggleSortOrder(0);
     }
 }

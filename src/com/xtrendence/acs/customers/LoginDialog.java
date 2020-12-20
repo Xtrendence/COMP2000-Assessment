@@ -92,6 +92,7 @@ public class LoginDialog extends JDialog {
             AdminArea adminArea = new AdminArea();
             adminArea.setVisible(true);
             adminArea.setContentPane(adminArea.mainPanel);
+            adminArea.loadData(adminArea);
         }
         dispose();
     }

@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.xtrendence.acs.admins.AdminArea">
   <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="690" height="400"/>
+      <xy x="20" y="20" width="722" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -56,16 +56,16 @@
           </component>
         </children>
       </grid>
-      <grid id="c6d67" binding="contentWrapper" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="c6d67" binding="contentWrapper" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="3c2db" binding="stockWrapper" layout-manager="GridLayoutManager" row-count="3" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="3c2db" binding="stockWrapper" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+              <grid row="1" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
                 <preferred-size width="497" height="408"/>
               </grid>
             </constraints>
@@ -102,15 +102,6 @@
                   </grid>
                 </constraints>
               </hspacer>
-              <vspacer id="cdda9">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="20"/>
-                    <preferred-size width="-1" height="20"/>
-                    <maximum-size width="-1" height="20"/>
-                  </grid>
-                </constraints>
-              </vspacer>
               <component id="8173c" class="javax.swing.JTextPane" binding="stockLabel">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -137,10 +128,10 @@
               </grid>
             </constraints>
           </vspacer>
-          <grid id="a551" binding="deliveryWrapper" layout-manager="GridLayoutManager" row-count="4" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="a551" binding="deliveryWrapper" layout-manager="GridLayoutManager" row-count="3" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="1" column="2" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties/>
             <border type="none"/>
@@ -176,15 +167,6 @@
                   </grid>
                 </constraints>
               </hspacer>
-              <vspacer id="2bddd">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="20"/>
-                    <preferred-size width="-1" height="20"/>
-                    <maximum-size width="-1" height="20"/>
-                  </grid>
-                </constraints>
-              </vspacer>
               <component id="2e9c9" class="javax.swing.JTextPane" binding="deliveryLabel">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -243,6 +225,55 @@
               </hspacer>
             </children>
           </grid>
+          <vspacer id="f6500">
+            <constraints>
+              <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false">
+                <minimum-size width="-1" height="20"/>
+                <preferred-size width="-1" height="20"/>
+                <maximum-size width="-1" height="20"/>
+              </grid>
+            </constraints>
+          </vspacer>
+          <component id="ac8db" class="javax.swing.JTextPane" binding="lowStockLabel">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="200" height="28"/>
+                <preferred-size width="200" height="28"/>
+                <maximum-size width="200" height="28"/>
+              </grid>
+            </constraints>
+            <properties>
+              <editable value="false"/>
+              <focusable value="false"/>
+              <requestFocusEnabled value="false"/>
+              <text value="Low In Stock"/>
+            </properties>
+          </component>
+          <scrollpane id="7c968" binding="lowStockScrollPane">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <minimum-size width="200" height="-1"/>
+                <preferred-size width="200" height="-1"/>
+                <maximum-size width="200" height="-1"/>
+              </grid>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="19832" class="javax.swing.JTable" binding="lowStockTable">
+                <constraints/>
+                <properties>
+                  <autoCreateColumnsFromModel value="true"/>
+                  <autoCreateRowSorter value="true"/>
+                  <autoResizeMode value="4"/>
+                  <foreground color="-11842741"/>
+                  <gridColor color="-7302509"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
         </children>
       </grid>
     </children>
