@@ -32,15 +32,15 @@ public class Stock {
         if(content != null) {
             try {
                 Gson gson = new Gson();
-                Type mapType = new TypeToken<Map<String,Map<String, String>>>() {}.getType();
-                Map<String, Map<String, String>> map = gson.fromJson(content, mapType);
+                Type mapType = new TypeToken<TreeMap<String,TreeMap<String, String>>>() {}.getType();
+                TreeMap<String, TreeMap<String, String>> map = gson.fromJson(content, mapType);
 
                 int count = map.size();
                 items = new ArrayList<Item>();
 
                 for(int i = 1; i <= count; i++)
                 {
-                    Map<String, String> entry = map.get(String.valueOf(i));
+                    TreeMap<String, String> entry = map.get(String.valueOf(i));
                     Item item = new Item(entry.get("code"), entry.get("name"), Float.parseFloat(entry.get("price")), Integer.parseInt(entry.get("quantity")));
                     items.add(item);
                 }

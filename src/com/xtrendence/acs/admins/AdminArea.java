@@ -61,44 +61,59 @@ public class AdminArea extends JFrame {
         });
 
         removeButton.addActionListener(actionEvent -> {
-            if(!deliveryProcessingRequired) {
-                removeItem();
+            if(Account.loggedIn) {
+                if(!deliveryProcessingRequired) {
+                    removeItem();
+                } else {
+                    JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
+                logout();
             }
         });
 
         addButton.addActionListener(actionEvent -> {
-            if(!deliveryProcessingRequired) {
-                addToStockTable();
+            if(Account.loggedIn) {
+                if(!deliveryProcessingRequired) {
+                    addToStockTable();
+                } else {
+                    JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
+                logout();
             }
         });
 
         saveButton.addActionListener(actionEvent -> {
-            if(!deliveryProcessingRequired) {
-                DefaultTableModel model = (DefaultTableModel) stockTable.getModel();
-                java.util.List<Item> updatedStock = new ArrayList<>();
-                for (int i = model.getRowCount() - 1; i >= 0; --i) {
-                    try {
-                        String code = model.getValueAt(i, 0).toString();
-                        String name = model.getValueAt(i, 1).toString();
-                        float price = Float.parseFloat(model.getValueAt(i, 2).toString());
-                        int quantity = Integer.parseInt(model.getValueAt(i, 3).toString());
-                        Item newItem = new Item(code, name, price, quantity);
-                        updatedStock.add(newItem);
-                    } catch (Exception e) {
-                        System.out.println(e);
+            if(Account.loggedIn) {
+                if(!deliveryProcessingRequired) {
+                    DefaultTableModel model = (DefaultTableModel) stockTable.getModel();
+                    java.util.List<Item> updatedStock = new ArrayList<>();
+                    for (int i = model.getRowCount() - 1; i >= 0; --i) {
+                        try {
+                            String code = model.getValueAt(i, 0).toString();
+                            String name = model.getValueAt(i, 1).toString();
+                            float price = Float.parseFloat(model.getValueAt(i, 2).toString());
+                            int quantity = Integer.parseInt(model.getValueAt(i, 3).toString());
+                            Item newItem = new Item(code, name, price, quantity);
+                            updatedStock.add(newItem);
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
                     }
+                    createStockTable(updatedStock, stockTable);
+                    createLowStockTable(updatedStock, lowStockTable);
+                    createDeliveryTable(updatedStock, deliveryTable);
+                    currentStock = updatedStock;
+                    Stock.setStock(currentStock);
+                } else {
+                    JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                createStockTable(updatedStock, stockTable);
-                createLowStockTable(updatedStock, lowStockTable);
-                createDeliveryTable(updatedStock, deliveryTable);
-                currentStock = updatedStock;
-                Stock.setStock(currentStock);
             } else {
-                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
+                logout();
             }
         });
 
@@ -110,63 +125,85 @@ public class AdminArea extends JFrame {
         Timer timer = new Timer(delay, deliverItems);
 
         deliveryButton.addActionListener(actionEvent -> {
-            if(!deliveryProcessingRequired) {
-                deliveryProcessingRequired = true;
+            if(Account.loggedIn) {
+                if(!deliveryProcessingRequired) {
+                    deliveryProcessingRequired = true;
 
-                deliveryButton.setBackground(new Color(0, 75, 150));
-                deliveryButton.setText("Delivering...");
+                    deliveryButton.setBackground(new Color(0, 75, 150));
+                    deliveryButton.setText("Delivering...");
 
-                removeButton.setBackground(new Color(0, 75, 150));
-                addButton.setBackground(new Color(0, 75, 150));
-                saveButton.setBackground(new Color(0, 75, 150));
+                    removeButton.setBackground(new Color(0, 75, 150));
+                    addButton.setBackground(new Color(0, 75, 150));
+                    saveButton.setBackground(new Color(0, 75, 150));
 
-                stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    lowStockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+                    deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 
-                stockTable.setEnabled(false);
-                stockTable.setBackground(new Color(200, 200, 200));
-                stockTable.setForeground(new Color(150,150,150));
-                stockTable.setGridColor(new Color(230,230,230));
+                    stockTable.setEnabled(false);
+                    stockTable.setBackground(new Color(200, 200, 200));
+                    stockTable.setForeground(new Color(150,150,150));
+                    stockTable.setGridColor(new Color(230,230,230));
 
-                deliveryTable.setEnabled(false);
-                deliveryTable.setBackground(new Color(200, 200, 200));
-                deliveryTable.setForeground(new Color(150,150,150));
-                deliveryTable.setGridColor(new Color(230,230,230));
+                    lowStockTable.setEnabled(false);
+                    lowStockTable.setBackground(new Color(200, 200, 200));
+                    lowStockTable.setForeground(new Color(150,150,150));
+                    lowStockTable.setGridColor(new Color(230,230,230));
 
-                timer.restart();
+                    deliveryTable.setEnabled(false);
+                    deliveryTable.setBackground(new Color(200, 200, 200));
+                    deliveryTable.setForeground(new Color(150,150,150));
+                    deliveryTable.setGridColor(new Color(230,230,230));
+
+                    timer.restart();
+                } else {
+                    JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
+                logout();
             }
         });
 
         replenishButton.addActionListener(actionEvent -> {
-            if(deliveryProcessingRequired) {
-                timer.stop();
+            if(Account.loggedIn) {
+                if(deliveryProcessingRequired) {
+                    timer.stop();
 
-                removeButton.setBackground(new Color(200,50,50));
-                addButton.setBackground(new Color(0,125,255));
-                saveButton.setBackground(new Color(0,125,255));
+                    removeButton.setBackground(new Color(200,50,50));
+                    addButton.setBackground(new Color(0,125,255));
+                    saveButton.setBackground(new Color(0,125,255));
 
-                stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-                deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    lowStockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-                stockTable.setEnabled(true);
-                stockTable.setBackground(new Color(255, 255, 255));
-                stockTable.setForeground(new Color(75,75,75));
-                stockTable.setGridColor(new Color(230,230,230));
+                    stockTable.setEnabled(true);
+                    stockTable.setBackground(new Color(255, 255, 255));
+                    stockTable.setForeground(new Color(75,75,75));
+                    stockTable.setGridColor(new Color(230,230,230));
 
-                deliveryTable.setEnabled(true);
-                deliveryTable.setBackground(new Color(255, 255, 255));
-                deliveryTable.setForeground(new Color(75,75,75));
-                deliveryTable.setGridColor(new Color(230,230,230));
+                    lowStockTable.setEnabled(true);
+                    lowStockTable.setBackground(new Color(255, 255, 255));
+                    lowStockTable.setForeground(new Color(75,75,75));
+                    lowStockTable.setGridColor(new Color(230,230,230));
 
-                deliveryProcessingRequired = false;
-                deliveryButton.setBackground(new Color(0,125,255));
-                replenishButton.setBackground(new Color(0, 75, 150));
-                replenishStock();
-                JOptionPane.showMessageDialog(null, "Stock replenished. Please remember to \"Save Changes\" to update the database.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                    deliveryTable.setEnabled(true);
+                    deliveryTable.setBackground(new Color(255, 255, 255));
+                    deliveryTable.setForeground(new Color(75,75,75));
+                    deliveryTable.setGridColor(new Color(230,230,230));
+
+                    deliveryProcessingRequired = false;
+                    deliveryButton.setBackground(new Color(0,125,255));
+                    replenishButton.setBackground(new Color(0, 75, 150));
+                    replenishStock();
+                    JOptionPane.showMessageDialog(null, "Stock replenished. Please remember to \"Save Changes\" to update the database.", "Reminder", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please order items for delivery first.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Please order items for delivery first.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
+                logout();
             }
         });
     }
