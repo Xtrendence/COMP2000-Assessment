@@ -6,9 +6,7 @@ public class Item {
     private float price;
     private int quantity;
 
-    public Item() {
-
-    }
+    public Item() { }
 
     public Item(String code, String name, float price, int quantity) {
         this.code = code;

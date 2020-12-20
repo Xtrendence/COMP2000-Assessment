@@ -192,6 +192,9 @@ public class CheckoutScreen extends JFrame {
             builder.append("\n*******************\nTotal: £" + String.format("%.2f", Cart.total));
             if(this.payingByCash) {
                 builder.append("\nChange Due: £" + String.format("%.2f", change));
+                builder.append("\nPayment Method: Cash");
+            } else {
+                builder.append("\nPayment Method: Card");
             }
 
             Stock.setStock(updatedStock);
