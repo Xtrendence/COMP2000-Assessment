@@ -28,23 +28,23 @@ public class AdminArea extends JFrame {
     public JPanel mainPanel;
     public JLabel backButton;
     public JLabel companyTitle;
-    private JPanel contentWrapper;
-    private JPanel stockWrapper;
-    private JScrollPane stockScrollPane;
-    private JTable stockTable;
-    private JTextPane stockLabel;
-    private JPanel deliveryWrapper;
-    private JScrollPane deliveryScrollPane;
-    private JTextPane deliveryLabel;
-    private JButton deliveryButton;
-    private JTable deliveryTable;
-    private JButton replenishButton;
-    private JTextPane lowStockLabel;
-    private JScrollPane lowStockScrollPane;
-    private JTable lowStockTable;
-    private JButton saveButton;
-    private JButton removeButton;
-    private JButton addButton;
+    public JPanel contentWrapper;
+    public JPanel stockWrapper;
+    public JScrollPane stockScrollPane;
+    public JTable stockTable;
+    public JTextPane stockLabel;
+    public JPanel deliveryWrapper;
+    public JScrollPane deliveryScrollPane;
+    public JTextPane deliveryLabel;
+    public JButton deliveryButton;
+    public JTable deliveryTable;
+    public JButton replenishButton;
+    public JTextPane lowStockLabel;
+    public JScrollPane lowStockScrollPane;
+    public JTable lowStockTable;
+    public JButton saveButton;
+    public JButton removeButton;
+    public JButton addButton;
 
     public AdminArea() {
         String separator = System.getProperty("file.separator");
@@ -54,125 +54,8 @@ public class AdminArea extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("X Mart - Admin Area");
 
-        navbar.setBackground(new Color(0, 125, 255));
-        navbar.setSize(navbar.getWidth(), 60);
-
-        try {
-            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "back.png"));
-            backButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-
-        companyTitle.setFont(companyTitle.getFont().deriveFont(Font.BOLD, 20));
-        companyTitle.setForeground(new Color(255,255,255));
-
-        mainPanel.setBackground(new Color(235,235,235));
-        contentWrapper.setBackground(new Color(235,235,235));
-
-        stockScrollPane.getViewport().setBackground(new Color(255, 255, 255));
-        lowStockScrollPane.getViewport().setBackground(new Color(255, 255, 255));
-        deliveryScrollPane.getViewport().setBackground(new Color(255, 255, 255));
-
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-
-        StyledDocument stockLabelText = stockLabel.getStyledDocument();
-        stockLabelText.setParagraphAttributes(0, stockLabelText.getLength(), center, false);
-        stockLabel.setFont(stockLabel.getFont().deriveFont(Font.BOLD, 16));
-        stockLabel.setBackground(new Color(150,135,255));
-        stockLabel.setForeground(new Color(255,255,255));
-        stockLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
-
-        StyledDocument lowStockLabelText = lowStockLabel.getStyledDocument();
-        lowStockLabelText.setParagraphAttributes(0, lowStockLabelText.getLength(), center, false);
-        lowStockLabel.setFont(lowStockLabel.getFont().deriveFont(Font.BOLD, 16));
-        lowStockLabel.setBackground(new Color(150,135,255));
-        lowStockLabel.setForeground(new Color(255,255,255));
-        lowStockLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
-
-        StyledDocument deliveryLabelText = deliveryLabel.getStyledDocument();
-        deliveryLabelText.setParagraphAttributes(0, deliveryLabelText.getLength(), center, false);
-        deliveryLabel.setFont(deliveryLabel.getFont().deriveFont(Font.BOLD, 16));
-        deliveryLabel.setBackground(new Color(150,135,255));
-        deliveryLabel.setForeground(new Color(255,255,255));
-        deliveryLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
-
-        removeButton.setOpaque(true);
-        removeButton.setBackground(new Color(200,50,50));
-        removeButton.setForeground(new Color(255,255,255));
-
-        addButton.setOpaque(true);
-        addButton.setBackground(new Color(0,125,255));
-        addButton.setForeground(new Color(255,255,255));
-
-        saveButton.setOpaque(true);
-        saveButton.setBackground(new Color(0,125,255));
-        saveButton.setForeground(new Color(255,255,255));
-
-        deliveryButton.setOpaque(true);
-        deliveryButton.setBackground(new Color(0,125,255));
-        deliveryButton.setForeground(new Color(255,255,255));
-
-        replenishButton.setOpaque(true);
-        replenishButton.setBackground(new Color(0, 75, 150));
-        replenishButton.setForeground(new Color(255,255,255));
-
-        JScrollBar stockScrollBar = new JScrollBar();
-        stockScrollBar.setBackground(new Color(230,230,230));
-        stockScrollBar.setPreferredSize(new Dimension(10, 40));
-        stockScrollBar.setMinimumSize(new Dimension(10, 40));
-        stockScrollBar.setMaximumSize(new Dimension(10, 2147483647));
-        stockScrollBar.setBorder(BorderFactory.createEmptyBorder());
-
-        JScrollBar lowStockScrollBar = new JScrollBar();
-        lowStockScrollBar.setBackground(new Color(230,230,230));
-        lowStockScrollBar.setPreferredSize(new Dimension(10, 40));
-        lowStockScrollBar.setMinimumSize(new Dimension(10, 40));
-        lowStockScrollBar.setMaximumSize(new Dimension(10, 2147483647));
-        lowStockScrollBar.setBorder(BorderFactory.createEmptyBorder());
-
-        JScrollBar deliveryScrollBar = new JScrollBar();
-        deliveryScrollBar.setBackground(new Color(230,230,230));
-        deliveryScrollBar.setPreferredSize(new Dimension(10, 40));
-        deliveryScrollBar.setMinimumSize(new Dimension(10, 40));
-        deliveryScrollBar.setMaximumSize(new Dimension(10, 2147483647));
-        deliveryScrollBar.setBorder(BorderFactory.createEmptyBorder());
-
-        stockScrollPane.setVerticalScrollBar(stockScrollBar);
-        lowStockScrollPane.setVerticalScrollBar(lowStockScrollBar);
-        deliveryScrollPane.setVerticalScrollBar(deliveryScrollBar);
-
-        stockTable.setBackground(new Color(255, 255, 255));
-        stockTable.setForeground(new Color(75,75,75));
-        stockTable.setSelectionBackground(new Color(0,125,255));
-        stockTable.setSelectionForeground(new Color(255,255,255));
-        stockTable.setGridColor(new Color(230,230,230));
-        stockTable.getTableHeader().setPreferredSize(new Dimension(stockTable.getTableHeader().getWidth(), 30));
-        stockTable.getTableHeader().setReorderingAllowed(false);
-        stockTable.setRowHeight(30);
-        stockTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        lowStockTable.setBackground(new Color(255, 255, 255));
-        lowStockTable.setForeground(new Color(75,75,75));
-        lowStockTable.setSelectionBackground(new Color(0,125,255));
-        lowStockTable.setSelectionForeground(new Color(255,255,255));
-        lowStockTable.setGridColor(new Color(230,230,230));
-        lowStockTable.getTableHeader().setPreferredSize(new Dimension(lowStockTable.getTableHeader().getWidth(), 30));
-        lowStockTable.getTableHeader().setReorderingAllowed(false);
-        lowStockTable.setRowHeight(30);
-        lowStockTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        lowStockTable.setDefaultEditor(Object.class, null);
-
-        deliveryTable.setBackground(new Color(255, 255, 255));
-        deliveryTable.setForeground(new Color(75,75,75));
-        deliveryTable.setSelectionBackground(new Color(0,125,255));
-        deliveryTable.setSelectionForeground(new Color(255,255,255));
-        deliveryTable.setGridColor(new Color(230,230,230));
-        deliveryTable.getTableHeader().setPreferredSize(new Dimension(deliveryTable.getTableHeader().getWidth(), 30));
-        deliveryTable.getTableHeader().setReorderingAllowed(false);
-        deliveryTable.setRowHeight(30);
-        deliveryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        AdminAreaStyling styling = new AdminAreaStyling(this);
+        styling.applyStyle();
 
         backButton.addMouseListener(new MouseAdapter() {
             @Override
