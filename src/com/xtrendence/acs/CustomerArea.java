@@ -129,6 +129,8 @@ public class CustomerArea extends JFrame {
     }
 
     public static void main(String[] args) {
+        DataAccess.generateFiles();
+
         CustomerArea customerArea = new CustomerArea();
 
         loadData(customerArea);
@@ -141,8 +143,7 @@ public class CustomerArea extends JFrame {
     }
 
     public static void loadData(CustomerArea customerArea) {
-        Stock stock = new Stock();
-        stock.getStock();
+        Stock.getStock();
 
         updateItemTable(Stock.items, customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);

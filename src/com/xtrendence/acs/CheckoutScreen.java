@@ -46,7 +46,7 @@ public class CheckoutScreen extends JFrame {
         paymentLabel.setFont(paymentLabel.getFont().deriveFont(Font.BOLD, 16));
         paymentLabel.setBackground(new Color(150,135,255));
         paymentLabel.setForeground(new Color(255,255,255));
-        paymentLabel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        paymentLabel.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         cashButton.setOpaque(true);
         cashButton.setBackground(new Color(0,125,255));

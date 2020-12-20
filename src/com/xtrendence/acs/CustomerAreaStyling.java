@@ -47,21 +47,21 @@ public class CustomerAreaStyling {
         customerArea.itemTableTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 16));
         customerArea.itemTableTitle.setBackground(new Color(150,135,255));
         customerArea.itemTableTitle.setForeground(new Color(255,255,255));
-        customerArea.itemTableTitle.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        customerArea.itemTableTitle.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         StyledDocument scannedTableTitleText = customerArea.scannedTableTitle.getStyledDocument();
         scannedTableTitleText.setParagraphAttributes(0, scannedTableTitleText.getLength(), center, false);
         customerArea.scannedTableTitle.setFont(customerArea.scannedTableTitle.getFont().deriveFont(Font.BOLD, 16));
         customerArea.scannedTableTitle.setBackground(new Color(150,135,255));
         customerArea.scannedTableTitle.setForeground(new Color(255,255,255));
-        customerArea.scannedTableTitle.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        customerArea.scannedTableTitle.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         StyledDocument scannedTotalText = customerArea.scannedTotal.getStyledDocument();
         scannedTotalText.setParagraphAttributes(0, scannedTotalText.getLength(), center, false);
         customerArea.scannedTotal.setFont(customerArea.scannedTotal.getFont().deriveFont(Font.BOLD, 16));
         customerArea.scannedTotal.setBackground(new Color(150,135,255));
         customerArea.scannedTotal.setForeground(new Color(255,255,255));
-        customerArea.scannedTotal.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        customerArea.scannedTotal.setBorder(BorderFactory.createEmptyBorder(3, 0, 0, 0));
 
         customerArea.checkoutButton.setOpaque(true);
         customerArea.checkoutButton.setBackground(new Color(0,125,255));
