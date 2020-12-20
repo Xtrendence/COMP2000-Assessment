@@ -29,7 +29,8 @@ public class CheckoutScreen extends JFrame {
 
     public CheckoutScreen(CustomerArea customerArea) {
         this.customerArea = customerArea;
-        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        String separator = System.getProperty("file.separator");
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
         this.setSize(400, 210);
         this.setLocation(600, 300);
@@ -45,10 +46,13 @@ public class CheckoutScreen extends JFrame {
         paymentLabel.setFont(paymentLabel.getFont().deriveFont(Font.BOLD, 16));
         paymentLabel.setBackground(new Color(150,135,255));
         paymentLabel.setForeground(new Color(255,255,255));
+        paymentLabel.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
 
+        cashButton.setOpaque(true);
         cashButton.setBackground(new Color(0,125,255));
         cashButton.setForeground(new Color(255,255,255));
 
+        cardButton.setOpaque(true);
         cardButton.setBackground(new Color(0,125,255));
         cardButton.setForeground(new Color(255,255,255));
 
@@ -62,12 +66,15 @@ public class CheckoutScreen extends JFrame {
         inputCash.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
         inputCash.setHorizontalAlignment(JTextField.CENTER);
 
+        payButton.setOpaque(true);
         payButton.setBackground(new Color(0,125,255));
         payButton.setForeground(new Color(255,255,255));
 
+        declineButton.setOpaque(true);
         declineButton.setBackground(new Color(200,50,50));
         declineButton.setForeground(new Color(255,255,255));
 
+        approveButton.setOpaque(true);
         approveButton.setBackground(new Color(0,125,255));
         approveButton.setForeground(new Color(255,255,255));
 

@@ -11,7 +11,8 @@ public class ReceiptDisplay extends JFrame {
     private JButton closeButton;
 
     public ReceiptDisplay(CustomerArea customerArea) {
-        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + "\\resources\\acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        String separator = System.getProperty("file.separator");
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
         this.setSize(400, 400);
         this.setLocation(600, 300);
@@ -21,6 +22,7 @@ public class ReceiptDisplay extends JFrame {
 
         receiptText.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
+        closeButton.setOpaque(true);
         closeButton.setBackground(new Color(0,125,255));
         closeButton.setForeground(new Color(255,255,255));
 

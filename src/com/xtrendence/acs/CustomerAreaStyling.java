@@ -26,7 +26,8 @@ public class CustomerAreaStyling {
         customerArea.actionsWrapper.setBackground(new Color(235,235,235));
 
         try {
-            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + "\\resources\\user.png"));
+            String separator = System.getProperty("file.separator");
+            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "user.png"));
             customerArea.adminButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         } catch(Exception e) {
             System.out.println(e);
@@ -46,19 +47,23 @@ public class CustomerAreaStyling {
         customerArea.itemTableTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 16));
         customerArea.itemTableTitle.setBackground(new Color(150,135,255));
         customerArea.itemTableTitle.setForeground(new Color(255,255,255));
+        customerArea.itemTableTitle.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
 
         StyledDocument scannedTableTitleText = customerArea.scannedTableTitle.getStyledDocument();
         scannedTableTitleText.setParagraphAttributes(0, scannedTableTitleText.getLength(), center, false);
         customerArea.scannedTableTitle.setFont(customerArea.scannedTableTitle.getFont().deriveFont(Font.BOLD, 16));
         customerArea.scannedTableTitle.setBackground(new Color(150,135,255));
         customerArea.scannedTableTitle.setForeground(new Color(255,255,255));
+        customerArea.scannedTableTitle.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
 
         StyledDocument scannedTotalText = customerArea.scannedTotal.getStyledDocument();
         scannedTotalText.setParagraphAttributes(0, scannedTotalText.getLength(), center, false);
         customerArea.scannedTotal.setFont(customerArea.scannedTotal.getFont().deriveFont(Font.BOLD, 16));
         customerArea.scannedTotal.setBackground(new Color(150,135,255));
         customerArea.scannedTotal.setForeground(new Color(255,255,255));
+        customerArea.scannedTotal.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));
 
+        customerArea.checkoutButton.setOpaque(true);
         customerArea.checkoutButton.setBackground(new Color(0,125,255));
         customerArea.checkoutButton.setForeground(new Color(255,255,255));
 
@@ -103,6 +108,8 @@ public class CustomerAreaStyling {
 
         customerArea.scanOutput.setVisible(false);
         customerArea.scanOutput.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        customerArea.scanButton.setOpaque(true);
         customerArea.scanButton.setBackground(new Color(0,125,255));
         customerArea.scanButton.setForeground(new Color(255,255,255));
 

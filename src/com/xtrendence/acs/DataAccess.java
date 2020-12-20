@@ -5,8 +5,9 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class DataAccess {
-    public String accountsFile = System.getProperty("user.dir") + "\\resources\\accounts.json";
-    public String stockFile = System.getProperty("user.dir") + "\\resources\\stock.json";
+    private String separator = System.getProperty("file.separator");
+    public String accountsFile = System.getProperty("user.dir") + separator + "resources" + separator + "accounts.json";
+    public String stockFile = System.getProperty("user.dir") + separator + "resources" + separator + "stock.json";
 
     static boolean writeFile(String filePath, String data) {
         try {
