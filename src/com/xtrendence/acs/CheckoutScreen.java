@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
@@ -152,11 +153,13 @@ public class CheckoutScreen extends JFrame {
         ReceiptDisplay receiptDisplay = new ReceiptDisplay(customerArea);
         receiptDisplay.setVisible(true);
 
+        java.util.List<Item> updatedStock = new ArrayList<>();
+
         new Thread(() -> {
             SimpleDateFormat today = new SimpleDateFormat("dd/MM/YYYY hh:mm:ss");
             String dateString = today.format(new Date());
             StringBuilder builder = new StringBuilder();
-            builder.append("X Mart - Receipt\n" + dateString + "\n\n");
+            builder.append("**************************************\n****  X Mart - Receipt\n****  " + dateString + "\n**************************************\n");
             Iterator iterator = Cart.cart.entrySet().iterator();
             while(iterator.hasNext()) {
                 Map.Entry pair = (Map.Entry) iterator.next();
@@ -165,15 +168,20 @@ public class CheckoutScreen extends JFrame {
                 for(Item item : Stock.items) {
                     if(code.equals(item.getCode())) {
                         float price = item.getPrice();
-                        builder.append(quantity + " " + item.getName() + "        £" + String.format("%.2f", price * quantity) + "\n");
+                        builder.append(code + "      " + quantity + " " + item.getName() + "        £" + String.format("%.2f", price * quantity) + "\n");
+
+                        item.setQuantity(item.getQuantity() - quantity);
                     }
+                    updatedStock.add(item);
                 }
                 iterator.remove();
             }
-            builder.append("\nTotal: £" + String.format("%.2f", Cart.total));
+            builder.append("\n*******************\nTotal: £" + String.format("%.2f", Cart.total));
             if(this.payingByCash) {
                 builder.append("\nChange Due: £" + String.format("%.2f", change));
             }
+
+            Stock.setStock(updatedStock);
 
             receiptDisplay.printReceipt(builder.toString());
         }).start();
