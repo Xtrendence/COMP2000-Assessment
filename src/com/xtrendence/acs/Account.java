@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Account {
@@ -14,8 +13,8 @@ public class Account {
 
     public static boolean login(String username, String password) {
         boolean valid = false;
-        DataAccess dataAccess = new DataAccess();
-        String content = DataAccess.readFile(dataAccess.accountsFile);
+        Repository repository = new Repository();
+        String content = Repository.readFile(Repository.accountsFile);
         if(content != null) {
             try {
                 Gson gson = new Gson();

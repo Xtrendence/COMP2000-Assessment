@@ -1,4 +1,4 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.customers;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -8,7 +8,6 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 public class CustomerAreaStyling {
     private CustomerArea customerArea;

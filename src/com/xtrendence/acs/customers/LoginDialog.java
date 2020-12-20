@@ -1,4 +1,7 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.customers;
+
+import com.xtrendence.acs.Account;
+import com.xtrendence.acs.admins.AdminArea;
 
 import javax.swing.*;
 import java.awt.*;

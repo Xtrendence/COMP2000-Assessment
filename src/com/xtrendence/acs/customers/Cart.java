@@ -1,4 +1,4 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.customers;
 
 import java.util.HashMap;
 import java.util.Map;

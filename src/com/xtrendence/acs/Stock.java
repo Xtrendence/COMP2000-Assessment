@@ -6,7 +6,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class Stock {
-    static List<Item> items;
+    public static List<Item> items;
 
     public static Item getItem(String code) {
         for(Item item : items) {
@@ -27,8 +27,8 @@ public class Stock {
     }
 
     public static void getStock() {
-        DataAccess dataAccess = new DataAccess();
-        String content = DataAccess.readFile(dataAccess.stockFile);
+        Repository repository = new Repository();
+        String content = Repository.readFile(repository.stockFile);
         if(content != null) {
             try {
                 Gson gson = new Gson();
@@ -51,7 +51,6 @@ public class Stock {
     }
 
     public static void setStock(List<Item> updatedItems) {
-        DataAccess dataAccess = new DataAccess();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         TreeMap<Integer, TreeMap<String, String>> map = new TreeMap<>();
         for(int i = 0; i < updatedItems.size(); i++) {
@@ -73,6 +72,6 @@ public class Stock {
             map.put(id, properties);
         }
         String json = gson.toJson(map);
-        DataAccess.writeFile(dataAccess.stockFile, json);
+        Repository.writeFile(Repository.stockFile, json);
     }
 }

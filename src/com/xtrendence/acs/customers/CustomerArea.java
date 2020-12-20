@@ -1,4 +1,6 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.customers;
+import com.xtrendence.acs.*;
+
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -129,7 +131,7 @@ public class CustomerArea extends JFrame {
     }
 
     public static void main(String[] args) {
-        DataAccess.generateFiles();
+        Repository.generateFiles();
 
         CustomerArea customerArea = new CustomerArea();
 

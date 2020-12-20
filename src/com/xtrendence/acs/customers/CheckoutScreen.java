@@ -1,4 +1,7 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.customers;
+
+import com.xtrendence.acs.Item;
+import com.xtrendence.acs.Stock;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
@@ -180,7 +183,9 @@ public class CheckoutScreen extends JFrame {
 
                         item.setQuantity(item.getQuantity() - quantity);
                     }
-                    updatedStock.add(item);
+                    if(!updatedStock.contains(item)) {
+                        updatedStock.add(item);
+                    }
                 }
                 iterator.remove();
             }

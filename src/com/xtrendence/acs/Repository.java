@@ -1,17 +1,14 @@
 package com.xtrendence.acs;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Scanner;
 
-public class DataAccess {
+public class Repository {
     static String separator = System.getProperty("file.separator");
     static String resourcesFolder = System.getProperty("user.dir") + separator + "resources" + separator;
     static String accountsFile = resourcesFolder + "accounts.json";
@@ -19,7 +16,7 @@ public class DataAccess {
 
     static boolean writeFile(String filePath, String data) {
         try {
-            FileWriter writer = new FileWriter(filePath);
+            FileWriter writer = new FileWriter(filePath, false);
             writer.write(data);
             writer.close();
             return true;
@@ -29,7 +26,7 @@ public class DataAccess {
         }
     }
 
-    static String readFile(String filePath) {
+    public static String readFile(String filePath) {
         try {
             StringBuilder builder = new StringBuilder();
             FileReader reader = new FileReader(filePath);
@@ -45,10 +42,10 @@ public class DataAccess {
         return null;
     }
 
-    static void generateFiles() {
-        File resources = new File(DataAccess.resourcesFolder);
-        File stock = new File(DataAccess.stockFile);
-        File accounts = new File(DataAccess.accountsFile);
+    public static void generateFiles() {
+        File resources = new File(Repository.resourcesFolder);
+        File stock = new File(Repository.stockFile);
+        File accounts = new File(Repository.accountsFile);
         resources.mkdir();
         if(!stock.exists()) {
             try {
@@ -57,7 +54,7 @@ public class DataAccess {
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
                 Map map = gson.fromJson(defaultStock, Map.class);
                 String json = gson.toJson(map);
-                DataAccess.writeFile(stockFile, json);
+                Repository.writeFile(stockFile, json);
             } catch(Exception e) {
                 System.out.println(e);
             }
@@ -70,7 +67,7 @@ public class DataAccess {
                 map.put("James", "$2a$12$8NVY5i/.tKE6ufjR7MImROLevix0A6sZAqdQHJFtE1LuBrkGQm6LS");
                 map.put("Hannibal", "$2a$12$wH6FGLmvKJ.ao98RfEo9XudGtVcvMKEWfNAVPIZ7MxPNXcm94RV.2");
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                DataAccess.writeFile(accountsFile, gson.toJson(map));
+                Repository.writeFile(accountsFile, gson.toJson(map));
             } catch(Exception e) {
                 System.out.println(e);
             }
