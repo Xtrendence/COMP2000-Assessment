@@ -23,7 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class AdminArea extends JFrame {
+    private int lowStockThreshold = 5;
     private boolean delivered = false;
+    private java.util.List<Item> currentStock = new ArrayList<>();
+
     public JPanel navbar;
     public JPanel mainPanel;
     public JLabel backButton;
@@ -112,6 +115,8 @@ public class AdminArea extends JFrame {
                 delivered = false;
                 deliveryButton.setBackground(new Color(0,125,255));
                 replenishButton.setBackground(new Color(0, 75, 150));
+                replenishStock();
+                JOptionPane.showMessageDialog(null, "Stock replenished. Please remember to \"Save Changes\" to update the database.", "Error", JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(null, "Please order items for delivery first.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -122,10 +127,11 @@ public class AdminArea extends JFrame {
 
     public void loadData(AdminArea adminArea) {
         Stock.getStock();
+        currentStock = Stock.items;
 
-        createStockTable(Stock.items, adminArea.stockTable);
-        createLowStockTable(Stock.items, adminArea.lowStockTable);
-        createDeliveryTable(Stock.items, adminArea.deliveryTable);
+        createStockTable(currentStock, adminArea.stockTable);
+        createLowStockTable(currentStock, adminArea.lowStockTable);
+        createDeliveryTable(currentStock, adminArea.deliveryTable);
 
         createStockPopupMenu(adminArea.stockTable);
     }
@@ -151,7 +157,7 @@ public class AdminArea extends JFrame {
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
-            if(item.getQuantity() < 5) {
+            if(item.getQuantity() < lowStockThreshold) {
                 model.addRow(new Object[]{ item.getCode(), item.getQuantity() });
             }
         }
@@ -175,6 +181,31 @@ public class AdminArea extends JFrame {
         table.getRowSorter().toggleSortOrder(0);
     }
 
+    public void replenishStock() {
+        DefaultTableModel model = (DefaultTableModel) deliveryTable.getModel();
+        java.util.List<Item> updatedStock = new ArrayList<>();
+        for(Item item : currentStock) {
+            for(int i = model.getRowCount() - 1; i >= 0; --i) {
+                try {
+                    String code = model.getValueAt(i, 0).toString();
+                    int quantity = Integer.parseInt(model.getValueAt(i, 1).toString());
+                    if(item.getCode().equals(code)) {
+                        item.setQuantity(item.getQuantity() + quantity);
+                    }
+                    if(!updatedStock.contains(item)) {
+                        updatedStock.add(item);
+                    }
+                } catch(Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
+        createStockTable(updatedStock, stockTable);
+        createLowStockTable(updatedStock, lowStockTable);
+        createDeliveryTable(updatedStock, deliveryTable);
+        currentStock = updatedStock;
+    }
+
     public void removeItem() {
         if(!stockTable.getSelectionModel().isSelectionEmpty()) {
             int row = stockTable.getSelectedRow();
@@ -189,7 +220,7 @@ public class AdminArea extends JFrame {
     }
 
     public String generateProductCode(DefaultTableModel model) {
-        String code = "- Product Code...";
+        String code;
         ArrayList<Integer> codes = new ArrayList<>();
         for(int i = model.getRowCount() - 1; i >= 0; --i) {
             String productCode = model.getValueAt(i, 0).toString().replace("pc", "");
