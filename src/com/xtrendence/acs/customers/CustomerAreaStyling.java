@@ -32,8 +32,8 @@ public class CustomerAreaStyling {
             System.out.println(e);
         }
 
-        customerArea.companyTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 20));
-        customerArea.companyTitle.setForeground(new Color(255,255,255));
+        customerArea.navbarTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 20));
+        customerArea.navbarTitle.setForeground(new Color(255,255,255));
 
         customerArea.itemTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         customerArea.scannedTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));

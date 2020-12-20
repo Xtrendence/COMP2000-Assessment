@@ -1,4 +1,5 @@
 package com.xtrendence.acs.customers;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.xtrendence.acs.*;
 
 import javax.swing.*;
@@ -34,7 +35,7 @@ public class CustomerArea extends JFrame {
     public JTextPane scannedTableTitle;
     public JTextPane scannedTotal;
     public JButton checkoutButton;
-    public JLabel companyTitle;
+    public JLabel navbarTitle;
 
     public CustomerArea() {
         instance = this;
@@ -48,9 +49,6 @@ public class CustomerArea extends JFrame {
 
         CustomerAreaStyling styling = new CustomerAreaStyling(this);
         styling.applyStyle();
-
-        // TODO: Remove after development.
-        showLogin();
 
         adminButton.addMouseListener(new MouseAdapter() {
             @Override

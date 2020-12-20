@@ -8,8 +8,8 @@ import java.lang.reflect.Type;
 import java.util.Map;
 
 public class Account {
-    static String username;
-    static boolean loggedIn = false;
+    public static String username;
+    public static boolean loggedIn = false;
 
     public static boolean login(String username, String password) {
         boolean valid = false;
@@ -33,5 +33,10 @@ public class Account {
             Account.loggedIn = true;
         }
         return valid;
+    }
+
+    public static void logout() {
+        Account.username = "";
+        Account.loggedIn = false;
     }
 }

@@ -28,8 +28,8 @@ public class AdminAreaStyling {
             System.out.println(e);
         }
 
-        adminArea.companyTitle.setFont(adminArea.companyTitle.getFont().deriveFont(Font.BOLD, 20));
-        adminArea.companyTitle.setForeground(new Color(255,255,255));
+        adminArea.navbarTitle.setFont(adminArea.navbarTitle.getFont().deriveFont(Font.BOLD, 20));
+        adminArea.navbarTitle.setForeground(new Color(255,255,255));
 
         adminArea.mainPanel.setBackground(new Color(235,235,235));
         adminArea.contentWrapper.setBackground(new Color(235,235,235));

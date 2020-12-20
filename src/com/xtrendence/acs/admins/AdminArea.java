@@ -1,36 +1,27 @@
 package com.xtrendence.acs.admins;
+import com.xtrendence.acs.Account;
 import com.xtrendence.acs.Item;
 import com.xtrendence.acs.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class AdminArea extends JFrame {
-    private int lowStockThreshold = 5;
-    private boolean delivered = false;
+    private boolean deliveryProcessingRequired = false;
     private java.util.List<Item> currentStock = new ArrayList<>();
-
     public JPanel navbar;
     public JPanel mainPanel;
     public JLabel backButton;
-    public JLabel companyTitle;
+    public JLabel navbarTitle;
     public JPanel contentWrapper;
     public JPanel stockWrapper;
     public JScrollPane stockScrollPane;
@@ -60,59 +51,116 @@ public class AdminArea extends JFrame {
         AdminAreaStyling styling = new AdminAreaStyling(this);
         styling.applyStyle();
 
+        navbarTitle.setText("Welcome, " + Account.username);
+
         backButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                CustomerArea customerArea = CustomerArea.getInstance();
-                customerArea.setVisible(true);
-                dispose();
+                logout();
             }
         });
 
         removeButton.addActionListener(actionEvent -> {
-            removeItem();
+            if(!deliveryProcessingRequired) {
+                removeItem();
+            } else {
+                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         addButton.addActionListener(actionEvent -> {
-            addToStockTable();
+            if(!deliveryProcessingRequired) {
+                addToStockTable();
+            } else {
+                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         saveButton.addActionListener(actionEvent -> {
-
+            if(!deliveryProcessingRequired) {
+                DefaultTableModel model = (DefaultTableModel) stockTable.getModel();
+                java.util.List<Item> updatedStock = new ArrayList<>();
+                for (int i = model.getRowCount() - 1; i >= 0; --i) {
+                    try {
+                        String code = model.getValueAt(i, 0).toString();
+                        String name = model.getValueAt(i, 1).toString();
+                        float price = Float.parseFloat(model.getValueAt(i, 2).toString());
+                        int quantity = Integer.parseInt(model.getValueAt(i, 3).toString());
+                        Item newItem = new Item(code, name, price, quantity);
+                        updatedStock.add(newItem);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+                createStockTable(updatedStock, stockTable);
+                createLowStockTable(updatedStock, lowStockTable);
+                createDeliveryTable(updatedStock, deliveryTable);
+                currentStock = updatedStock;
+                Stock.setStock(currentStock);
+            } else {
+                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
 
         int delay = 3000;
         ActionListener deliverItems = actionEvent -> {
-            delivered = true;
             deliveryButton.setText("Request Items");
-            deliveryButton.setBackground(new Color(0, 75, 150));
             replenishButton.setBackground(new Color(0,125,255));
         };
         Timer timer = new Timer(delay, deliverItems);
 
         deliveryButton.addActionListener(actionEvent -> {
-            if(!delivered) {
+            if(!deliveryProcessingRequired) {
+                deliveryProcessingRequired = true;
+
+                deliveryButton.setBackground(new Color(0, 75, 150));
                 deliveryButton.setText("Delivering...");
+
+                removeButton.setBackground(new Color(0, 75, 150));
+                addButton.setBackground(new Color(0, 75, 150));
+                saveButton.setBackground(new Color(0, 75, 150));
+
+                stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
                 deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+                stockTable.setEnabled(false);
+                stockTable.setBackground(new Color(200, 200, 200));
+                stockTable.setForeground(new Color(150,150,150));
+                stockTable.setGridColor(new Color(230,230,230));
+
                 deliveryTable.setEnabled(false);
                 deliveryTable.setBackground(new Color(200, 200, 200));
                 deliveryTable.setForeground(new Color(150,150,150));
                 deliveryTable.setGridColor(new Color(230,230,230));
+
                 timer.restart();
             } else {
-                JOptionPane.showMessageDialog(null, "There's already a delivery that needs to be processed.", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         replenishButton.addActionListener(actionEvent -> {
-            if(delivered) {
+            if(deliveryProcessingRequired) {
                 timer.stop();
+
+                removeButton.setBackground(new Color(200,50,50));
+                addButton.setBackground(new Color(0,125,255));
+                saveButton.setBackground(new Color(0,125,255));
+
+                stockScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
                 deliveryScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+
+                stockTable.setEnabled(true);
+                stockTable.setBackground(new Color(255, 255, 255));
+                stockTable.setForeground(new Color(75,75,75));
+                stockTable.setGridColor(new Color(230,230,230));
+
                 deliveryTable.setEnabled(true);
                 deliveryTable.setBackground(new Color(255, 255, 255));
                 deliveryTable.setForeground(new Color(75,75,75));
                 deliveryTable.setGridColor(new Color(230,230,230));
-                delivered = false;
+
+                deliveryProcessingRequired = false;
                 deliveryButton.setBackground(new Color(0,125,255));
                 replenishButton.setBackground(new Color(0, 75, 150));
                 replenishStock();
@@ -124,6 +172,13 @@ public class AdminArea extends JFrame {
     }
 
     public static void main(String[] args) { }
+
+    public void logout() {
+        Account.logout();
+        CustomerArea customerArea = CustomerArea.getInstance();
+        customerArea.setVisible(true);
+        dispose();
+    }
 
     public void loadData(AdminArea adminArea) {
         Stock.getStock();
@@ -157,6 +212,7 @@ public class AdminArea extends JFrame {
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
+            int lowStockThreshold = 5;
             if(item.getQuantity() < lowStockThreshold) {
                 model.addRow(new Object[]{ item.getCode(), item.getQuantity() });
             }
