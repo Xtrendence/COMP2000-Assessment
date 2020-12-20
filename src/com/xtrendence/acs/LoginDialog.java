@@ -51,8 +51,8 @@ public class LoginDialog extends JDialog {
         buttonLogin.setForeground(new Color(0,100,200));
 
         // TODO: Remove after development.
-        inputUsername.setText("Xtrendence");
-        inputPassword.setText("passw0rd");
+        inputUsername.setText("Temp");
+        inputPassword.setText("t3mp");
 
         buttonCancel.addActionListener(e -> onCancel());
 
