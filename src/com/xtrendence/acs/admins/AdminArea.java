@@ -239,7 +239,12 @@ public class AdminArea extends JFrame {
 
     public void createDeliveryTable(java.util.List<Item> stock, JTable table) {
         String[] columns = new String[]{ "Product Code", "Quantity To Order" };
-        DefaultTableModel model = new DefaultTableModel();
+        DefaultTableModel model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 1;
+            }
+        };
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
             model.addRow(new Object[]{ item.getCode(), 0 });
