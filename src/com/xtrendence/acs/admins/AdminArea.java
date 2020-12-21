@@ -9,9 +9,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -45,7 +43,7 @@ public class AdminArea extends JFrame {
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(1280, 720);
         this.setLocation(100, 100);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("X Mart - Admin Area");
 
         AdminAreaStyling styling = new AdminAreaStyling(this);
@@ -108,6 +106,8 @@ public class AdminArea extends JFrame {
                     createDeliveryTable(updatedStock, deliveryTable);
                     currentStock = updatedStock;
                     Stock.setStock(currentStock);
+                    CustomerArea.loadData(CustomerArea.getInstance());
+                    JOptionPane.showMessageDialog(null, "Changes have been saved.", "Saved", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -205,6 +205,26 @@ public class AdminArea extends JFrame {
                 JOptionPane.showMessageDialog(null, "You don't seem to be logged in...", "Error", JOptionPane.ERROR_MESSAGE);
                 logout();
             }
+        });
+
+        this.addWindowListener(new WindowListener() {
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                logout();
+                dispose();
+            }
+            @Override
+            public void windowClosed(WindowEvent windowEvent) { }
+            @Override
+            public void windowOpened(WindowEvent windowEvent) { }
+            @Override
+            public void windowIconified(WindowEvent windowEvent) { }
+            @Override
+            public void windowDeiconified(WindowEvent windowEvent) { }
+            @Override
+            public void windowActivated(WindowEvent windowEvent) { }
+            @Override
+            public void windowDeactivated(WindowEvent windowEvent) { }
         });
     }
 
