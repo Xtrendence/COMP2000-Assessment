@@ -27,13 +27,17 @@ public class CustomerAreaStyling {
         try {
             String separator = System.getProperty("file.separator");
             BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "user.png"));
-            customerArea.adminButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+            customerArea.adminIcon.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         } catch(Exception e) {
             System.out.println(e);
         }
 
         customerArea.navbarTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 20));
         customerArea.navbarTitle.setForeground(new Color(255,255,255));
+
+        customerArea.adminButton.setOpaque(true);
+        customerArea.adminButton.setBackground(new Color(255,255,255));
+        customerArea.adminButton.setForeground(new Color(0,125,255));
 
         customerArea.itemTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         customerArea.scannedTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));

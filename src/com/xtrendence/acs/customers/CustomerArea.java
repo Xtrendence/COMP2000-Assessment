@@ -1,5 +1,4 @@
 package com.xtrendence.acs.customers;
-import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.xtrendence.acs.*;
 
 import javax.swing.*;
@@ -21,7 +20,7 @@ public class CustomerArea extends JFrame {
     public JPanel contentWrapper;
     public JPanel listWrapper;
     public JPanel actionsWrapper;
-    public JLabel adminButton;
+    public JLabel adminIcon;
     public JTable itemTable;
     public JScrollPane itemTableScrollPane;
     public JTextField inputProductCode;
@@ -36,6 +35,7 @@ public class CustomerArea extends JFrame {
     public JTextPane scannedTotal;
     public JButton checkoutButton;
     public JLabel navbarTitle;
+    public JButton adminButton;
 
     public CustomerArea() {
         instance = this;
@@ -50,7 +50,11 @@ public class CustomerArea extends JFrame {
         CustomerAreaStyling styling = new CustomerAreaStyling(this);
         styling.applyStyle();
 
-        adminButton.addMouseListener(new MouseAdapter() {
+        adminButton.addActionListener(actionEvent -> {
+            showLogin();
+        });
+
+        adminIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 showLogin();
@@ -113,6 +117,8 @@ public class CustomerArea extends JFrame {
                             }
                         }
                     }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please enter a product code, or double/right click on a product in the list to automatically enter its code.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -148,7 +154,7 @@ public class CustomerArea extends JFrame {
 
     private void showLogin() {
         LoginDialog loginDialog = new LoginDialog(this);
-        loginDialog.setLocation(adminButton.getLocationOnScreen().x - 150, adminButton.getLocationOnScreen().y + 50);
+        loginDialog.setLocation(adminIcon.getLocationOnScreen().x - 150, adminIcon.getLocationOnScreen().y + 50);
         loginDialog.setSize(200, 180);
         loginDialog.setResizable(false);
         loginDialog.setUndecorated(true);

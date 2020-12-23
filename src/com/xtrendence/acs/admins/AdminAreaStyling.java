@@ -31,6 +31,10 @@ public class AdminAreaStyling {
         adminArea.navbarTitle.setFont(adminArea.navbarTitle.getFont().deriveFont(Font.BOLD, 20));
         adminArea.navbarTitle.setForeground(new Color(255,255,255));
 
+        adminArea.customerButton.setOpaque(true);
+        adminArea.customerButton.setBackground(new Color(255,255,255));
+        adminArea.customerButton.setForeground(new Color(0,125,255));
+
         adminArea.mainPanel.setBackground(new Color(235,235,235));
         adminArea.contentWrapper.setBackground(new Color(235,235,235));
 

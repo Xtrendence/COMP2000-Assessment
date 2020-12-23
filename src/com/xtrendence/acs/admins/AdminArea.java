@@ -37,6 +37,7 @@ public class AdminArea extends JFrame {
     public JButton saveButton;
     public JButton removeButton;
     public JButton addButton;
+    public JButton customerButton;
 
     public AdminArea() {
         String separator = System.getProperty("file.separator");
@@ -50,6 +51,10 @@ public class AdminArea extends JFrame {
         styling.applyStyle();
 
         navbarTitle.setText("Welcome, " + Account.username);
+
+        customerButton.addActionListener(actionEvent -> {
+            logout();
+        });
 
         backButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -265,7 +270,7 @@ public class AdminArea extends JFrame {
     }
 
     public void createLowStockTable(java.util.List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Remaining Quantity" };
+        String[] columns = new String[]{ "Product Code", "Remaining" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
@@ -279,7 +284,7 @@ public class AdminArea extends JFrame {
     }
 
     public void createDeliveryTable(java.util.List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Quantity To Order" };
+        String[] columns = new String[]{ "Product Code", "Name", "Quantity To Order" };
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -288,7 +293,7 @@ public class AdminArea extends JFrame {
         };
         model.setColumnIdentifiers(columns);
         for(Item item : stock) {
-            model.addRow(new Object[]{ item.getCode(), 0 });
+            model.addRow(new Object[]{ item.getCode(), item.getName(), 0 });
         }
         table.setModel(model);
         table.getRowSorter().toggleSortOrder(0);
