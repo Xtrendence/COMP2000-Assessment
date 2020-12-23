@@ -11,8 +11,8 @@ import java.util.Scanner;
 public class Repository implements IRepository {
     private static String separator = System.getProperty("file.separator");
     private static String resourcesFolder = System.getProperty("user.dir") + separator + "resources" + separator;
-    static String accountsFile = resourcesFolder + "accounts.json";
-    static String stockFile = resourcesFolder + "stock.json";
+    public static String accountsFile = resourcesFolder + "accounts.json";
+    public static String stockFile = resourcesFolder + "stock.json";
 
     public static void create() {
         File resources = new File(Repository.resourcesFolder);
@@ -54,7 +54,7 @@ public class Repository implements IRepository {
         }
     }
 
-    static String read(String filePath) {
+    public static String read(String filePath) {
         try {
             StringBuilder builder = new StringBuilder();
             FileReader reader = new FileReader(filePath);
@@ -70,7 +70,7 @@ public class Repository implements IRepository {
         return null;
     }
 
-    static void update(String filePath, String data) {
+    public static void update(String filePath, String data) {
         try {
             FileWriter writer = new FileWriter(filePath, false);
             writer.write(data);
@@ -80,7 +80,7 @@ public class Repository implements IRepository {
         }
     }
 
-    static void delete(String filePath) {
+    public static void delete(String filePath) {
         try {
             File file = new File(filePath);
             file.delete();

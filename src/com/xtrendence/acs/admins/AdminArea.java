@@ -1,5 +1,5 @@
 package com.xtrendence.acs.admins;
-import com.xtrendence.acs.Account;
+import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.Item;
 import com.xtrendence.acs.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
@@ -17,6 +17,7 @@ import java.util.Collections;
 public class AdminArea extends JFrame {
     private boolean deliveryProcessingRequired = false;
     private java.util.List<Item> currentStock = new ArrayList<>();
+    private Account account;
     public JPanel navbar;
     public JPanel mainPanel;
     public JLabel backButton;
@@ -40,7 +41,7 @@ public class AdminArea extends JFrame {
     public JButton addButton;
     public JButton customerButton;
 
-    public AdminArea() {
+    public AdminArea(Account account) {
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(1280, 720);
@@ -48,10 +49,12 @@ public class AdminArea extends JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("X Mart - Admin Area");
 
+        this.account = account;
+
         AdminAreaStyling styling = new AdminAreaStyling(this);
         styling.applyStyle();
 
-        navbarTitle.setText("Welcome, " + Account.username);
+        navbarTitle.setText("Welcome, " + account.getUsername());
 
         customerButton.addActionListener(actionEvent -> {
             logout();
@@ -65,7 +68,7 @@ public class AdminArea extends JFrame {
         });
 
         removeButton.addActionListener(actionEvent -> {
-            if(Account.loggedIn) {
+            if(account.getState().loggedIn()) {
                 if(!deliveryProcessingRequired) {
                     removeItem();
                 } else {
@@ -78,7 +81,7 @@ public class AdminArea extends JFrame {
         });
 
         addButton.addActionListener(actionEvent -> {
-            if(Account.loggedIn) {
+            if(account.getState().loggedIn()) {
                 if(!deliveryProcessingRequired) {
                     addToStockTable();
                 } else {
@@ -91,7 +94,7 @@ public class AdminArea extends JFrame {
         });
 
         saveButton.addActionListener(actionEvent -> {
-            if(Account.loggedIn) {
+            if(account.getState().loggedIn()) {
                 if(!deliveryProcessingRequired) {
                     TableCellEditor editor = stockTable.getCellEditor();
                     if(editor != null) {
@@ -135,7 +138,7 @@ public class AdminArea extends JFrame {
         Timer timer = new Timer(delay, deliverItems);
 
         deliveryButton.addActionListener(actionEvent -> {
-            if(Account.loggedIn) {
+            if(account.getState().loggedIn()) {
                 if(!deliveryProcessingRequired) {
                     deliveryProcessingRequired = true;
 
@@ -176,7 +179,7 @@ public class AdminArea extends JFrame {
         });
 
         replenishButton.addActionListener(actionEvent -> {
-            if(Account.loggedIn) {
+            if(account.getState().loggedIn()) {
                 if(deliveryProcessingRequired) {
                     timer.stop();
 
@@ -241,7 +244,7 @@ public class AdminArea extends JFrame {
     public static void main(String[] args) { }
 
     public void logout() {
-        Account.logout();
+        account.logout();
         CustomerArea.getInstance().setVisible(true);
         dispose();
     }

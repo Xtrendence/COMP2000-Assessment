@@ -1,6 +1,6 @@
 package com.xtrendence.acs.customers;
 
-import com.xtrendence.acs.Account;
+import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.admins.AdminArea;
 
 import javax.swing.*;
@@ -83,10 +83,12 @@ public class LoginDialog extends JDialog {
     }
 
     private void onLogin() {
-        boolean login = Account.login(inputUsername.getText(), inputPassword.getText());
-        if(login) {
+        String username = inputUsername.getText();
+        String password = inputPassword.getText();
+        Account account = new Account(username, password);
+        if(account.getState().loggedIn()) {
             CustomerArea.getInstance().setVisible(false);
-            AdminArea adminArea = new AdminArea();
+            AdminArea adminArea = new AdminArea(account);
             adminArea.setVisible(true);
             adminArea.setContentPane(adminArea.mainPanel);
             adminArea.loadData(adminArea);
