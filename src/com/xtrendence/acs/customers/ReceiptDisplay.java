@@ -10,7 +10,7 @@ public class ReceiptDisplay extends JFrame {
     private JTextPane receiptText;
     private JButton closeButton;
 
-    public ReceiptDisplay(CustomerArea customerArea) {
+    public ReceiptDisplay() {
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
@@ -27,8 +27,8 @@ public class ReceiptDisplay extends JFrame {
         closeButton.setForeground(new Color(255,255,255));
 
         closeButton.addActionListener(actionEvent -> {
-            customerArea.setVisible(true);
-            CustomerArea.loadData(customerArea);
+            CustomerArea.getInstance().setVisible(true);
+            CustomerArea.loadData();
             Cart.emptyCart();
             dispose();
         });
@@ -36,8 +36,8 @@ public class ReceiptDisplay extends JFrame {
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                customerArea.setVisible(true);
-                CustomerArea.loadData(customerArea);
+                CustomerArea.getInstance().setVisible(true);
+                CustomerArea.loadData();
                 Cart.emptyCart();
                 dispose();
             }

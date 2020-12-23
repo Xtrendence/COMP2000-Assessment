@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class CheckoutScreen extends JFrame {
-    CustomerArea customerArea;
     private boolean payingByCash;
     private JButton cashButton;
     private JButton cardButton;
@@ -30,8 +29,7 @@ public class CheckoutScreen extends JFrame {
     private JLabel cashLabel;
     private JButton payButton;
 
-    public CheckoutScreen(CustomerArea customerArea) {
-        this.customerArea = customerArea;
+    public CheckoutScreen() {
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
@@ -128,7 +126,7 @@ public class CheckoutScreen extends JFrame {
         });
 
         declineButton.addActionListener(actionEvent -> {
-            customerArea.setVisible(true);
+            CustomerArea.getInstance().setVisible(true);
             dispose();
         });
 
@@ -140,7 +138,7 @@ public class CheckoutScreen extends JFrame {
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                customerArea.setVisible(true);
+                CustomerArea.getInstance().setVisible(true);
                 dispose();
             }
             @Override
@@ -161,7 +159,7 @@ public class CheckoutScreen extends JFrame {
     public static void main(String[] args) { }
 
     public void showReceipt(Float change) {
-        ReceiptDisplay receiptDisplay = new ReceiptDisplay(customerArea);
+        ReceiptDisplay receiptDisplay = new ReceiptDisplay();
         receiptDisplay.setVisible(true);
 
         java.util.List<Item> updatedStock = new ArrayList<>();

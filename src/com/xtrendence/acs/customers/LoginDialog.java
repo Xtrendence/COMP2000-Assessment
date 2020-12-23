@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class LoginDialog extends JDialog {
-    private CustomerArea customerArea;
     private JPanel contentPane;
     private JButton buttonLogin;
     private JButton buttonCancel;
@@ -20,8 +19,7 @@ public class LoginDialog extends JDialog {
     private JLabel labelUsername;
     private JLabel labelPassword;
 
-    public LoginDialog(CustomerArea customerArea) {
-        this.customerArea = customerArea;
+    public LoginDialog() {
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(contentPane);
@@ -87,8 +85,7 @@ public class LoginDialog extends JDialog {
     private void onLogin() {
         boolean login = Account.login(inputUsername.getText(), inputPassword.getText());
         if(login) {
-
-            customerArea.setVisible(false);
+            CustomerArea.getInstance().setVisible(false);
             AdminArea adminArea = new AdminArea();
             adminArea.setVisible(true);
             adminArea.setContentPane(adminArea.mainPanel);

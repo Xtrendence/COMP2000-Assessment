@@ -13,7 +13,7 @@ public class Account {
 
     public static boolean login(String username, String password) {
         boolean valid = false;
-        String content = Repository.readFile(Repository.accountsFile);
+        String content = Repository.read(Repository.accountsFile);
         if(content != null) {
             try {
                 Gson gson = new Gson();

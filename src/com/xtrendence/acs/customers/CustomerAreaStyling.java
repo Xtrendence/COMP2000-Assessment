@@ -12,8 +12,8 @@ import java.io.File;
 public class CustomerAreaStyling {
     private CustomerArea customerArea;
 
-    public CustomerAreaStyling(CustomerArea customerArea) {
-        this.customerArea = customerArea;
+    public CustomerAreaStyling() {
+        this.customerArea = CustomerArea.getInstance();
     }
 
     public void applyStyle() {

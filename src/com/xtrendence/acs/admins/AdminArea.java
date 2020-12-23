@@ -116,7 +116,7 @@ public class AdminArea extends JFrame {
                     createDeliveryTable(updatedStock, deliveryTable);
                     currentStock = updatedStock;
                     Stock.setStock(currentStock);
-                    CustomerArea.loadData(CustomerArea.getInstance());
+                    CustomerArea.loadData();
                     JOptionPane.showMessageDialog(null, "Changes have been saved.", "Saved", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -242,8 +242,7 @@ public class AdminArea extends JFrame {
 
     public void logout() {
         Account.logout();
-        CustomerArea customerArea = CustomerArea.getInstance();
-        customerArea.setVisible(true);
+        CustomerArea.getInstance().setVisible(true);
         dispose();
     }
 

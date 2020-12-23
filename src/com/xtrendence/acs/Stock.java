@@ -27,8 +27,7 @@ public class Stock {
     }
 
     public static void getStock() {
-        Repository repository = new Repository();
-        String content = Repository.readFile(repository.stockFile);
+        String content = Repository.read(Repository.stockFile);
         if(content != null) {
             try {
                 Gson gson = new Gson();
@@ -36,7 +35,7 @@ public class Stock {
                 TreeMap<String, TreeMap<String, String>> map = gson.fromJson(content, mapType);
 
                 int count = map.size();
-                items = new ArrayList<Item>();
+                items = new ArrayList<>();
 
                 for(int i = 1; i <= count; i++)
                 {
@@ -72,6 +71,6 @@ public class Stock {
             map.put(id, properties);
         }
         String json = gson.toJson(map);
-        Repository.writeFile(Repository.stockFile, json);
+        Repository.write(Repository.stockFile, json);
     }
 }
