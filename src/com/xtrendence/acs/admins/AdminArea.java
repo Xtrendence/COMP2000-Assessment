@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -92,6 +93,10 @@ public class AdminArea extends JFrame {
         saveButton.addActionListener(actionEvent -> {
             if(Account.loggedIn) {
                 if(!deliveryProcessingRequired) {
+                    TableCellEditor editor = stockTable.getCellEditor();
+                    if(editor != null) {
+                        editor.stopCellEditing();
+                    }
                     DefaultTableModel model = (DefaultTableModel) stockTable.getModel();
                     java.util.List<Item> updatedStock = new ArrayList<>();
                     for (int i = model.getRowCount() - 1; i >= 0; --i) {
