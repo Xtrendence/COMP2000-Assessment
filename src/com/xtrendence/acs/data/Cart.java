@@ -1,13 +1,13 @@
-package com.xtrendence.acs.customers;
+package com.xtrendence.acs.data;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
-    static Map<String, Integer> cart = new HashMap<String, Integer>();
-    static float total;
+    public static Map<String, Integer> cart = new HashMap<String, Integer>();
+    public static float total;
 
-    static void addToCart(String code, float price) {
+    public static void addToCart(String code, float price) {
         if(cart.containsKey(code)) {
             cart.put(code, cart.get(code) + 1);
         } else {
@@ -16,7 +16,7 @@ public class Cart {
         total += price;
     }
 
-    static void removeFromCart(String code, float price) {
+    public static void removeFromCart(String code, float price) {
         if(cart.containsKey(code)) {
             int currentQuantity = cart.get(code);
             if(currentQuantity == 1) {
@@ -28,7 +28,7 @@ public class Cart {
         total -= price;
     }
 
-    static void emptyCart() {
+    public static void emptyCart() {
         cart.clear();
         total = 0;
     }

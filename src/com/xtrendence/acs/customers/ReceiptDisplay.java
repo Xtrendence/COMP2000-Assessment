@@ -1,5 +1,7 @@
 package com.xtrendence.acs.customers;
 
+import com.xtrendence.acs.data.Cart;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
