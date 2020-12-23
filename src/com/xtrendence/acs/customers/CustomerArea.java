@@ -1,4 +1,5 @@
 package com.xtrendence.acs.customers;
+import com.xtrendence.acs.data.IObserver;
 import com.xtrendence.acs.data.Cart;
 import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Repository;
@@ -16,7 +17,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class CustomerArea extends JFrame {
+public class CustomerArea extends JFrame implements IObserver {
     private static CustomerArea instance = new CustomerArea();
     private Cart cart = new Cart();
     public JPanel mainPanel;
@@ -50,6 +51,8 @@ public class CustomerArea extends JFrame {
         this.setLocation(100, 100);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("X Mart - Customer Area");
+
+        Stock.attach(this);
 
         CustomerAreaStyling styling = new CustomerAreaStyling();
         styling.applyStyle();
@@ -99,7 +102,7 @@ public class CustomerArea extends JFrame {
 
         CustomerArea customerArea = CustomerArea.getInstance();
 
-        customerArea.loadData();
+        Stock.getStock();
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
@@ -132,10 +135,9 @@ public class CustomerArea extends JFrame {
         }
     }
 
-    public void loadData() {
+    @Override
+    public void updateTables() {
         CustomerArea customerArea = CustomerArea.getInstance();
-
-        Stock.getStock();
 
         emptyCart();
 

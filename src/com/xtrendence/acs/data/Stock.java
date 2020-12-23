@@ -6,7 +6,18 @@ import java.lang.reflect.Type;
 import java.util.*;
 
 public class Stock {
+    public static List<IObserver> observers = new ArrayList<>();
     public static List<Item> items;
+
+    public static void attach(IObserver observer) {
+        observers.add(observer);
+    }
+
+    public static void notifyAllObservers() {
+        for(IObserver observer : observers) {
+            observer.updateTables();
+        }
+    }
 
     public static Item getItem(String code) {
         for(Item item : items) {
@@ -22,6 +33,7 @@ public class Stock {
             if(updatedItem.getCode().equals(item.getCode())) {
                 items.remove(item);
                 items.add(updatedItem);
+                notifyAllObservers();
             }
         }
     }
@@ -37,12 +49,13 @@ public class Stock {
                 int count = map.size();
                 items = new ArrayList<>();
 
-                for(int i = 1; i <= count; i++)
-                {
+                for(int i = 1; i <= count; i++) {
                     TreeMap<String, String> entry = map.get(String.valueOf(i));
                     Item item = new Item(entry.get("code"), entry.get("name"), Float.parseFloat(entry.get("price")), Integer.parseInt(entry.get("quantity")));
                     items.add(item);
                 }
+
+                notifyAllObservers();
             } catch(Exception e) {
                 System.out.println(e);
             }
@@ -72,5 +85,6 @@ public class Stock {
         }
         String json = gson.toJson(map);
         Repository.update(Repository.stockFile, json);
+        notifyAllObservers();
     }
 }

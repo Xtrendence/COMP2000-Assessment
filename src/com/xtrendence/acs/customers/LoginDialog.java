@@ -2,6 +2,7 @@ package com.xtrendence.acs.customers;
 
 import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.admins.AdminArea;
+import com.xtrendence.acs.data.Stock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,11 +88,12 @@ public class LoginDialog extends JDialog {
         String password = inputPassword.getText();
         Account account = new Account(username, password);
         if(account.getState().loggedIn()) {
+            Stock.getStock();
             CustomerArea.getInstance().setVisible(false);
             AdminArea adminArea = new AdminArea(account);
             adminArea.setVisible(true);
             adminArea.setContentPane(adminArea.mainPanel);
-            adminArea.loadData(adminArea);
+            adminArea.updateTables();
         }
         dispose();
     }

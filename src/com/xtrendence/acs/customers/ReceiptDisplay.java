@@ -1,7 +1,5 @@
 package com.xtrendence.acs.customers;
 
-import com.xtrendence.acs.data.Cart;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -30,7 +28,6 @@ public class ReceiptDisplay extends JFrame {
 
         closeButton.addActionListener(actionEvent -> {
             CustomerArea.getInstance().setVisible(true);
-            CustomerArea.getInstance().loadData();
             dispose();
         });
 
@@ -38,7 +35,6 @@ public class ReceiptDisplay extends JFrame {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
                 CustomerArea.getInstance().setVisible(true);
-                CustomerArea.getInstance().loadData();
                 dispose();
             }
             @Override

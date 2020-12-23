@@ -1,4 +1,5 @@
 package com.xtrendence.acs.admins;
+import com.xtrendence.acs.data.IObserver;
 import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Stock;
@@ -14,10 +15,11 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AdminArea extends JFrame {
+public class AdminArea extends JFrame implements IObserver {
     private boolean deliveryProcessingRequired = false;
     private java.util.List<Item> currentStock = new ArrayList<>();
     private Account account;
+    private static AdminArea instance;
     public JPanel navbar;
     public JPanel mainPanel;
     public JLabel backButton;
@@ -49,7 +51,10 @@ public class AdminArea extends JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("X Mart - Admin Area");
 
+        this.instance = this;
         this.account = account;
+
+        Stock.attach(this);
 
         AdminAreaStyling styling = new AdminAreaStyling(this);
         styling.applyStyle();
@@ -119,7 +124,7 @@ public class AdminArea extends JFrame {
                     createDeliveryTable(updatedStock, deliveryTable);
                     currentStock = updatedStock;
                     Stock.setStock(currentStock);
-                    CustomerArea.getInstance().loadData();
+                    Stock.getStock();
                     JOptionPane.showMessageDialog(null, "Changes have been saved.", "Saved", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -248,19 +253,23 @@ public class AdminArea extends JFrame {
 
     public static void main(String[] args) { }
 
+    public static AdminArea getInstance() {
+        return instance;
+    }
+
     public void logout() {
         account.logout();
         CustomerArea.getInstance().setVisible(true);
         dispose();
     }
 
-    public void loadData(AdminArea adminArea) {
-        Stock.getStock();
-        currentStock = Stock.items;
+    @Override
+    public void updateTables() {
+        AdminArea adminArea = AdminArea.getInstance();
 
-        createStockTable(currentStock, adminArea.stockTable);
-        createLowStockTable(currentStock, adminArea.lowStockTable);
-        createDeliveryTable(currentStock, adminArea.deliveryTable);
+        createStockTable(Stock.items, adminArea.stockTable);
+        createLowStockTable(Stock.items, adminArea.lowStockTable);
+        createDeliveryTable(Stock.items, adminArea.deliveryTable);
 
         createStockPopupMenu(adminArea.stockTable);
     }
