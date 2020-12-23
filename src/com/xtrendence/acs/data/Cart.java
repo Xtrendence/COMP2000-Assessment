@@ -4,11 +4,44 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cart {
-    public static Map<String, Integer> cart = new HashMap<String, Integer>();
-    public static float total;
+    private Map<String, Integer> cart = new HashMap<String, Integer>();
+    private float total;
 
-    public static void addToCart(String code, float price) {
-        if(cart.containsKey(code)) {
+    public Cart() { }
+
+    public int getSize() {
+        return cart.size();
+    }
+
+    public float getTotal() {
+        return this.total;
+    }
+
+    public Map<String, Integer> getCart() {
+        return cart;
+    }
+
+    public int getQuantity(String code) {
+        if(itemExists(code)) {
+            return cart.get(code);
+        }
+        return 0;
+    }
+
+    public boolean itemExists(String code) {
+        return cart.containsKey(code);
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public void setCart(Map<String, Integer> cart) {
+        this.cart = cart;
+    }
+
+    public void addToCart(String code, float price) {
+        if(itemExists(code)) {
             cart.put(code, cart.get(code) + 1);
         } else {
             cart.put(code, 1);
@@ -16,8 +49,8 @@ public class Cart {
         total += price;
     }
 
-    public static void removeFromCart(String code, float price) {
-        if(cart.containsKey(code)) {
+    public void removeFromCart(String code, float price) {
+        if(itemExists(code)) {
             int currentQuantity = cart.get(code);
             if(currentQuantity == 1) {
                 cart.remove(code);
@@ -28,7 +61,7 @@ public class Cart {
         total -= price;
     }
 
-    public static void emptyCart() {
+    public void emptyCart() {
         cart.clear();
         total = 0;
     }

@@ -119,7 +119,7 @@ public class AdminArea extends JFrame {
                     createDeliveryTable(updatedStock, deliveryTable);
                     currentStock = updatedStock;
                     Stock.setStock(currentStock);
-                    CustomerArea.loadData();
+                    CustomerArea.getInstance().loadData();
                     JOptionPane.showMessageDialog(null, "Changes have been saved.", "Saved", JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(null, "There's a delivery that needs to be processed. Click the \"Replenish Stock\" button.", "Error", JOptionPane.ERROR_MESSAGE);

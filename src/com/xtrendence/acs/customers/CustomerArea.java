@@ -18,6 +18,7 @@ import java.util.List;
 
 public class CustomerArea extends JFrame {
     private static CustomerArea instance = new CustomerArea();
+    private Cart cart = new Cart();
     public JPanel mainPanel;
     public JPanel navbar;
     public JPanel contentWrapper;
@@ -98,13 +99,13 @@ public class CustomerArea extends JFrame {
 
         CustomerArea customerArea = CustomerArea.getInstance();
 
-        loadData();
+        customerArea.loadData();
 
         customerArea.setVisible(true);
         customerArea.setContentPane(customerArea.mainPanel);
 
-        createItemPopupMenu();
-        createScannedPopupMenu();
+        customerArea.createItemPopupMenu();
+        customerArea.createScannedPopupMenu();
     }
 
     // Singleton objects have a getInstance() method to return the one and only instance of the object.
@@ -122,8 +123,8 @@ public class CustomerArea extends JFrame {
     }
 
     private void showCheckout() {
-        if(Cart.cart.size() > 0) {
-            CheckoutScreen checkoutScreen = new CheckoutScreen();
+        if(cart.getSize() > 0) {
+            CheckoutScreen checkoutScreen = new CheckoutScreen(cart);
             checkoutScreen.setVisible(true);
             this.setVisible(false);
         } else {
@@ -131,15 +132,21 @@ public class CustomerArea extends JFrame {
         }
     }
 
-    public static void loadData() {
+    public void loadData() {
         CustomerArea customerArea = CustomerArea.getInstance();
 
         Stock.getStock();
+
+        emptyCart();
 
         updateItemTable(Stock.items, customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);
 
         customerArea.scannedTotal.setText("Total: £0.00");
+    }
+
+    public void emptyCart() {
+        cart.emptyCart();
     }
 
     private void scanItem(String code) {
@@ -156,7 +163,7 @@ public class CustomerArea extends JFrame {
 
         for(Item item : Stock.items) {
             if(item.getCode().equals(code) && item.getQuantity() >= 0) {
-                if(Cart.cart.containsKey(code) && Cart.cart.get(code) >= item.getQuantity()) {
+                if(cart.itemExists(code) && cart.getQuantity(code) >= item.getQuantity()) {
                     inputProductCode.setText("");
                     JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -186,7 +193,7 @@ public class CustomerArea extends JFrame {
         }
     }
 
-    public static void selectRowByValue(JTable table, String value) {
+    public void selectRowByValue(JTable table, String value) {
         TableModel model = table.getModel();
         for(int i = model.getRowCount() - 1; i >= 0; --i) {
             if(model.getValueAt(i, 0).equals(value)) {
@@ -195,7 +202,7 @@ public class CustomerArea extends JFrame {
         }
     }
 
-    public static void createItemPopupMenu() {
+    public void createItemPopupMenu() {
         CustomerArea customerArea = CustomerArea.getInstance();
         JPopupMenu itemTablePopupMenu = new JPopupMenu();
         itemTablePopupMenu.setBackground(new Color(230,230,230));
@@ -227,7 +234,7 @@ public class CustomerArea extends JFrame {
         });
     }
 
-    public static void createScannedPopupMenu() {
+    public void createScannedPopupMenu() {
         CustomerArea customerArea = CustomerArea.getInstance();
         JPopupMenu scannedTablePopupMenu = new JPopupMenu();
         scannedTablePopupMenu.setBackground(new Color(230,230,230));
@@ -241,8 +248,8 @@ public class CustomerArea extends JFrame {
                 int row = customerArea.scannedTable.getSelectedRow();
                 String code = customerArea.scannedTable.getValueAt(row, 0).toString();
                 float price = Float.parseFloat(customerArea.scannedTable.getValueAt(row, 2).toString());
-                Cart.removeFromCart(code, price);
-                customerArea.scannedTotal.setText("Total: £" + String.format("%.2f", Cart.total));
+                cart.removeFromCart(code, price);
+                customerArea.scannedTotal.setText("Total: £" + String.format("%.2f", cart.getTotal()));
                 DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
                 model.removeRow(row);
                 customerArea.scannedTable.setModel(model);
@@ -275,16 +282,16 @@ public class CustomerArea extends JFrame {
         });
     }
 
-    public static void addToScannedTable(JTextPane total, Item item, JTable table) {
-        Cart.addToCart(item.getCode(), item.getPrice());
-        total.setText("Total: £" + String.format("%.2f", Cart.total));
+    public void addToScannedTable(JTextPane total, Item item, JTable table) {
+        cart.addToCart(item.getCode(), item.getPrice());
+        total.setText("Total: £" + String.format("%.2f", cart.getTotal()));
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice() });
         table.setModel(model);
         table.repaint();
     }
 
-    public static void updateItemTable(List<Item> stock, JTable table) {
+    public void updateItemTable(List<Item> stock, JTable table) {
         String[] columns = new String[]{ "Product Code", "Name", "Price (£)", "Remaining Quantity" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);
@@ -298,7 +305,7 @@ public class CustomerArea extends JFrame {
         table.getRowSorter().toggleSortOrder(0);
     }
 
-    public static void createScannedTable(JTable table) {
+    public void createScannedTable(JTable table) {
         String[] columns = new String[]{ "Product Code", "Name", "Price" };
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnIdentifiers(columns);

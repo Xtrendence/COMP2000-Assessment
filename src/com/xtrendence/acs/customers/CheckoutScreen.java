@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class CheckoutScreen extends JFrame {
+    private Cart cart;
     private boolean payingByCash;
     private JButton cashButton;
     private JButton cardButton;
@@ -30,7 +31,7 @@ public class CheckoutScreen extends JFrame {
     private JLabel cashLabel;
     private JButton payButton;
 
-    public CheckoutScreen() {
+    public CheckoutScreen(Cart cart) {
         String separator = System.getProperty("file.separator");
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setContentPane(mainPanel);
@@ -39,10 +40,12 @@ public class CheckoutScreen extends JFrame {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.setTitle("X Mart - Checkout");
 
+        this.cart = cart;
+
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 
-        paymentLabel.setText("Total: £" + String.format("%.2f", Cart.total) + " | Payment Method:");
+        paymentLabel.setText("Total: £" + String.format("%.2f", cart.getTotal()) + " | Payment Method:");
         StyledDocument paymentLabelText = paymentLabel.getStyledDocument();
         paymentLabelText.setParagraphAttributes(0, paymentLabelText.getLength(), center, false);
         paymentLabel.setFont(paymentLabel.getFont().deriveFont(Font.BOLD, 16));
@@ -107,8 +110,8 @@ public class CheckoutScreen extends JFrame {
             String message = "Invalid cash entry.";
             try {
                 cash = Float.parseFloat(inputCash.getText());
-                if(cash >= Cart.total) {
-                    change = cash - Cart.total;
+                if(cash >= cart.getTotal()) {
+                    change = cash - cart.getTotal();
                     message = "You are owed £" + String.format("%.2f", change) + " in change.";
                     valid = true;
                 } else {
@@ -170,7 +173,7 @@ public class CheckoutScreen extends JFrame {
             String dateString = today.format(new Date());
             StringBuilder builder = new StringBuilder();
             builder.append("**************************************\n****  X Mart - Receipt\n****  " + dateString + "\n**************************************\n");
-            Iterator iterator = Cart.cart.entrySet().iterator();
+            Iterator iterator = cart.getCart().entrySet().iterator();
             while(iterator.hasNext()) {
                 Map.Entry pair = (Map.Entry) iterator.next();
                 String code = pair.getKey().toString();
@@ -188,7 +191,7 @@ public class CheckoutScreen extends JFrame {
                 }
                 iterator.remove();
             }
-            builder.append("\n*******************\nTotal: £" + String.format("%.2f", Cart.total));
+            builder.append("\n*******************\nTotal: £" + String.format("%.2f", cart.getTotal()));
             if(this.payingByCash) {
                 builder.append("\nChange Due: £" + String.format("%.2f", change));
                 builder.append("\nPayment Method: Cash");
