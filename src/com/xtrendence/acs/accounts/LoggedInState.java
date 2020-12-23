@@ -3,7 +3,7 @@ package com.xtrendence.acs.accounts;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.xtrendence.acs.Repository;
+import com.xtrendence.acs.data.Repository;
 
 import java.lang.reflect.Type;
 import java.util.Map;

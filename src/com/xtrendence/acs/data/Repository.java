@@ -1,4 +1,4 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,7 +1,7 @@
 package com.xtrendence.acs.customers;
 
-import com.xtrendence.acs.Item;
-import com.xtrendence.acs.Stock;
+import com.xtrendence.acs.data.Item;
+import com.xtrendence.acs.data.Stock;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;

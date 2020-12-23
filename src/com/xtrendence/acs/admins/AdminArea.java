@@ -1,7 +1,7 @@
 package com.xtrendence.acs.admins;
 import com.xtrendence.acs.accounts.Account;
-import com.xtrendence.acs.Item;
-import com.xtrendence.acs.Stock;
+import com.xtrendence.acs.data.Item;
+import com.xtrendence.acs.data.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
 
 import javax.swing.*;
@@ -140,6 +140,11 @@ public class AdminArea extends JFrame {
         deliveryButton.addActionListener(actionEvent -> {
             if(account.getState().loggedIn()) {
                 if(!deliveryProcessingRequired) {
+                    TableCellEditor editor = deliveryTable.getCellEditor();
+                    if(editor != null) {
+                        editor.stopCellEditing();
+                    }
+
                     deliveryProcessingRequired = true;
 
                     deliveryButton.setBackground(new Color(0, 75, 150));
@@ -295,7 +300,7 @@ public class AdminArea extends JFrame {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 1;
+                return column == 2;
             }
         };
         model.setColumnIdentifiers(columns);
@@ -313,7 +318,7 @@ public class AdminArea extends JFrame {
             for(int i = model.getRowCount() - 1; i >= 0; --i) {
                 try {
                     String code = model.getValueAt(i, 0).toString();
-                    int quantity = Integer.parseInt(model.getValueAt(i, 1).toString());
+                    int quantity = Integer.parseInt(model.getValueAt(i, 2).toString());
                     if(item.getCode().equals(code)) {
                         item.setQuantity(item.getQuantity() + quantity);
                     }

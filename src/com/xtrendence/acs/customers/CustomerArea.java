@@ -1,5 +1,7 @@
 package com.xtrendence.acs.customers;
-import com.xtrendence.acs.*;
+import com.xtrendence.acs.data.Item;
+import com.xtrendence.acs.data.Repository;
+import com.xtrendence.acs.data.Stock;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;

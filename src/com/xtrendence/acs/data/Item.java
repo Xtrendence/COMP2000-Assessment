@@ -1,4 +1,4 @@
-package com.xtrendence.acs;
+package com.xtrendence.acs.data;
 
 public class Item {
     private String code;
