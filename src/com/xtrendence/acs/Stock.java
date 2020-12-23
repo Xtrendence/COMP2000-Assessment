@@ -71,6 +71,6 @@ public class Stock {
             map.put(id, properties);
         }
         String json = gson.toJson(map);
-        Repository.write(Repository.stockFile, json);
+        Repository.update(Repository.stockFile, json);
     }
 }

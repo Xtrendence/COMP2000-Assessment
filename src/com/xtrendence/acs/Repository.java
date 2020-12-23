@@ -14,33 +14,7 @@ public class Repository implements IRepository {
     static String accountsFile = resourcesFolder + "accounts.json";
     static String stockFile = resourcesFolder + "stock.json";
 
-    static void write(String filePath, String data) {
-        try {
-            FileWriter writer = new FileWriter(filePath, false);
-            writer.write(data);
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static String read(String filePath) {
-        try {
-            StringBuilder builder = new StringBuilder();
-            FileReader reader = new FileReader(filePath);
-            Scanner scanner = new Scanner(reader);
-            while(scanner.hasNextLine()) {
-                builder.append(scanner.nextLine());
-            }
-            scanner.close();
-            return builder.toString();
-        } catch(FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public static void generateFiles() {
+    public static void create() {
         File resources = new File(Repository.resourcesFolder);
         File stock = new File(Repository.stockFile);
         File accounts = new File(Repository.accountsFile);
@@ -57,7 +31,7 @@ public class Repository implements IRepository {
                 Map map = gson.fromJson(defaultStock, Map.class);
                 String json = gson.toJson(map);
 
-                Repository.write(stockFile, json);
+                Repository.update(stockFile, json);
             } catch(Exception e) {
                 System.out.println(e);
             }
@@ -73,10 +47,45 @@ public class Repository implements IRepository {
 
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-                Repository.write(accountsFile, gson.toJson(map));
+                Repository.update(accountsFile, gson.toJson(map));
             } catch(Exception e) {
                 System.out.println(e);
             }
+        }
+    }
+
+    static String read(String filePath) {
+        try {
+            StringBuilder builder = new StringBuilder();
+            FileReader reader = new FileReader(filePath);
+            Scanner scanner = new Scanner(reader);
+            while(scanner.hasNextLine()) {
+                builder.append(scanner.nextLine());
+            }
+            scanner.close();
+            return builder.toString();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    static void update(String filePath, String data) {
+        try {
+            FileWriter writer = new FileWriter(filePath, false);
+            writer.write(data);
+            writer.close();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    static void delete(String filePath) {
+        try {
+            File file = new File(filePath);
+            file.delete();
+        } catch(Exception e) {
+            System.out.println(e);
         }
     }
 }

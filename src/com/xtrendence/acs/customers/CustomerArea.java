@@ -91,7 +91,7 @@ public class CustomerArea extends JFrame {
     }
 
     public static void main(String[] args) {
-        Repository.generateFiles();
+        Repository.create();
 
         CustomerArea customerArea = CustomerArea.getInstance();
 
