@@ -4,6 +4,8 @@ import com.xtrendence.acs.data.Cart;
 import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Repository;
 import com.xtrendence.acs.data.Stock;
+import com.xtrendence.acs.tables.ScannedTable;
+import com.xtrendence.acs.tables.ItemTable;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -141,7 +143,7 @@ public class CustomerArea extends JFrame implements IObserver {
 
         emptyCart();
 
-        updateItemTable(Stock.items, customerArea.itemTable);
+        createItemTable(Stock.items, customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);
 
         customerArea.scannedTotal.setText("Total: £0.00");
@@ -293,24 +295,17 @@ public class CustomerArea extends JFrame implements IObserver {
         table.repaint();
     }
 
-    public void updateItemTable(List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Name", "Price (£)", "Remaining Quantity" };
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-        for(Item item : stock) {
-            if(item.getQuantity() > 0) {
-                model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
-            }
-        }
+    public void createItemTable(List<Item> stock, JTable table) {
+        ItemTable itemTable = new ItemTable();
+        DefaultTableModel model = itemTable.create();
+        model = itemTable.setItems(model, stock);
         table.setModel(model);
         table.repaint();
         table.getRowSorter().toggleSortOrder(0);
     }
 
     public void createScannedTable(JTable table) {
-        String[] columns = new String[]{ "Product Code", "Name", "Price" };
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
+        DefaultTableModel model = new ScannedTable().create();
         table.setModel(model);
         table.getColumnModel().getColumn(0).setMinWidth(0);
         table.getColumnModel().getColumn(0).setMaxWidth(0);

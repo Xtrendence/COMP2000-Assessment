@@ -4,6 +4,10 @@ import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
+import com.xtrendence.acs.tables.DeliveryTable;
+import com.xtrendence.acs.tables.ItemTable;
+import com.xtrendence.acs.tables.LowStockTable;
+import com.xtrendence.acs.tables.StockTable;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -267,6 +271,8 @@ public class AdminArea extends JFrame implements IObserver {
     public void updateTables() {
         AdminArea adminArea = AdminArea.getInstance();
 
+        currentStock = Stock.items;
+
         createStockTable(Stock.items, adminArea.stockTable);
         createLowStockTable(Stock.items, adminArea.lowStockTable);
         createDeliveryTable(Stock.items, adminArea.deliveryTable);
@@ -275,47 +281,25 @@ public class AdminArea extends JFrame implements IObserver {
     }
 
     public void createStockTable(java.util.List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Name", "Price (£)", "Remaining Quantity" };
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 1 || column == 2 || column == 3;
-            }
-        };
-        model.setColumnIdentifiers(columns);
-        for(Item item : stock) {
-            model.addRow(new Object[]{ item.getCode(), item.getName(), item.getPrice(), item.getQuantity() });
-        }
+        StockTable stockTable = new StockTable();
+        DefaultTableModel model = stockTable.create();
+        model = stockTable.setItems(model, stock);
         table.setModel(model);
         table.getRowSorter().toggleSortOrder(0);
     }
 
     public void createLowStockTable(java.util.List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Remaining" };
-        DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(columns);
-        for(Item item : stock) {
-            int lowStockThreshold = 5;
-            if(item.getQuantity() < lowStockThreshold) {
-                model.addRow(new Object[]{ item.getCode(), item.getQuantity() });
-            }
-        }
+        LowStockTable lowStockTable = new LowStockTable();
+        DefaultTableModel model = lowStockTable.create();
+        model = lowStockTable.setItems(model, stock);
         table.setModel(model);
         table.getRowSorter().toggleSortOrder(1);
     }
 
     public void createDeliveryTable(java.util.List<Item> stock, JTable table) {
-        String[] columns = new String[]{ "Product Code", "Name", "Quantity To Order" };
-        DefaultTableModel model = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return column == 2;
-            }
-        };
-        model.setColumnIdentifiers(columns);
-        for(Item item : stock) {
-            model.addRow(new Object[]{ item.getCode(), item.getName(), 0 });
-        }
+        DeliveryTable deliveryTable = new DeliveryTable();
+        DefaultTableModel model = deliveryTable.create();
+        model = deliveryTable.setItems(model, stock);
         table.setModel(model);
         table.getRowSorter().toggleSortOrder(0);
     }
