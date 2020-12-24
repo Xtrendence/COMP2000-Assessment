@@ -4,9 +4,9 @@ COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system f
 
 ### Run Configuration
 
-|Main Class  |Package                 |
-|------------|------------------------|
-|CustomerArea|com.xtrendence.customers|
+|Main Class  |Package                     |
+|------------|----------------------------|
+|CustomerArea|com.xtrendence.acs.customers|
 
 ### Login Details
 
