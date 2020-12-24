@@ -114,6 +114,12 @@ public class CustomerArea extends JFrame implements IObserver {
         // Generates the necessary files for the application to function (but only if they don't exist already).
         Repository.create();
 
+        Testing testing = new Testing();
+        testing.testAll();
+
+        // Use a separate thread for testing login/logout functionality as bcrypt's hash comparison time could freeze up the GUI.
+        new Thread(testing::testAccount).start();
+
         CustomerArea customerArea = CustomerArea.getInstance();
 
         // Fetches the store's stock using the Stock class' getStock() method.
@@ -124,9 +130,6 @@ public class CustomerArea extends JFrame implements IObserver {
 
         customerArea.createItemPopupMenu();
         customerArea.createScannedPopupMenu();
-
-        Testing testing = new Testing();
-        testing.testAll();
     }
 
     /* Singleton objects have a getInstance() method to return the one and only instance of the object.

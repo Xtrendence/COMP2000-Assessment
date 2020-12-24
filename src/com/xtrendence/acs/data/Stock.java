@@ -49,8 +49,7 @@ public class Stock {
     public static void setItem(Item updatedItem) {
         for(Item item : items) {
             if(updatedItem.getCode().equals(item.getCode())) {
-                items.remove(item);
-                items.add(updatedItem);
+                items.set(items.indexOf(item), updatedItem);
                 notifyAllObservers();
             }
         }

@@ -2,14 +2,16 @@ package com.xtrendence.acs.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.xtrendence.acs.accounts.Account;
+import com.xtrendence.acs.data.Cart;
+import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Repository;
+import com.xtrendence.acs.data.Stock;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -99,16 +101,25 @@ public class Testing {
         }
     }
 
+    // Account is tested separately due to bcrypt hash comparison time.
     public void testAll() {
+        testRepository();
+        testCart();
+        testStock();
+    }
+
+    public void testRepository() {
+        System.out.println("Testing Repository.create(), Repository.read(), Repository.update(), and Repository.delete().");
         generateTestFiles();
         testCreate();
         testRead();
         testUpdate();
         testDelete();
+        System.out.println("Finished testing Repository.");
     }
 
     public void testCreate() {
-        System.out.println("Testing Repository.create()");
+        System.out.println("Testing Repository.create().");
 
         File stock = new File(Repository.stockFile);
         File accounts = new File(Repository.accountsFile);
@@ -164,16 +175,20 @@ public class Testing {
         } catch(Exception e) {
             System.out.println(e);
         }
+
+        System.out.println("Finished testing Repository.create().");
     }
 
     public void testRead() {
-        System.out.println("Testing Repository.read()");
+        System.out.println("Testing Repository.read().");
 
         generateTestFiles();
 
         String content = Repository.read(testTextFile);
 
         assertEquals("The content of the text file should be \"default\".", "default", content);
+
+        System.out.println("Finished testing Repository.read().");
     }
 
     public void testUpdate() {
@@ -186,15 +201,173 @@ public class Testing {
         String content = Repository.read(testTextFile);
 
         assertEquals("The content of the text file should be \"updated\".", "updated", content);
+
+        System.out.println("Finished testing Repository.update().");
     }
 
     public void testDelete() {
-        System.out.println("Testing Repository.delete()");
+        System.out.println("Testing Repository.delete().");
 
         generateTestFiles();
 
         Repository.delete(testTextFile);
 
         assertFalse("The text file should not exist.", new File(testTextFile).exists());
+
+        System.out.println("Finished testing Repository.delete().");
+    }
+
+    public void testCart() {
+        System.out.println("Testing Cart.addToCart(), Cart.removeFromCart(), Cart.getQuantity(), and Cart.emptyCart().");
+
+        Map<String, Integer> expectedCart = new HashMap<>();
+        expectedCart.put("pc00001", 2);
+        expectedCart.put("pc00002", 4);
+        expectedCart.put("pc00003", 3);
+
+        Cart cart = new Cart();
+
+        cart.addToCart("pc00001", (float) 1.20);
+        cart.addToCart("pc00001", (float) 1.20);
+
+        cart.addToCart("pc00002", (float) 1.10);
+        cart.addToCart("pc00002", (float) 1.10);
+        cart.addToCart("pc00002", (float) 1.10);
+        cart.addToCart("pc00002", (float) 1.10);
+
+        cart.addToCart("pc00003", (float) 0.70);
+        cart.addToCart("pc00003", (float) 0.70);
+        cart.addToCart("pc00003", (float) 0.70);
+
+        assertEquals("There should be a key of pc00001 with a value of 2, pc00002 with a value of 4, and pc00003 with a value of 3.", expectedCart, cart.getCart());
+
+        expectedCart.put("pc00002", 2);
+
+        cart.removeFromCart("pc00002", (float) 1.10);
+        cart.removeFromCart("pc00002", (float) 1.10);
+
+        assertEquals("The should be a key of pc00001 with a value of 2, pc00002 with a value of 2, and pc00003 with a value of 3.", expectedCart, cart.getCart());
+
+        assertEquals("The key of pc00002 should have a value of 2.", 2, cart.getQuantity("pc00002"));
+
+        expectedCart.clear();
+
+        cart.emptyCart();
+
+        assertEquals("The cart should be empty.", expectedCart, cart.getCart());
+
+        System.out.println("Finished testing Cart.");
+    }
+
+    public void testStock() {
+        System.out.println("Testing Stock.getStock(), Stock.getItem(), Stock.setStock(), and Stock.setItem().");
+
+        generateTestFiles();
+
+        String currentStockFile = Repository.stockFile;
+
+        Repository.stockFile = testStockFile;
+
+        Stock.getStock();
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        TreeMap<Integer, TreeMap<String, String>> actualStockMap = new TreeMap<>();
+
+        for(int i = 0; i < Stock.items.size(); i++) {
+            Item item = Stock.items.get(i);
+
+            int id = i + 1;
+            String code = item.getCode();
+            String name = item.getName();
+            String price = String.format("%.2f", item.getPrice());
+            String quantity = String.valueOf(item.getQuantity());
+
+            TreeMap<String, String> properties = new TreeMap<>();
+
+            properties.put("code", code);
+            properties.put("name", name);
+            properties.put("price", price);
+            properties.put("quantity", quantity);
+
+            actualStockMap.put(id, properties);
+        }
+
+        String actualStockJSON = gson.toJson(actualStockMap);
+
+        Map defaultStockMap = gson.fromJson(defaultStock, Map.class);
+        String defaultStockJSON = gson.toJson(defaultStockMap);
+
+        assertEquals("The newly fetched stock items should be the same as the default ones.", defaultStockJSON, actualStockJSON);
+
+        String name = Stock.getItem("pc00001").getName();
+
+        assertEquals("The first item by default should be milk.", "Milk", name);
+
+        List<Item> updatedItems = new ArrayList<>();
+
+        Item cherries = new Item("pc00060", "Cherries", (float) 0.80, 8);
+        Item noodles = new Item("pc00061", "Noodles", (float) 0.70, 4);
+        Item cake = new Item("pc00062", "Cake", (float) 2.00, 3);
+
+        updatedItems.add(cherries);
+        updatedItems.add(noodles);
+        updatedItems.add(cake);
+
+        Stock.setStock(updatedItems);
+
+        Stock.getStock();
+
+        String cherriesName = Stock.getItem("pc00060").getName();
+        String noodlesName = Stock.getItem("pc00061").getName();
+        String cakeName = Stock.getItem("pc00062").getName();
+
+        assertEquals("pc00060 should be cherries.", "Cherries", cherriesName);
+        assertEquals("pc00061 should be noodles.", "Noodles", noodlesName);
+        assertEquals("pc00062 should be cake.", "Cake", cakeName);
+
+        Item butter = new Item("pc00061", "Butter", (float) 1.20, 5);
+
+        Stock.setItem(butter);
+
+        String butterName = Stock.getItem("pc00061").getName();
+
+        assertEquals("pc00061 should now be butter.", "Butter", butterName);
+
+        Repository.stockFile = currentStockFile;
+
+        Stock.getStock();
+
+        System.out.println("Finished testing Stock.");
+    }
+
+    public void testAccount() {
+        System.out.println("Testing Account.login() and Account.logout().");
+
+        generateTestFiles();
+
+        String currentAccountsFile = Repository.accountsFile;
+
+        Repository.accountsFile = testAccountsFile;
+
+        assertTrue("The test accounts file should exist.", new File(testAccountsFile).exists());
+
+        String username = "Temp";
+        String password = "t3mp";
+
+        Account account = new Account(username, password);
+
+        boolean afterLogin = account.getState().loggedIn();
+
+        account.logout();
+
+        boolean afterLogout = account.getState().loggedIn();
+
+        assertTrue("The username and password should be valid, and the login should be successful.", afterLogin);
+        assertFalse("The account should be logged out.", afterLogout);
+
+        Repository.accountsFile = currentAccountsFile;
+
+        System.out.println("Finished testing Account.");
     }
 }
