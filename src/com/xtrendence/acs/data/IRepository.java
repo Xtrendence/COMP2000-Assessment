@@ -1,5 +1,6 @@
 package com.xtrendence.acs.data;
 
+// Part of the Repository design pattern. Ensures that classes that implement the IRepository interface have methods used for CRUD functionality.
 public interface IRepository {
     static void create() { }
     static String read(String filePath) { return null; }

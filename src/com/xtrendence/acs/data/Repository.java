@@ -8,12 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+// Part of the Repository design pattern.
 public class Repository implements IRepository {
+    // Depending on the OS, the file separator can be different (usually either / or \).
     private static String separator = System.getProperty("file.separator");
+
+    // The resources folder contains the icons and JSON files used in the application. Since JAR files are read-only, the resources folder would be right outside it, hence why the getResource() method isn't being used.
     private static String resourcesFolder = System.getProperty("user.dir") + separator + "resources" + separator;
     public static String accountsFile = resourcesFolder + "accounts.json";
     public static String stockFile = resourcesFolder + "stock.json";
 
+    /* Generates the required files for the application to function. The files are only generated if they don't already exist.
+    *  @return Nothing.
+    */
     public static void create() {
         File resources = new File(Repository.resourcesFolder);
         File stock = new File(Repository.stockFile);
@@ -54,6 +61,10 @@ public class Repository implements IRepository {
         }
     }
 
+    /* Reads and returns the content of a file.
+    *  @param filePath Path to a file.
+    *  @return String The content of the file.
+    */
     public static String read(String filePath) {
         try {
             StringBuilder builder = new StringBuilder();
@@ -70,6 +81,11 @@ public class Repository implements IRepository {
         return null;
     }
 
+    /* Updates the content of an existing file.
+    *  @param filePath Path to the file.
+    *  @param data The data to be written into the file.
+    *  @return Nothing.
+    */
     public static void update(String filePath, String data) {
         try {
             FileWriter writer = new FileWriter(filePath, false);
@@ -80,6 +96,10 @@ public class Repository implements IRepository {
         }
     }
 
+    /* Deletes a file.
+    *  @param filePath Path to the file.
+    *  @return Nothing.
+    */
     public static void delete(String filePath) {
         try {
             File file = new File(filePath);
