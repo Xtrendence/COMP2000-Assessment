@@ -4,10 +4,7 @@ import com.xtrendence.acs.accounts.Account;
 import com.xtrendence.acs.data.Item;
 import com.xtrendence.acs.data.Stock;
 import com.xtrendence.acs.customers.CustomerArea;
-import com.xtrendence.acs.tables.DeliveryTable;
-import com.xtrendence.acs.tables.ItemTable;
-import com.xtrendence.acs.tables.LowStockTable;
-import com.xtrendence.acs.tables.StockTable;
+import com.xtrendence.acs.tables.*;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -110,19 +107,7 @@ public class AdminArea extends JFrame implements IObserver {
                         editor.stopCellEditing();
                     }
                     DefaultTableModel model = (DefaultTableModel) stockTable.getModel();
-                    java.util.List<Item> updatedStock = new ArrayList<>();
-                    for (int i = model.getRowCount() - 1; i >= 0; --i) {
-                        try {
-                            String code = model.getValueAt(i, 0).toString();
-                            String name = model.getValueAt(i, 1).toString();
-                            float price = Float.parseFloat(model.getValueAt(i, 2).toString());
-                            int quantity = Integer.parseInt(model.getValueAt(i, 3).toString());
-                            Item newItem = new Item(code, name, price, quantity);
-                            updatedStock.add(newItem);
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-                    }
+                    java.util.List<Item> updatedStock = new TableAdapter().getItems(model);
                     createStockTable(updatedStock, stockTable);
                     createLowStockTable(updatedStock, lowStockTable);
                     createDeliveryTable(updatedStock, deliveryTable);
