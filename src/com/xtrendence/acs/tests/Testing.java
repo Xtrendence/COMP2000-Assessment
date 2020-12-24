@@ -39,6 +39,9 @@ public class Testing {
         defaultAccounts.put("Hannibal", "$2a$12$wH6FGLmvKJ.ao98RfEo9XudGtVcvMKEWfNAVPIZ7MxPNXcm94RV.2");
     }
 
+    /* Creates the required test files (stock.json and accounts.json).
+    *  @return Nothing.
+    */
     public void generateTestFiles() {
         File resources = new File(testFolder);
         File stock = new File(testStockFile);
@@ -101,13 +104,18 @@ public class Testing {
         }
     }
 
-    // Account is tested separately due to bcrypt hash comparison time.
+    /* Runs all the test functions. Account is tested separately due to bcrypt hash comparison time.
+    *  @return Nothing.
+    */
     public void testAll() {
         testRepository();
         testCart();
         testStock();
     }
 
+    /* Test's the Repository class' CRUD functionality.
+    *  @return Nothing.
+    */
     public void testRepository() {
         System.out.println("Testing Repository.create(), Repository.read(), Repository.update(), and Repository.delete().");
         generateTestFiles();
@@ -118,6 +126,9 @@ public class Testing {
         System.out.println("Finished testing Repository.");
     }
 
+    /* Tests Repository.create().
+    *  @return Nothing.
+    */
     public void testCreate() {
         System.out.println("Testing Repository.create().");
 
@@ -179,6 +190,9 @@ public class Testing {
         System.out.println("Finished testing Repository.create().");
     }
 
+    /* Tests Repository.read().
+    *  @return Nothing.
+    */
     public void testRead() {
         System.out.println("Testing Repository.read().");
 
@@ -191,6 +205,9 @@ public class Testing {
         System.out.println("Finished testing Repository.read().");
     }
 
+    /* Tests Repository.update().
+    *  @return Nothing.
+    */
     public void testUpdate() {
         System.out.println("Testing Repository.update()");
 
@@ -205,6 +222,9 @@ public class Testing {
         System.out.println("Finished testing Repository.update().");
     }
 
+    /* Tests Repository.delete().
+    *  @return Nothing.
+    */
     public void testDelete() {
         System.out.println("Testing Repository.delete().");
 
@@ -217,6 +237,9 @@ public class Testing {
         System.out.println("Finished testing Repository.delete().");
     }
 
+    /* Tests Cart.addToCart(), Cart.removeFromCart(), Cart.getQuantity(), and Cart.emptyCart().
+    *  @return Nothing.
+    */
     public void testCart() {
         System.out.println("Testing Cart.addToCart(), Cart.removeFromCart(), Cart.getQuantity(), and Cart.emptyCart().");
 
@@ -259,6 +282,9 @@ public class Testing {
         System.out.println("Finished testing Cart.");
     }
 
+    /* Tests Stock.getStock(), Stock.getItem(), Stock.setStock(), and Stock.setItem().
+    *  @return Nothing.
+    */
     public void testStock() {
         System.out.println("Testing Stock.getStock(), Stock.getItem(), Stock.setStock(), and Stock.setItem().");
 
@@ -341,6 +367,9 @@ public class Testing {
         System.out.println("Finished testing Stock.");
     }
 
+    /* Tests login and logout functionality.
+    *  @return Nothing.
+    */
     public void testAccount() {
         System.out.println("Testing Account.login() and Account.logout().");
 
