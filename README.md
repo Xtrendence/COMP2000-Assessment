@@ -2,6 +2,12 @@
 
 COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system for a supermarket.
 
+### Run Configuration
+
+|Main Class  |Package                 |
+|------------|------------------------|
+|CustomerArea|com.xtrendence.customers|
+
 ### Login Details
 
 |Username|Password|
