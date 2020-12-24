@@ -20,6 +20,7 @@ public class AdminAreaStyling {
         adminArea.navbar.setBackground(new Color(0, 125, 255));
         adminArea.navbar.setSize(adminArea.navbar.getWidth(), 60);
 
+        // Tries to set the backButton's icon.
         try {
             String separator = System.getProperty("file.separator");
             BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "back.png"));
@@ -31,6 +32,7 @@ public class AdminAreaStyling {
         adminArea.navbarTitle.setFont(adminArea.navbarTitle.getFont().deriveFont(Font.BOLD, 20));
         adminArea.navbarTitle.setForeground(new Color(255,255,255));
 
+        // If buttons' opaque values aren't set to true, they don't show up on macOS systems.
         adminArea.customerButton.setOpaque(true);
         adminArea.customerButton.setBackground(new Color(255,255,255));
         adminArea.customerButton.setForeground(new Color(0,125,255));
@@ -42,6 +44,7 @@ public class AdminAreaStyling {
         adminArea.lowStockScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         adminArea.deliveryScrollPane.getViewport().setBackground(new Color(255, 255, 255));
 
+        // Used to center content inside JTextPane components.
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 
@@ -86,6 +89,7 @@ public class AdminAreaStyling {
         adminArea.replenishButton.setBackground(new Color(0, 75, 150));
         adminArea.replenishButton.setForeground(new Color(255,255,255));
 
+        // Used to make scrollbars thinner and more modern looking.
         JScrollBar stockScrollBar = new JScrollBar();
         stockScrollBar.setBackground(new Color(230,230,230));
         stockScrollBar.setPreferredSize(new Dimension(10, 40));
