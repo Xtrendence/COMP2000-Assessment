@@ -22,8 +22,8 @@ public class AdminAreaStyling {
 
         // Tries to set the backButton's icon.
         try {
-            String separator = System.getProperty("file.separator");
-            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "back.png"));
+            String fs = System.getProperty("file.separator");
+            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + fs + "resources" + fs + "back.png"));
             adminArea.backButton.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         } catch(Exception e) {
             System.out.println(e);

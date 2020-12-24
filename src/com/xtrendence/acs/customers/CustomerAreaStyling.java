@@ -26,8 +26,8 @@ public class CustomerAreaStyling {
 
         // Tries to set the adminIcon's icon.
         try {
-            String separator = System.getProperty("file.separator");
-            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "user.png"));
+            String fs = System.getProperty("file.separator");
+            BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + fs + "resources" + fs + "user.png"));
             customerArea.adminIcon.setIcon(new ImageIcon(userIcon.getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
         } catch(Exception e) {
             System.out.println(e);

@@ -11,10 +11,10 @@ import java.util.Scanner;
 // Part of the Repository design pattern.
 public class Repository implements IRepository {
     // Depending on the OS, the file separator can be different (usually either / or \).
-    private static String separator = System.getProperty("file.separator");
+    private static String fs = System.getProperty("file.separator");
 
     // The resources folder contains the icons and JSON files used in the application. Since JAR files are read-only, the resources folder would be right outside it, hence why the getResource() method isn't being used.
-    private static String resourcesFolder = System.getProperty("user.dir") + separator + "resources" + separator;
+    public static String resourcesFolder = System.getProperty("user.dir") + fs + "resources" + fs;
     public static String accountsFile = resourcesFolder + "accounts.json";
     public static String stockFile = resourcesFolder + "stock.json";
 
@@ -45,6 +45,8 @@ public class Repository implements IRepository {
         }
         if(!accounts.exists()) {
             try {
+                accounts.createNewFile();
+
                 Map<String, String> map = new HashMap<>();
 
                 map.put("Temp", "$2a$12$eRCYLwKDTEKjVg8PzNdrs.1BjUBTqkt3uDErPQ25xvFO5Z.bUlv2a");

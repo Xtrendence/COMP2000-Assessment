@@ -34,10 +34,10 @@ public class CheckoutScreen extends JFrame {
     // The customer's shopping cart is passed to the constructor of the CheckoutScreen. The Cart object contains a HashMap with the keys being product codes, and the values being the quantity.
     public CheckoutScreen(Cart cart) {
         // Depending on the OS, the file separator can be different (usually either / or \).
-        String separator = System.getProperty("file.separator");
+        String fs = System.getProperty("file.separator");
 
         // Sets the application icon.
-        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + fs + "resources" + fs + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
 
         this.setContentPane(mainPanel);
         this.setSize(400, 210);

@@ -6,6 +6,7 @@ import com.xtrendence.acs.data.Repository;
 import com.xtrendence.acs.data.Stock;
 import com.xtrendence.acs.tables.ScannedTable;
 import com.xtrendence.acs.tables.ItemTable;
+import com.xtrendence.acs.tests.Testing;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -21,7 +22,7 @@ import java.util.List;
 
 // CustomerArea is one of the two classes that implements the IObserver method in order to automatically update its JTables when the stock is changed.
 public class CustomerArea extends JFrame implements IObserver {
-    private static CustomerArea instance; // Part of the Singleton design pattern.
+    private static CustomerArea instance = new CustomerArea(); // Part of the Singleton design pattern.
     private Cart cart = new Cart(); // An empty Cart object is created for the customer to add items to.
     public JPanel mainPanel;
     public JPanel navbar;
@@ -49,10 +50,10 @@ public class CustomerArea extends JFrame implements IObserver {
         instance = this;
 
         // Depending on the OS, the file separator can be different (usually either / or \).
-        String separator = System.getProperty("file.separator");
+        String fs = System.getProperty("file.separator");
 
         // Sets the application icon.
-        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + fs + "resources" + fs + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(1280, 720);
         this.setLocation(100, 100);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -123,6 +124,9 @@ public class CustomerArea extends JFrame implements IObserver {
 
         customerArea.createItemPopupMenu();
         customerArea.createScannedPopupMenu();
+
+        Testing testing = new Testing();
+        testing.testAll();
     }
 
     /* Singleton objects have a getInstance() method to return the one and only instance of the object.

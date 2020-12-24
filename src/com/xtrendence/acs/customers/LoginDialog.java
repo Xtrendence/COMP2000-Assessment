@@ -22,10 +22,10 @@ public class LoginDialog extends JDialog {
 
     public LoginDialog() {
         // Depending on the OS, the file separator can be different (usually either / or \).
-        String separator = System.getProperty("file.separator");
+        String fs = System.getProperty("file.separator");
 
         // Sets the application icon.
-        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
+        this.setIconImage(new ImageIcon(System.getProperty("user.dir") + fs + "resources" + fs + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
 
         this.setContentPane(contentPane);
 
