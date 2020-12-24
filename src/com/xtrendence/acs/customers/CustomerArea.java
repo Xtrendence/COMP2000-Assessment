@@ -19,9 +19,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+// CustomerArea is one of the two classes that implements the IObserver method in order to automatically update its JTables when the stock is changed.
 public class CustomerArea extends JFrame implements IObserver {
-    private static CustomerArea instance = new CustomerArea();
-    private Cart cart = new Cart();
+    private static CustomerArea instance; // Part of the Singleton design pattern.
+    private Cart cart = new Cart(); // An empty Cart object is created for the customer to add items to.
     public JPanel mainPanel;
     public JPanel navbar;
     public JPanel contentWrapper;
@@ -47,15 +48,20 @@ public class CustomerArea extends JFrame implements IObserver {
     public CustomerArea() {
         instance = this;
 
+        // Depending on the OS, the file separator can be different (usually either / or \).
         String separator = System.getProperty("file.separator");
+
+        // Sets the application icon.
         this.setIconImage(new ImageIcon(System.getProperty("user.dir") + separator + "resources" + separator + "acs.png").getImage().getScaledInstance(128, 128, Image.SCALE_SMOOTH));
         this.setSize(1280, 720);
         this.setLocation(100, 100);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("X Mart - Customer Area");
 
+        // Part of the Observer design pattern. This essentially registers the CustomerArea as a page that requires updating whenever the Stock object is changed.
         Stock.attach(this);
 
+        // Most of the styling code is in a separate file to improve code readability.
         CustomerAreaStyling styling = new CustomerAreaStyling();
         styling.applyStyle();
 
@@ -70,6 +76,7 @@ public class CustomerArea extends JFrame implements IObserver {
             }
         });
 
+        // Allows the customer to double-click on a row in the item JTable and autofill the inputProductCode JTextField.
         itemTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent me) {
                 if(me.getClickCount() == 2) {
@@ -79,11 +86,14 @@ public class CustomerArea extends JFrame implements IObserver {
             }
         });
 
+        // Creates an empty JTable to act as a visual representation of the customer's cart.
         createScannedTable(scannedTable);
 
+        // If the enter key is pressed, the product code gets scanned.
         inputProductCode.addActionListener(e -> scanButton.doClick());
 
         scanButton.addActionListener(actionEvent -> {
+            // Since there is a short artificial wait time interval between item scans, this checks to ensure the wait is over.
             if(inputProductCode.isEnabled()) {
                 String code = inputProductCode.getText();
                 if(code != null && !code.equals("")) {
@@ -100,10 +110,12 @@ public class CustomerArea extends JFrame implements IObserver {
     }
 
     public static void main(String[] args) {
+        // Generates the necessary files for the application to function (but only if they don't exist already).
         Repository.create();
 
         CustomerArea customerArea = CustomerArea.getInstance();
 
+        // Fetches the store's stock using the Stock class' getStock() method.
         Stock.getStock();
 
         customerArea.setVisible(true);
@@ -113,11 +125,16 @@ public class CustomerArea extends JFrame implements IObserver {
         customerArea.createScannedPopupMenu();
     }
 
-    // Singleton objects have a getInstance() method to return the one and only instance of the object.
+    /* Singleton objects have a getInstance() method to return the one and only instance of the object.
+    *  @return CustomerArea The singular CustomerArea instance.
+    */
     public static CustomerArea getInstance() {
         return instance;
     }
 
+    /* Shows the LoginDialog GUI.
+    *  @return Nothing.
+    */
     private void showLogin() {
         LoginDialog loginDialog = new LoginDialog();
         loginDialog.setLocation(adminIcon.getLocationOnScreen().x - 150, adminIcon.getLocationOnScreen().y + 50);
@@ -127,6 +144,9 @@ public class CustomerArea extends JFrame implements IObserver {
         loginDialog.setVisible(true);
     }
 
+    /* Shows the CheckoutScreen GUI.
+    *  @return Nothing.
+    */
     private void showCheckout() {
         if(cart.getSize() > 0) {
             CheckoutScreen checkoutScreen = new CheckoutScreen(cart);
@@ -137,6 +157,9 @@ public class CustomerArea extends JFrame implements IObserver {
         }
     }
 
+    /* Part of the Observer design pattern. When triggered from the Stock class, it updates the two tables in the CustomerArea.
+    *  @return Nothing.
+    */
     @Override
     public void updateTables() {
         CustomerArea customerArea = CustomerArea.getInstance();
@@ -149,13 +172,21 @@ public class CustomerArea extends JFrame implements IObserver {
         customerArea.scannedTotal.setText("Total: £0.00");
     }
 
-    public void emptyCart() {
+    /* Empties the customer's shopping cart.
+    *  @return Nothing.
+    */
+    private void emptyCart() {
         cart.emptyCart();
     }
 
+    /* Takes a product code as a parameter, and adds the item to the scanned table.
+    *  @param code A product code.
+    *  @return Nothing.
+    */
     private void scanItem(String code) {
-        int delay = 2000;
+        int delay = 2000; // Time interval required between each item scan.
 
+        // Shows a notification to let the customer know their item was scanned.
         ActionListener hideOutput = actionEvent -> {
             scanOutput.setVisible(false);
             scanButton.setText("Scan Item");
@@ -166,13 +197,17 @@ public class CustomerArea extends JFrame implements IObserver {
         Timer timer = new Timer(delay, hideOutput);
 
         for(Item item : Stock.items) {
+            // Ensures the item is actually in stock.
             if(item.getCode().equals(code) && item.getQuantity() >= 0) {
+                // Ensures the customer isn't buying more than the available amount of the desired item.
                 if(cart.itemExists(code) && cart.getQuantity(code) >= item.getQuantity()) {
                     inputProductCode.setText("");
                     JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
+                    // Selects the corresponding JTable row.
                     selectRowByValue(itemTable, code);
 
+                    // Decrements the item's quantity by 1 in the item table. This is only a visual change, no data is written until checkout.
                     TableModel model = itemTable.getModel();
                     int row = itemTable.getSelectedRow();
                     int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
@@ -197,6 +232,11 @@ public class CustomerArea extends JFrame implements IObserver {
         }
     }
 
+    /* Selects a JTable row given a value that would be found in the first column.
+    *  @param table The JTable component to search.
+    *  @param value The value to search for.
+    *  @return Nothing.
+    */
     public void selectRowByValue(JTable table, String value) {
         TableModel model = table.getModel();
         for(int i = model.getRowCount() - 1; i >= 0; --i) {
@@ -206,19 +246,27 @@ public class CustomerArea extends JFrame implements IObserver {
         }
     }
 
+    /* Creates a JPopupMenu and adds it to the item table. Used to scan items quicker.
+    *  @return Nothing.
+    */
     public void createItemPopupMenu() {
         CustomerArea customerArea = CustomerArea.getInstance();
+
         JPopupMenu itemTablePopupMenu = new JPopupMenu();
         itemTablePopupMenu.setBackground(new Color(230,230,230));
+
         JMenuItem scanItem = new JMenuItem("Scan Item");
         scanItem.setSize(scanItem.getWidth(), 30);
         scanItem.setBackground(new Color(255,255,255));
         scanItem.setForeground(new Color(75,75,75));
+
         scanItem.addActionListener(e -> {
             String code = customerArea.itemTable.getValueAt(customerArea.itemTable.getSelectedRow(), 0).toString();
             customerArea.inputProductCode.setText(code);
         });
+
         itemTablePopupMenu.add(scanItem);
+
         customerArea.itemTable.setComponentPopupMenu(itemTablePopupMenu);
 
         itemTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -238,35 +286,50 @@ public class CustomerArea extends JFrame implements IObserver {
         });
     }
 
+    /* Creates a JPopupMenu and adds it to the scanned table. Allows the customer to remove items from their cart.
+    *  @return Nothing.
+    */
     public void createScannedPopupMenu() {
         CustomerArea customerArea = CustomerArea.getInstance();
+
         JPopupMenu scannedTablePopupMenu = new JPopupMenu();
         scannedTablePopupMenu.setBackground(new Color(230,230,230));
+
         JMenuItem removeItem = new JMenuItem("Remove Item");
         removeItem.setSize(removeItem.getWidth(), 30);
         removeItem.setBackground(new Color(255,255,255));
         removeItem.setForeground(new Color(75,75,75));
+
+        // Remove the selected row from the scanned table, and increment the corresponding row's quantity column (based on the product code) in the item table by 1.
         removeItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int row = customerArea.scannedTable.getSelectedRow();
+
                 String code = customerArea.scannedTable.getValueAt(row, 0).toString();
                 float price = Float.parseFloat(customerArea.scannedTable.getValueAt(row, 2).toString());
+
                 cart.removeFromCart(code, price);
+
                 customerArea.scannedTotal.setText("Total: £" + String.format("%.2f", cart.getTotal()));
+
                 DefaultTableModel model = (DefaultTableModel) customerArea.scannedTable.getModel();
                 model.removeRow(row);
                 customerArea.scannedTable.setModel(model);
                 customerArea.scannedTable.repaint();
 
                 selectRowByValue(customerArea.itemTable, code);
+
                 TableModel itemTableModel = customerArea.itemTable.getModel();
                 int itemTableRow = customerArea.itemTable.getSelectedRow();
                 int currentQuantity = Integer.parseInt(itemTableModel.getValueAt(itemTableRow, 3).toString());
+
                 itemTableModel.setValueAt(currentQuantity + 1, itemTableRow, 3);
             }
         });
+
         scannedTablePopupMenu.add(removeItem);
+
         customerArea.scannedTable.setComponentPopupMenu(scannedTablePopupMenu);
 
         scannedTablePopupMenu.addPopupMenuListener(new PopupMenuListener() {
@@ -286,6 +349,12 @@ public class CustomerArea extends JFrame implements IObserver {
         });
     }
 
+    /*
+    *  @param total The current total cost of every item in the customer's shopping cart.
+    *  @param item The item to add to the scanned table.
+    *  @param table The JTable to add the row to.
+    *  @return Nothing.
+    */
     public void addToScannedTable(JTextPane total, Item item, JTable table) {
         cart.addToCart(item.getCode(), item.getPrice());
         total.setText("Total: £" + String.format("%.2f", cart.getTotal()));
@@ -295,20 +364,32 @@ public class CustomerArea extends JFrame implements IObserver {
         table.repaint();
     }
 
+    /* Create a model for the item table, and populate it with data.
+    *  @param stock A list of Item objects to add to the table model.
+    *  @param table The JTable component to modify.
+    *  @return Nothing.
+    */
     public void createItemTable(List<Item> stock, JTable table) {
-        ItemTable itemTable = new ItemTable();
-        DefaultTableModel model = itemTable.create();
-        model = itemTable.setItems(model, stock);
+        ItemTable itemTable = new ItemTable(); // Part of the Factory design pattern.
+        DefaultTableModel model = itemTable.create(); // Creates an empty itemTable model with the relevant columns (as determined and as part of the Factory design pattern).
+        model = itemTable.setItems(model, stock); // Add the Item objects to the table model as rows.
         table.setModel(model);
         table.repaint();
         table.getRowSorter().toggleSortOrder(0);
     }
 
+    /* Create the scanned table.
+    *  @param table The JTable component to modify.
+    *  @return Nothing.
+    */
     public void createScannedTable(JTable table) {
-        DefaultTableModel model = new ScannedTable().create();
+        DefaultTableModel model = new ScannedTable().create(); // Part of the Factory design pattern. Creates an empty scannedTable model with the appropriate columns.
         table.setModel(model);
+
+        // The scanned table has a hidden column wth each product's code, and it is sorted by this column.
         table.getColumnModel().getColumn(0).setMinWidth(0);
         table.getColumnModel().getColumn(0).setMaxWidth(0);
+
         table.repaint();
     }
 }

@@ -16,6 +16,7 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
+// AdminArea is one of the two classes that implements the IObserver method in order to automatically update its JTables when the stock is changed.
 public class AdminArea extends JFrame implements IObserver {
     private boolean deliveryProcessingRequired = false; // When products are delivered, they need to be processed before more deliveries can be made, or the stock can be edited. This variable keeps track of that.
     private java.util.List<Item> currentStock = new ArrayList<>();

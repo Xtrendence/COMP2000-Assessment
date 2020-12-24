@@ -24,6 +24,7 @@ public class CustomerAreaStyling {
         customerArea.contentWrapper.setBackground(new Color(235,235,235));
         customerArea.actionsWrapper.setBackground(new Color(235,235,235));
 
+        // Tries to set the adminIcon's icon.
         try {
             String separator = System.getProperty("file.separator");
             BufferedImage userIcon = ImageIO.read(new File(System.getProperty("user.dir") + separator + "resources" + separator + "user.png"));
@@ -35,6 +36,7 @@ public class CustomerAreaStyling {
         customerArea.navbarTitle.setFont(customerArea.itemTableTitle.getFont().deriveFont(Font.BOLD, 20));
         customerArea.navbarTitle.setForeground(new Color(255,255,255));
 
+        // If buttons' opaque values aren't set to true, they don't show up on macOS systems.
         customerArea.adminButton.setOpaque(true);
         customerArea.adminButton.setBackground(new Color(255,255,255));
         customerArea.adminButton.setForeground(new Color(0,125,255));
@@ -42,6 +44,7 @@ public class CustomerAreaStyling {
         customerArea.itemTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
         customerArea.scannedTableScrollPane.getViewport().setBackground(new Color(255, 255, 255));
 
+        // Used to center content inside JTextPane components.
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 
@@ -70,6 +73,7 @@ public class CustomerAreaStyling {
         customerArea.checkoutButton.setBackground(new Color(0,125,255));
         customerArea.checkoutButton.setForeground(new Color(255,255,255));
 
+        // Used to make scrollbars thinner and more modern looking.
         JScrollBar itemScrollBar = new JScrollBar();
         itemScrollBar.setBackground(new Color(230,230,230));
         itemScrollBar.setPreferredSize(new Dimension(10, 40));
