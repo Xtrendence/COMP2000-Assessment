@@ -1,14 +1,21 @@
 package com.xtrendence.acs.model;
 
+import com.xtrendence.acs.annotations.JSONElement;
+import com.xtrendence.acs.annotations.JSONSerializable;
 import com.xtrendence.acs.controller.IAccountState;
 import com.xtrendence.acs.controller.LoggedInState;
 import com.xtrendence.acs.controller.LoggedOutState;
 
 // Account object used to log admins into the system.
+@JSONSerializable
 public class Account {
     // A State design pattern is used to specify whether the admin is in a logged in state, or logged out.
     private IAccountState state;
+
+    @JSONElement
     private String username;
+
+    @JSONElement
     private String password;
 
     /* The constructor creates an Account object with username and password as class members, and calls the login() method.

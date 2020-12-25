@@ -1,10 +1,16 @@
 package com.xtrendence.acs.controller;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.xtrendence.acs.annotations.Initialize;
+import com.xtrendence.acs.annotations.JSONElement;
+import com.xtrendence.acs.annotations.JSONSerializable;
 import com.xtrendence.acs.model.IObserver;
 import com.xtrendence.acs.model.Item;
 import com.xtrendence.acs.model.Repository;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -100,20 +106,40 @@ public class Stock {
         for(int i = 0; i < updatedItems.size(); i++) {
             Item item = updatedItems.get(i);
 
-            int id = i + 1;
-            String code = item.getCode();
-            String name = item.getName();
-            String price = String.format("%.2f", item.getPrice());
-            String quantity = String.valueOf(item.getQuantity());
+            Class itemClass = item.getClass();
 
-            TreeMap<String, String> properties = new TreeMap<>();
+            for(Method method : itemClass.getDeclaredMethods()) {
+                if(method.isAnnotationPresent(Initialize.class)) {
+                    method.setAccessible(true);
+                    try {
+                        method.invoke(item);
+                    } catch(Exception e) {
+                        System.out.println(e);
+                    }
+                }
+            }
 
-            properties.put("code", code);
-            properties.put("name", name);
-            properties.put("price", price);
-            properties.put("quantity", quantity);
+            if(itemClass.isAnnotationPresent(JSONSerializable.class)) {
+                int id = i + 1;
+                String code = item.getCode();
+                String name = item.getName();
+                String price = String.format("%.2f", item.getPrice());
+                String quantity = String.valueOf(item.getQuantity());
 
-            map.put(id, properties);
+                TreeMap<String, String> properties = new TreeMap<>();
+
+                for(Field field : itemClass.getDeclaredFields()) {
+                    field.setAccessible(true);
+                    if(field.isAnnotationPresent(JSONElement.class)) {
+                        properties.put("code", code);
+                        properties.put("name", name);
+                        properties.put("price", price);
+                        properties.put("quantity", quantity);
+                    }
+                }
+
+                map.put(id, properties);
+            }
         }
 
         String json = gson.toJson(map);

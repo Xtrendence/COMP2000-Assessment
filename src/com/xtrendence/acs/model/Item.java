@@ -1,11 +1,32 @@
 package com.xtrendence.acs.model;
 
+import com.xtrendence.acs.annotations.Initialize;
+import com.xtrendence.acs.annotations.JSONElement;
+import com.xtrendence.acs.annotations.JSONSerializable;
+
 // Each product has a unique ID (product code), name, price, and quantity.
+@JSONSerializable
 public class Item {
+    @JSONElement
     private String code;
+
+    @JSONElement
     private String name;
+
+    @JSONElement
     private float price;
+
+    @JSONElement
     private int quantity;
+
+    @Initialize
+    private void initializeCode() {
+        this.code = this.code.toLowerCase();
+        String firstTwo = this.code.substring(0, 2);
+        if(!firstTwo.equals("pc")) {
+            this.code = "pc" + this.code;
+        }
+    }
 
     public Item() { }
 
