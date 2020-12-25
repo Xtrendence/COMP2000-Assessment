@@ -1,7 +1,8 @@
-package com.xtrendence.acs.controller;
+package com.xtrendence.acs.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.xtrendence.acs.controller.IRepository;
 
 import java.io.*;
 import java.util.HashMap;

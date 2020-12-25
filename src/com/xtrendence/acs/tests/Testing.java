@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.xtrendence.acs.model.Account;
 import com.xtrendence.acs.controller.Cart;
 import com.xtrendence.acs.model.Item;
-import com.xtrendence.acs.controller.Repository;
+import com.xtrendence.acs.model.Repository;
 import com.xtrendence.acs.controller.Stock;
 
 import java.io.File;

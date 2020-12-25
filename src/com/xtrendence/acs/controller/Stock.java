@@ -1,7 +1,9 @@
 package com.xtrendence.acs.controller;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.xtrendence.acs.model.IObserver;
 import com.xtrendence.acs.model.Item;
+import com.xtrendence.acs.model.Repository;
 
 import java.lang.reflect.Type;
 import java.util.*;

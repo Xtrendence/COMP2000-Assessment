@@ -1,5 +1,5 @@
 package com.xtrendence.acs.view;
-import com.xtrendence.acs.controller.IObserver;
+import com.xtrendence.acs.model.IObserver;
 import com.xtrendence.acs.model.Account;
 import com.xtrendence.acs.controller.TableAdapter;
 import com.xtrendence.acs.model.DeliveryTable;

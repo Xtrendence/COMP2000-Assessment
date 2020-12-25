@@ -1,4 +1,4 @@
-package com.xtrendence.acs.controller;
+package com.xtrendence.acs.model;
 
 // Part of the Observer design pattern. Ensures that all classes that implement the IObserver interfaces have an implementation of the updateTables() method.
 public interface IObserver {

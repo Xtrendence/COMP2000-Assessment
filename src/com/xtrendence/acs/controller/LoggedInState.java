@@ -4,6 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.xtrendence.acs.model.Account;
+import com.xtrendence.acs.model.Repository;
 
 import java.lang.reflect.Type;
 import java.util.Map;

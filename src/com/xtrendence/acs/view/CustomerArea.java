@@ -1,8 +1,8 @@
 package com.xtrendence.acs.view;
-import com.xtrendence.acs.controller.IObserver;
+import com.xtrendence.acs.model.IObserver;
 import com.xtrendence.acs.controller.Cart;
 import com.xtrendence.acs.model.Item;
-import com.xtrendence.acs.controller.Repository;
+import com.xtrendence.acs.model.Repository;
 import com.xtrendence.acs.controller.Stock;
 import com.xtrendence.acs.model.ScannedTable;
 import com.xtrendence.acs.model.ItemTable;
