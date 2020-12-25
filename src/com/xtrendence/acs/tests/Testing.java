@@ -7,6 +7,8 @@ import com.xtrendence.acs.controller.Cart;
 import com.xtrendence.acs.model.Item;
 import com.xtrendence.acs.model.Repository;
 import com.xtrendence.acs.controller.Stock;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileReader;
@@ -42,6 +44,7 @@ public class Testing {
     /* Creates the required test files (stock.json and accounts.json).
     *  @return Nothing.
     */
+    @Before
     public void generateTestFiles() {
         File resources = new File(testFolder);
         File stock = new File(testStockFile);
@@ -129,6 +132,7 @@ public class Testing {
     /* Tests Repository.create().
     *  @return Nothing.
     */
+    @Test
     public void testCreate() {
         System.out.println("Testing Repository.create().");
 
@@ -193,6 +197,7 @@ public class Testing {
     /* Tests Repository.read().
     *  @return Nothing.
     */
+    @Test
     public void testRead() {
         System.out.println("Testing Repository.read().");
 
@@ -208,6 +213,7 @@ public class Testing {
     /* Tests Repository.update().
     *  @return Nothing.
     */
+    @Test
     public void testUpdate() {
         System.out.println("Testing Repository.update()");
 
@@ -225,6 +231,7 @@ public class Testing {
     /* Tests Repository.delete().
     *  @return Nothing.
     */
+    @Test
     public void testDelete() {
         System.out.println("Testing Repository.delete().");
 
@@ -240,6 +247,7 @@ public class Testing {
     /* Tests Cart.addToCart(), Cart.removeFromCart(), Cart.getQuantity(), and Cart.emptyCart().
     *  @return Nothing.
     */
+    @Test
     public void testCart() {
         System.out.println("Testing Cart.addToCart(), Cart.removeFromCart(), Cart.getQuantity(), and Cart.emptyCart().");
 
@@ -285,6 +293,7 @@ public class Testing {
     /* Tests Stock.getStock(), Stock.getItem(), Stock.setStock(), and Stock.setItem().
     *  @return Nothing.
     */
+    @Test
     public void testStock() {
         System.out.println("Testing Stock.getStock(), Stock.getItem(), Stock.setStock(), and Stock.setItem().");
 
@@ -370,6 +379,7 @@ public class Testing {
     /* Tests login and logout functionality.
     *  @return Nothing.
     */
+    @Test
     public void testAccount() {
         System.out.println("Testing Account.login() and Account.logout().");
 
