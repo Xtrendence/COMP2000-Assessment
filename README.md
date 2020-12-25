@@ -4,9 +4,9 @@ COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system f
 
 ### Run Configuration
 
-|Main Class  |Package                     |
-|------------|----------------------------|
-|CustomerArea|com.xtrendence.acs.customers|
+|Main Class  |Package                |
+|------------|-----------------------|
+|CustomerArea|com.xtrendence.acs.view|
 
 ### Login Details
 
@@ -15,5 +15,13 @@ COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system f
 |Xtrendence|adm1nP4ss|
 |James|f0rTh3HayT3rs|
 |Hannibal|n1ceChi4nt1|
+
+### Credits
+
+|Library|Author                                               |
+|-------|-----------------------------------------------------|
+|JUnit  |[JUnit Team](https://github.com/junit-team/junit4)   |
+|Gson   |[Google](https://github.com/google/gson)             |
+|bcrypt |[Patrick Favre](https://github.com/patrickfav/bcrypt)|
 
 ![X Mart - Automated Checkout System](https://i.imgur.com/jUcIDGy.png)

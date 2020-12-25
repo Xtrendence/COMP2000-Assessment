@@ -2,11 +2,11 @@ package com.xtrendence.acs.tests;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.xtrendence.acs.accounts.Account;
-import com.xtrendence.acs.data.Cart;
-import com.xtrendence.acs.data.Item;
-import com.xtrendence.acs.data.Repository;
-import com.xtrendence.acs.data.Stock;
+import com.xtrendence.acs.model.Account;
+import com.xtrendence.acs.controller.Cart;
+import com.xtrendence.acs.model.Item;
+import com.xtrendence.acs.controller.Repository;
+import com.xtrendence.acs.controller.Stock;
 
 import java.io.File;
 import java.io.FileReader;
