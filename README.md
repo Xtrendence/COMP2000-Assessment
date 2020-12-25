@@ -16,12 +16,18 @@ COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system f
 |James|f0rTh3HayT3rs|
 |Hannibal|n1ceChi4nt1|
 
-### Credits
+### External Libraries
 
 |Library|Author                                               |
 |-------|-----------------------------------------------------|
 |JUnit  |[JUnit Team](https://github.com/junit-team/junit4)   |
 |Gson   |[Google](https://github.com/google/gson)             |
 |bcrypt |[Patrick Favre](https://github.com/patrickfav/bcrypt)|
+
+### Other Resources
+
+|Resource    |Author                                       |
+|------------|---------------------------------------------|
+|Font Awesome|[Font Awesome Team](https://fontawesome.com/)|
 
 ![X Mart - Automated Checkout System](https://i.imgur.com/jUcIDGy.png)
