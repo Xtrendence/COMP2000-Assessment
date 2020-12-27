@@ -289,12 +289,12 @@ public class AdminArea extends JFrame implements IObserver {
     *  @return Nothing.
     */
     @Override
-    public void updateTables(java.util.List<Item> stock) {
+    public void updateTables() {
         AdminArea adminArea = AdminArea.getInstance();
 
-        createStockTable(stock, adminArea.stockTable);
-        createLowStockTable(stock, adminArea.lowStockTable);
-        createDeliveryTable(stock, adminArea.deliveryTable);
+        createStockTable(Stock.getItems(), adminArea.stockTable);
+        createLowStockTable(Stock.getItems(), adminArea.lowStockTable);
+        createDeliveryTable(Stock.getItems(), adminArea.deliveryTable);
 
         createStockPopupMenu(adminArea.stockTable);
     }

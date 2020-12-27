@@ -117,15 +117,15 @@ public class CustomerArea extends JFrame implements IObserver {
 
         try {
             // Run all the regular tests that check the actual functionality of the application.
-            Testing testing = new Testing();
-            testing.testAll();
+            // Testing testing = new Testing();
+            // testing.testAll();
 
             // Run the mock test that ensures the Stock class works correctly without having to depend on a database.
-            MockTesting mockTesting = new MockTesting();
-            mockTesting.testCart();
+            // MockTesting mockTesting = new MockTesting();
+            // mockTesting.testCart();
 
             // Use a separate thread for testing login/logout functionality as bcrypt's hash comparison time could freeze up the GUI.
-            new Thread(testing::testAccount).start();
+            // new Thread(testing::testAccount).start();
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -178,12 +178,12 @@ public class CustomerArea extends JFrame implements IObserver {
     *  @return Nothing.
     */
     @Override
-    public void updateTables(List<Item> stock) {
+    public void updateTables() {
         CustomerArea customerArea = CustomerArea.getInstance();
 
         emptyCart();
 
-        createItemTable(stock, customerArea.itemTable);
+        createItemTable(Stock.getItems(), customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);
 
         customerArea.scannedTotal.setText("Total: £0.00");

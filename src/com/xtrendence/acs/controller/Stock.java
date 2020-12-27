@@ -34,7 +34,7 @@ public class Stock {
     */
     public static void notifyAllObservers() {
         for(IObserver observer : observers) {
-            observer.updateTables(items);
+            observer.updateTables();
         }
     }
 

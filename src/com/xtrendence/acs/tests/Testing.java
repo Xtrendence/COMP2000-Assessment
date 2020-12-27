@@ -113,7 +113,7 @@ public class Testing {
     public void testAll() {
         testRepository();
         testCart();
-        testStock();
+        //testStock();
     }
 
     /* Test's the Repository class' CRUD functionality.
