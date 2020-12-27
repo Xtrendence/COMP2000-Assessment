@@ -212,39 +212,44 @@ public class CustomerArea extends JFrame implements IObserver {
         };
 
         Timer timer = new Timer(delay, hideOutput);
+        timer.setRepeats(false);
 
-        for(Item item : Stock.getStock()) {
-            // Ensures the item is actually in stock.
-            if(item.getCode().equals(code) && item.getQuantity() >= 0) {
-                // Ensures the customer isn't buying more than the available amount of the desired item.
-                if(cart.itemExists(code) && cart.getQuantity(code) >= item.getQuantity()) {
-                    inputProductCode.setText("");
-                    JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // Selects the corresponding JTable row.
-                    selectRowByValue(itemTable, code);
+        for(Item item : Stock.getItems()) {
+            // Separate "if" statements in order to break the loop when the item is found (for better performance).
+            if(item.getCode().equals(code)) {
+                // Ensures the item is actually in stock.
+                if(item.getQuantity() >= 0) {
+                    // Ensures the customer isn't buying more than the available amount of the desired item.
+                    if (cart.itemExists(code) && cart.getQuantity(code) >= item.getQuantity()) {
+                        inputProductCode.setText("");
+                        JOptionPane.showMessageDialog(null, "No more \"" + item.getName() + "\" in stock.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        // Selects the corresponding JTable row.
+                        selectRowByValue(itemTable, code);
 
-                    // Decrements the item's quantity by 1 in the item table. This is only a visual change, no data is written until checkout.
-                    TableModel model = itemTable.getModel();
-                    int row = itemTable.getSelectedRow();
-                    int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
-                    model.setValueAt(currentQuantity - 1, row, 3);
+                        // Decrements the item's quantity by 1 in the item table. This is only a visual change, no data is written until checkout.
+                        TableModel model = itemTable.getModel();
+                        int row = itemTable.getSelectedRow();
+                        int currentQuantity = Integer.parseInt(model.getValueAt(row, 3).toString());
+                        model.setValueAt(currentQuantity - 1, row, 3);
 
-                    inputProductCode.setText("");
-                    inputProductCode.setEnabled(false);
+                        inputProductCode.setText("");
+                        inputProductCode.setEnabled(false);
 
-                    scanButton.setText("Please Wait...");
-                    scanButton.setBackground(new Color(0,100,200));
-                    scanOutput.setVisible(true);
-                    scanOutput.setEditable(false);
-                    scanOutput.setBackground(new Color(150, 135, 255));
-                    scanOutput.setForeground(new Color(255,255,255));
-                    scanOutput.setText("The item has been added to your shopping cart.");
+                        scanButton.setText("Please Wait...");
+                        scanButton.setBackground(new Color(0, 100, 200));
+                        scanOutput.setVisible(true);
+                        scanOutput.setEditable(false);
+                        scanOutput.setBackground(new Color(150, 135, 255));
+                        scanOutput.setForeground(new Color(255, 255, 255));
+                        scanOutput.setText("The item has been added to your shopping cart.");
 
-                    addToScannedTable(scannedTotal, item, scannedTable);
+                        addToScannedTable(scannedTotal, item, scannedTable);
 
-                    timer.restart();
+                        timer.restart();
+                    }
                 }
+                break;
             }
         }
     }
@@ -259,6 +264,7 @@ public class CustomerArea extends JFrame implements IObserver {
         for(int i = model.getRowCount() - 1; i >= 0; --i) {
             if(model.getValueAt(i, 0).equals(value)) {
                 table.setRowSelectionInterval(i, i);
+                break;
             }
         }
     }

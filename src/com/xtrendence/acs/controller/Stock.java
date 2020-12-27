@@ -38,6 +38,10 @@ public class Stock {
         }
     }
 
+    public static List<Item> getItems() {
+        return items;
+    }
+
     /* Returns an Item object from the List of items given a product code.
     *  @param code The product code.
     *  @return Item The relevant item if found, null if not found.
@@ -60,6 +64,7 @@ public class Stock {
             if(updatedItem.getCode().equals(item.getCode())) {
                 items.set(items.indexOf(item), updatedItem);
                 notifyAllObservers();
+                break;
             }
         }
     }

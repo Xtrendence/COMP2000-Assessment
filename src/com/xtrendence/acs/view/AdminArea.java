@@ -429,6 +429,7 @@ public class AdminArea extends JFrame implements IObserver {
         for(int i = model.getRowCount() - 1; i >= 0; --i) {
             if(model.getValueAt(i, 0).equals(value)) {
                 model.removeRow(i);
+                break;
             }
         }
         return model;
