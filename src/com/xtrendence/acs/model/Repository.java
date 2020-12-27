@@ -50,7 +50,6 @@ public class Repository implements IRepository {
 
                 Map<String, String> map = new HashMap<>();
 
-                map.put("Temp", "$2a$12$eRCYLwKDTEKjVg8PzNdrs.1BjUBTqkt3uDErPQ25xvFO5Z.bUlv2a");
                 map.put("Xtrendence", "$2a$12$dSD3oMqS6vDCSTJ..KSPJunABiXda6z1fpHDswt228p74XKTw4W02");
                 map.put("James", "$2a$12$8NVY5i/.tKE6ufjR7MImROLevix0A6sZAqdQHJFtE1LuBrkGQm6LS");
                 map.put("Hannibal", "$2a$12$wH6FGLmvKJ.ao98RfEo9XudGtVcvMKEWfNAVPIZ7MxPNXcm94RV.2");
