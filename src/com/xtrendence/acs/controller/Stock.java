@@ -19,7 +19,7 @@ public class Stock {
     public static List<IObserver> observers = new ArrayList<>();
 
     // A List of Item objects.
-    public static List<Item> items;
+    private static List<Item> items;
 
     /* Adds a class (that has the IObserver interfaces as an implementation) to the list of observers.
     *  @param observer The class to add to the list.
@@ -34,7 +34,7 @@ public class Stock {
     */
     public static void notifyAllObservers() {
         for(IObserver observer : observers) {
-            observer.updateTables();
+            observer.updateTables(items);
         }
     }
 
@@ -67,7 +67,7 @@ public class Stock {
     /* Reads the stock.json file and turns the JSON string into a TreeMap, and then each entry into an Item object.
     *  @return Nothing.
     */
-    public static void getStock() {
+    public static List<Item> getStock() {
         String content = Repository.read(Repository.stockFile);
         if(content != null) {
             try {
@@ -92,6 +92,7 @@ public class Stock {
                 System.out.println(e);
             }
         }
+        return items;
     }
 
     /* Overwrites the stock.json file with new stock data.

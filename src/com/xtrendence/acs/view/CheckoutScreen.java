@@ -214,7 +214,7 @@ public class CheckoutScreen extends JFrame {
                 Map.Entry pair = (Map.Entry) iterator.next();
                 String code = pair.getKey().toString();
                 int quantity = Integer.parseInt(pair.getValue().toString());
-                for(Item item : Stock.items) {
+                for(Item item : Stock.getStock()) {
                     if(code.equals(item.getCode())) {
                         float price = item.getPrice();
 

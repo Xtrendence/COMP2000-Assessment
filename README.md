@@ -21,6 +21,7 @@ COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system f
 |Library|Author                                               |
 |-------|-----------------------------------------------------|
 |JUnit  |[JUnit Team](https://github.com/junit-team/junit4)   |
+|Mockito|[Mockito Team](https://github.com/mockito/mockito)   |
 |Gson   |[Google](https://github.com/google/gson)             |
 |bcrypt |[Patrick Favre](https://github.com/patrickfav/bcrypt)|
 

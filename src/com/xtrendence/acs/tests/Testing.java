@@ -303,14 +303,14 @@ public class Testing {
 
         Repository.stockFile = testStockFile;
 
-        Stock.getStock();
+        List<Item> stock = Stock.getStock();
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         TreeMap<Integer, TreeMap<String, String>> actualStockMap = new TreeMap<>();
 
-        for(int i = 0; i < Stock.items.size(); i++) {
-            Item item = Stock.items.get(i);
+        for(int i = 0; i < stock.size(); i++) {
+            Item item = stock.get(i);
 
             int id = i + 1;
             String code = item.getCode();

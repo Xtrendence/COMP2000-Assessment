@@ -6,6 +6,7 @@ import com.xtrendence.acs.model.Repository;
 import com.xtrendence.acs.controller.Stock;
 import com.xtrendence.acs.model.ScannedTable;
 import com.xtrendence.acs.model.ItemTable;
+import com.xtrendence.acs.tests.MockTesting;
 import com.xtrendence.acs.tests.Testing;
 
 import javax.swing.*;
@@ -114,11 +115,20 @@ public class CustomerArea extends JFrame implements IObserver {
         // Generates the necessary files for the application to function (but only if they don't exist already).
         Repository.create();
 
-        Testing testing = new Testing();
-        testing.testAll();
+        try {
+            // Run all the regular tests that check the actual functionality of the application.
+            Testing testing = new Testing();
+            testing.testAll();
 
-        // Use a separate thread for testing login/logout functionality as bcrypt's hash comparison time could freeze up the GUI.
-        new Thread(testing::testAccount).start();
+            // Run the mock test that ensures the Stock class works correctly without having to depend on a database.
+            MockTesting mockTesting = new MockTesting();
+            mockTesting.testCart();
+
+            // Use a separate thread for testing login/logout functionality as bcrypt's hash comparison time could freeze up the GUI.
+            new Thread(testing::testAccount).start();
+        } catch(Exception e) {
+            System.out.println(e);
+        }
 
         CustomerArea customerArea = CustomerArea.getInstance();
 
@@ -168,12 +178,12 @@ public class CustomerArea extends JFrame implements IObserver {
     *  @return Nothing.
     */
     @Override
-    public void updateTables() {
+    public void updateTables(List<Item> stock) {
         CustomerArea customerArea = CustomerArea.getInstance();
 
         emptyCart();
 
-        createItemTable(Stock.items, customerArea.itemTable);
+        createItemTable(stock, customerArea.itemTable);
         createScannedTable(customerArea.scannedTable);
 
         customerArea.scannedTotal.setText("Total: £0.00");
@@ -203,7 +213,7 @@ public class CustomerArea extends JFrame implements IObserver {
 
         Timer timer = new Timer(delay, hideOutput);
 
-        for(Item item : Stock.items) {
+        for(Item item : Stock.getStock()) {
             // Ensures the item is actually in stock.
             if(item.getCode().equals(code) && item.getQuantity() >= 0) {
                 // Ensures the customer isn't buying more than the available amount of the desired item.

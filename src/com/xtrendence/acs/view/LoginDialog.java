@@ -114,7 +114,7 @@ public class LoginDialog extends JDialog {
             AdminArea adminArea = new AdminArea(account);
             adminArea.setVisible(true);
             adminArea.setContentPane(adminArea.mainPanel);
-            adminArea.updateTables();
+            Stock.getStock();
         }
         dispose();
     }
