@@ -60,9 +60,9 @@
           <component id="61acd" class="javax.swing.JButton" binding="adminButton">
             <constraints>
               <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false">
-                <minimum-size width="100" height="30"/>
-                <preferred-size width="100" height="30"/>
-                <maximum-size width="100" height="30"/>
+                <minimum-size width="120" height="30"/>
+                <preferred-size width="120" height="30"/>
+                <maximum-size width="120" height="30"/>
               </grid>
             </constraints>
             <properties>
