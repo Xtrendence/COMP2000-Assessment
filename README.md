@@ -2,6 +2,10 @@
 
 COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system for a supermarket.
 
+### Download
+
+You can either download an executable JAR file from the [Releases](https://github.com/Xtrendence/COMP2000-Assessment/releases) section, or you can download the [source code](https://github.com/Xtrendence/COMP2000-Assessment/archive/main.zip) and open it with IntelliJ instead. The run configuration can be found below, with the main class being "**com.xtrendence.acs.view.CustomerArea**".
+
 ### Run Configuration
 
 |Main Class  |Package                |
