@@ -1,6 +1,6 @@
 # COMP2000 Assessment
 
-COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system for a supermarket.
+COMP2000 Coursework by Khodadad (Adrian) Nouchin. An automated checkout system for a supermarket. This project got 100/100.
 
 ### Download
 
